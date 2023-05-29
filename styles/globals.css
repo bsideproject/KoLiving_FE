@@ -1,3 +1,13 @@
+
+/**
+ * This injects Tailwind's base styles and any base styles registered by
+ * plugins.
+ */
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+
+/*
 html,
 body {
   padding: 0;
@@ -24,3 +34,4 @@ a {
     background: black;
   }
 }
+*/
