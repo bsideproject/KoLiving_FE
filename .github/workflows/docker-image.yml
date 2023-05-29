@@ -27,7 +27,7 @@ jobs:
         run: docker images
 
       - name: Set Tag Name
-        run: docker image tag ko-living-fe_front-service ${{ secrets.NCP_NCR }}/nextjs-docker:latest
+        run: docker image tag koliving_fe_front-service ${{ secrets.NCP_NCR }}/nextjs-docker:latest
 
       - name: Push Docker image
         run: docker push ${{ secrets.NCP_NCR }}/nextjs-docker:latest
