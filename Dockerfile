@@ -1,5 +1,8 @@
 FROM node:18-alpine AS base
 
+LABEL maintainer="zestlee1106@gmail.com"
+LABEL description="KoLiving_FE Dockerfile"
+
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat

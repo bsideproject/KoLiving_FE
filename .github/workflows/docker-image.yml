@@ -14,8 +14,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Build Docker image
+      - name: Build Docker image / tag with build number
         run: docker-compose build
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          NCP_NCR: ${{ secrets.NCP_NCR }}
+          IMAGE_NAME: koliving_fe
+
+      - name: Build Docker image / tag latest
+        run: docker-compose build
+        env:
+          BUILD_NUMBER: latest
+          NCP_NCR: ${{ secrets.NCP_NCR }}
+          IMAGE_NAME: koliving_fe
 
       - name: Login to NCP Container Registry
         uses: docker/login-action@v2
@@ -24,14 +35,11 @@ jobs:
           username: ${{ secrets.NCP_NCR_ACCESS_KEY }}
           password: ${{ secrets.NCP_NCR_SECRET_KEY }}
 
-      - name: List Docker images
-        run: docker images
+      - name: Push Docker image / tag with build number
+        run: docker push ${{ secrets.NCP_NCR }}/koliving_fe:${{ secrets.NCP_NCR }}
 
-      - name: Set Tag Name
-        run: docker image tag koliving_fe_front-service ${{ secrets.NCP_NCR }}/nextjs-docker:latest
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.NCP_NCR }}/nextjs-docker:latest
+      - name: Push Docker image / tag latest
+        run: docker push ${{ secrets.NCP_NCR }}/koliving_fe:latest
 
       - name: Connect ssh
         uses: appleboy/ssh-action@master

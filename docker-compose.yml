@@ -1,11 +1,12 @@
-version: "3.6"
+version: '3.6'
 
 services:
   front-service:
+    image: ${NCP_NCR}/${IMAGE_NAME}:${BUILD_NUMBER}
     build:
       context: ./
       dockerfile: Dockerfile
     environment:
       - HOST=0.0.0.0
     ports:
-      - "80:3000"
+      - '80:3000'
