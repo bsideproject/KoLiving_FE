@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_NAME: koliving_fe
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -26,10 +29,7 @@ jobs:
         env:
           BUILD_NUMBER: latest
           NCP_NCR: ${{ secrets.NCP_NCR }}
-          IMAGE_NAME: koliving_fe
-
-      - name: List Docker images
-        run: docker images
+          IMAGE_NAME: $IMAGE_NAME
 
       - name: Login to NCP Container Registry
         uses: docker/login-action@v2
@@ -39,10 +39,10 @@ jobs:
           password: ${{ secrets.NCP_NCR_SECRET_KEY }}
 
       - name: Push Docker image / tag with build number
-        run: docker push ${{ secrets.NCP_NCR }}/koliving_fe:${{ github.run_number }}
+        run: docker push ${{ secrets.NCP_NCR }}/$IMAGE_NAME:${{ github.run_number }}
 
       - name: Push Docker image / tag latest
-        run: docker push ${{ secrets.NCP_NCR }}/koliving_fe:latest
+        run: docker push ${{ secrets.NCP_NCR }}/$IMAGE_NAME:latest
 
       - name: Copy Docker Compose file to NCP Server
         uses: appleboy/scp-action@master
@@ -64,7 +64,7 @@ jobs:
           script: |
             cd /deploy/scripts
             echo ${{ secrets.NCP_NCR_SECRET_KEY }} | docker login -u ${{ secrets.NCP_NCR_ACCESS_KEY }} --password-stdin ${{ secrets.NCP_NCR }}
-            docker pull ${{ secrets.NCP_NCR }}/nextjs-docker:latest
+            docker pull ${{ secrets.NCP_NCR }}/$IMAGE_NAME:latest
             if [[ $(docker ps -q) ]]; then
               docker stop $(docker ps -q)
               docker rm $(docker ps -aq)
