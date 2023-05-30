@@ -55,10 +55,6 @@ jobs:
           target: /deploy/scripts
 
       - name: Connect ssh to NCP Server
-        env:
-          BUILD_NUMBER: latest
-          NCP_NCR: ${{ secrets.NCP_NCR }}
-          IMAGE_NAME: ${{env.IMAGE_NAME}}
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.NCP_SERVER_IP }}
@@ -69,6 +65,9 @@ jobs:
             cd /deploy/scripts
             echo ${{ secrets.NCP_NCR_SECRET_KEY }} | docker login -u ${{ secrets.NCP_NCR_ACCESS_KEY }} --password-stdin ${{ secrets.NCP_NCR }}
             docker pull ${{ secrets.NCP_NCR }}/${{env.IMAGE_NAME}}:latest
+            export BUILD_NUMBER=latest
+            export NCP_NCR=${{ secrets.NCP_NCR }}
+            export IMAGE_NAME=${{ env.IMAGE_NAME }}
             if [[ $(docker ps -q) ]]; then
               docker stop $(docker ps -q)
               docker rm $(docker ps -aq)
