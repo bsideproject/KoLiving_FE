@@ -9,23 +9,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--color-primary)',
-        'primary-var': 'var(--color-primary-variant)',
-        secondary: 'var(--color-secondary)',
-        'secondary-var': 'var(--color-secondary-variant)',
-        info: 'var(--color-info)',
-        warning: 'var(--color-warning)',
-        success: 'var(--color-success)',
-        error: 'var(--color-error)',
-      },
-      keyframes: {
-        wiggle: {
-          '0%, 100%': { transform: 'rotate(-1deg)' },
-          '50%': { transform: 'rotate(1deg)' },
-        },
-      },
-      animation: {
-        wiggle: 'wiggle .1s ease-in-out infinite',
+        r1: '#FF8E00',
+        r2: '#FE75B9',
+        r3: '#FFD3DD',
+        a1: '#F42500',
+        a2: '#717D96',
+        g0: '#FFFFFF',
+        g1: '#FAFAFA',
+        g2: '#EEEEEE',
+        g3: '#E0E0E0',
+        g4: '#BDBDBD',
+        g5: '#757575',
+        g6: '#424242',
+        g7: '#212121',
       },
     },
   },
