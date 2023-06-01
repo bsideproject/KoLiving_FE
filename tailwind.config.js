@@ -22,6 +22,10 @@ module.exports = {
         g6: '#424242',
         g7: '#212121',
       },
+      fontFamily: {
+        poppins: ['Poppins', 'sans-serif'],
+        pretendard: ['Pretendard', 'sans-serif'],
+      },
     },
   },
   plugins: [],
