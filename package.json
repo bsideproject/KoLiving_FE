@@ -38,5 +38,10 @@
     "react-i18next": "^12.3.1",
     "tailwindcss": "^3.3.2",
     "typescript": "5.0.4"
+  },
+  "description": "KoLiving 서비스",
+  "author": "살아남은공룡들 프론트엔드 개발팀",
+  "engines": {
+    "node": "18.13.0"
   }
 }
