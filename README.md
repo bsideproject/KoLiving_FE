@@ -6,7 +6,7 @@
 
 - Package manager: yarn
 - node version: 18.13.0
-- Npm version manager: nvm
+- Node version manager: nvm
 
 ```bash
 # node 버전 설정
