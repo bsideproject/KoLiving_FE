@@ -42,6 +42,6 @@
   "description": "KoLiving 서비스",
   "author": "살아남은공룡들 프론트엔드 개발팀",
   "engines": {
-    "node": "18.13.0"
+    "node": "18.16.0"
   }
 }
