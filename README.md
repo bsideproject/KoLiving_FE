@@ -1,34 +1,93 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KoLiving 서비스
 
-## Getting Started
+## Setup
 
-First, run the development server:
+### 패키지 설치
+
+- Package manager: yarn
+- node version: 18.13.0
 
 ```bash
-npm run dev
-# or
+# node 버전 설정
+nvm use
+
+# 패키지 설치
+yarn install
+```
+
+## 개발 서버 실행
+
+```bash
+# local 환경 개발 서버
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 빌드 후 서버 띄우기
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+# build
+yarn build
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# start
+yarn start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Font
 
-## Learn More
+- Poppins
+- pretendard
+- 호출 위치: `styles/globals.css`
 
-To learn more about Next.js, take a look at the following resources:
+## 전역 css
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `styles/globals.css`
+  - 내용
+    - tailwind css 적용
+    - 폰트 적용 (poppins, pretendard)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## tailwind css
 
-## Deploy on Vercel
+- tailwind.config.js
+  - 스타일 시스템의 컬러, 폰트 설정을 추가함 (theme.extend.colors, theme.extend.fontFamily)
+  - html 태그에 컬러 적용: text-r1, bg-h1 etc...
+  - 폰트 스타일 적용: font-poppins, font-pretendard
+  - 기타 추가값 (스크린 사이즈 등) 이 필요할 경우 tailwind.config.js 에 추가하면 됨
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 깃 전략
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 현재 시점 (dev 를 따로 두지 않음)
+  - main 브랜치에서 작업 브랜치 생성
+  - 작업 브랜치에서 작업
+  - 작업 브랜치에서 main 브랜치로 merge request
+  - merge
+
+## 커밋 컨벤션
+
+- feat : 새로운 기능 추가
+- fix : 버그 수정
+- docs : 문서 수정
+- style : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+- refactor : 코드 리펙토링
+- test : 테스트 코드, 리펙토링 테스트 코드 추가
+- chore : 빌드 업무 수정, 패키지 매니저 수정
+
+- 예시 >> [feat] 로그인 기능 추가
+
+## 도커 빌드
+
+```bash
+# build
+docker-compose build
+
+# start
+docker-compose up -d
+```
+
+- 추후 서비스가 추가될 것을 대비하여 docker-compose 를 만들어놓음 (컨테이너를 여러개 띄우기 쉽게 만든 것)
+- 3000번으로 뜬 Next.js 를 80번 포트로 연결하여 도커를 띄운다
+
+## 배포 스크립트
+
+- .github/workflows/docker-image.yml
+  - KoLiving_FE 리포지토리에서 발생한 푸시 이벤트일 때에만 작동하도록 해놓음
+  - 각 secrets 키는 리포지토리에 설정이 되어있으며, 필요 시 공유함
