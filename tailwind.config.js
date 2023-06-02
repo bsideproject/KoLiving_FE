@@ -21,6 +21,15 @@ module.exports = {
         poppins: ['Poppins', 'sans-serif'],
         pretendard: ['Pretendard', 'sans-serif'],
       },
+      maxWidth: {
+        default: '335px',
+      },
+      spacing: {
+        default: '335px',
+      },
+      width: {
+        default: '335px',
+      },
     },
   },
   plugins: [],
