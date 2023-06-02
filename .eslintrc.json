@@ -5,9 +5,9 @@
     "prettier",
     "airbnb",
     "airbnb/hooks",
-    "plugin:storybook/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended"
   ],
   "rules": {
     "react/jsx-filename-extension": [
