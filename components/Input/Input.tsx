@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
+import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import styles from './Input.module.scss';
 
-function Input() {
+interface InputProps {
+  placeholder?: string;
+  register: UseFormRegisterReturn;
+  type?: string;
+  error?: FieldError;
+}
+
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { placeholder, register, type, error }: InputProps,
+  ref
+) {
   return (
     <div>
-      <input
-        className="border-g4 border-solid border-[1px] rounded-[2px] bg-g0 max-w-[335px] h-[48px] focus:border-g6 placeholder-g4 pl-[12px]"
-        placeholder="hint"
-      />
-      <p className="text-a1 font-pretendard text-[14px] max-w-[335px] h-[14px] mt-[4px]">주의사항</p>
+      <input className={styles.input} placeholder={placeholder || undefined} type={type} {...register} />
+      {error && <p className={styles.warning}>{error.message}</p>}
     </div>
   );
-}
+});
+
+Input.defaultProps = {
+  type: 'text',
+  placeholder: '',
+  error: undefined,
+};
 
 export default Input;

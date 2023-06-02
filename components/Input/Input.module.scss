@@ -1,3 +1,11 @@
+.input {
+  @apply border-g4 border-solid border-[1px] rounded-[2px] bg-g0 w-default h-[48px] focus:border-g6 placeholder-g4 pl-[12px] font-pretendard font-normal;
+}
+
 .input:focus {
   outline: none;
+}
+
+.warning {
+  @apply text-a1 font-pretendard text-[14px] max-w-default h-[14px] mt-[4px];
 }
