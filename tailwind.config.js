@@ -1,10 +1,5 @@
 module.exports = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './pages/**/*.{js,jsx,ts,tsx}',
-  ],
+  content: ['./pages/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -25,6 +20,15 @@ module.exports = {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
         pretendard: ['Pretendard', 'sans-serif'],
+      },
+      maxWidth: {
+        default: '335px',
+      },
+      spacing: {
+        default: '335px',
+      },
+      width: {
+        default: '335px',
       },
     },
   },

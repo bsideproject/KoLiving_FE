@@ -37,11 +37,11 @@ yarn start
 
 - Poppins
 - pretendard
-- 호출 위치: `styles/globals.css`
+- 호출 위치: `styles/tailwind.scss`
 
 ## 전역 css
 
-- `styles/globals.css`
+- `styles/tailwind.scss`
   - 내용
     - tailwind css 적용
     - 폰트 적용 (poppins, pretendard)

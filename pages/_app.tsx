@@ -1,5 +1,6 @@
 import React from 'react';
-import '../styles/globals.css';
+import '../styles/tailwind.scss';
+import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
