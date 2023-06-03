@@ -29,8 +29,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.NCP_SERVER_USERNAME }}
           AWS_SECRET_ACCESS_KEY: ${{secrets.NCP_SERVER_PASSWORD}}
-        run: |
-          yarn build-storybook
-          aws --endpoint-url=${{env.NAVER_S3_ENDPOINT}}
-          s3 cp --recursive ./storybook-static
-          s3://${{env.BUCKET_NAME}}
+        run: aws --endpoint-url=${{ env.NAVER_S3_ENDPOINT }} s3 cp --recursive ./storybook-static s3://${{ env.BUCKET_NAME }}
