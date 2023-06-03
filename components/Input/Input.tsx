@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const hasError = error && error.message;
 
   return (
-    <div>
+    <>
       <input
         className={`${styles.input} ${hasError ? styles.error : ''}`}
         placeholder={placeholder}
@@ -26,7 +26,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         {...register}
       />
       {hasError && <p className={styles.warning}>{error.message}</p>}
-    </div>
+    </>
   );
 });
 

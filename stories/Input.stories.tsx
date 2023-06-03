@@ -94,24 +94,26 @@ const PasswordCheckTemplate = (args) => {
   const watchPassword1 = watch('password1', '');
   return (
     <form>
-      <Input
-        {...args}
-        register={register('password1', {
-          validate: (value) => {
-            return isValidPassword(value, '비밀번호 형식이 아닙니다');
-          },
-        })}
-        error={errors['password1'] as FieldError}
-      />
-      <Input
-        {...args}
-        register={register('password2', {
-          validate: (value) => {
-            return value === watchPassword1 || '비밀번호가 일치하지 않습니다.';
-          },
-        })}
-        error={errors['password2'] as FieldError}
-      />
+      <div style={{ width: 400 }}>
+        <Input
+          {...args}
+          register={register('password1', {
+            validate: (value) => {
+              return isValidPassword(value, '비밀번호 형식이 아닙니다');
+            },
+          })}
+          error={errors['password1'] as FieldError}
+        />
+        <Input
+          {...args}
+          register={register('password2', {
+            validate: (value) => {
+              return value === watchPassword1 || '비밀번호가 일치하지 않습니다.';
+            },
+          })}
+          error={errors['password2'] as FieldError}
+        />
+      </div>
     </form>
   );
 };
