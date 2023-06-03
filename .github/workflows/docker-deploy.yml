@@ -10,7 +10,7 @@ env:
   BUCKET_NAME: front-storybook
 
 jobs:
-  build-and-deploy:
+  docker-deploy:
     runs-on: ubuntu-latest
     if: github.repository == 'bsideproject/KoLiving_FE'
 
