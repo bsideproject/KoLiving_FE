@@ -7,6 +7,8 @@ on:
 
 env:
   IMAGE_NAME: koliving_fe
+  NAVER_S3_ENDPOINT: https://kr.object.ncloudstorage.com
+  BUCKET_NAME: front-storybook
 
 jobs:
   build-and-deploy:
@@ -30,6 +32,16 @@ jobs:
           BUILD_NUMBER: latest
           NCP_NCR: ${{ secrets.NCP_NCR }}
           IMAGE_NAME: ${{env.IMAGE_NAME}}
+
+      - name: Deploy Storybook
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.NCP_SERVER_USERNAME }}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.NCP_SERVER_PASSWORD}}
+        run: |
+          yarn build
+          aws --endpoint-url=${{env.NAVER_S3_ENDPOINT}}
+          s3 cp --recursive ./storybook-static
+          s3://${{env.BUCKET_NAME}}
 
       - name: Login to NCP Container Registry
         uses: docker/login-action@v2
