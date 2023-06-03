@@ -1,9 +1,16 @@
 import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import Input from '../components/Input/Input.tsx';
 
-export default {
-  title: 'Components/Input',
+const meta: Meta<typeof Input> = {
+  title: 'List',
   component: Input,
 };
 
-export const HomePage = () => <Input />;
+export default meta;
+type Story = StoryObj<typeof Input>;
+
+export const ManyItems: Story = {
+  render: (args) => <Input {...args} />,
+};
