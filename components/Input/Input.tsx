@@ -7,16 +7,25 @@ interface InputProps {
   register: UseFormRegisterReturn;
   type?: string;
   error?: FieldError;
+  maxLength?: number;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { placeholder, register, type, error }: InputProps,
+  { placeholder, register, type, error, maxLength }: InputProps,
   ref
 ) {
+  const hasError = error && error.message;
+
   return (
     <div>
-      <input className={styles.input} placeholder={placeholder || undefined} type={type} {...register} />
-      {error && <p className={styles.warning}>{error.message}</p>}
+      <input
+        className={`${styles.input} ${hasError ? styles.error : ''}`}
+        placeholder={placeholder}
+        type={type}
+        maxLength={maxLength}
+        {...register}
+      />
+      {hasError && <p className={styles.warning}>{error.message}</p>}
     </div>
   );
 });
@@ -25,6 +34,7 @@ Input.defaultProps = {
   type: 'text',
   placeholder: '',
   error: undefined,
+  maxLength: undefined,
 };
 
 export default Input;
