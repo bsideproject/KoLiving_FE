@@ -5,6 +5,13 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.module.rules.push({
+      test: /(\\|\/)(\.storybook|stories)(\\|\/)/,
+      loader: 'ignore-loader',
+    });
+    return config;
+  },
 };
 
 module.exports = {

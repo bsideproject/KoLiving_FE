@@ -23,18 +23,6 @@ const config: StorybookConfig = {
       nextConfigPath: path.resolve(__dirname, '../next.config.js'),
     },
   },
-  babel: async (options) => ({
-    ...options,
-    presets: [
-      [
-        '@babel/preset-react',
-        {
-          runtime: 'automatic',
-        },
-        'preset-react-jsx-transform', // Can name this anything, just an arbitrary alias to avoid duplicate presets'
-      ],
-    ],
-  }),
   docs: {
     autodocs: 'tag',
   },
