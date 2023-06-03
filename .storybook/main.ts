@@ -29,5 +29,18 @@ const config: StorybookConfig = {
   webpackFinal: async (config) => {
     return config;
   },
+  previewHead: (head) => `
+    ${head}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+      rel="stylesheet"
+    />
+  `,
 };
 export default config;

@@ -1,9 +1,12 @@
 .input {
   @apply border-g4 border-solid border-[1px] rounded-[2px] bg-g0 w-default h-[48px] focus:border-g6 placeholder-g4 pl-[12px] font-pretendard font-normal;
-}
 
-.input:focus {
-  outline: none;
+  &.error {
+    @apply border-a1;
+  }
+  &:focus {
+    outline: none;
+  }
 }
 
 .warning {
