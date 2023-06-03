@@ -6,12 +6,28 @@ import { useTranslation } from 'next-i18next';
 import { FieldError, useForm } from 'react-hook-form';
 import Input from '../components/Input/Input.tsx';
 import { isRequired } from '../utils/validCheck.ts';
+import Select from '../components/Select/Select.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
     ...(await serverSideTranslations(locale as string, ['common'])),
   },
 });
+
+const test = [
+  {
+    value: '1',
+    label: 'test1',
+  },
+  {
+    value: '2',
+    label: 'test2',
+  },
+  {
+    value: '3',
+    label: 'test3',
+  },
+];
 
 const Home = () => {
   const { t } = useTranslation('common');
@@ -34,6 +50,7 @@ const Home = () => {
             })}
             error={errors.name as FieldError}
           />
+          <Select options={test} register={register('age')} placeholder="test" size="lg" />
         </form>
       </div>
     </div>
