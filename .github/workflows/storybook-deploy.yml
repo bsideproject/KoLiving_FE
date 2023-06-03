@@ -1,0 +1,32 @@
+name: Deploy Storybook
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  NAVER_S3_ENDPOINT: https://kr.object.ncloudstorage.com
+  BUCKET_NAME: front-storybook
+
+jobs:
+  storybook-deploy:
+    runs-on: ubuntu-latest
+    if: github.repository == 'bsideproject/KoLiving_FE'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Storybook
+        run: yarn build-storybook
+
+      - name: Deploy Storybook
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.NCP_SERVER_USERNAME }}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.NCP_SERVER_PASSWORD}}
+        run: |
+          yarn build-storybook
+          aws --endpoint-url=${{env.NAVER_S3_ENDPOINT}}
+          s3 cp --recursive ./storybook-static
+          s3://${{env.BUCKET_NAME}}

@@ -1,9 +1,8 @@
 name: Deploy to NCP
 
 on:
-  push:
-    branches:
-      - main
+  repository_dispatch:
+    types: [deploy]
 
 env:
   IMAGE_NAME: koliving_fe
@@ -18,43 +17,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Build Docker image / tag with build number
-        run: docker-compose build
-        env:
-          BUILD_NUMBER: ${{ github.run_number }}
-          NCP_NCR: ${{ secrets.NCP_NCR }}
-          IMAGE_NAME: ${{env.IMAGE_NAME}}
-
-      - name: Build Docker image / tag latest
-        run: docker-compose build
-        env:
-          BUILD_NUMBER: latest
-          NCP_NCR: ${{ secrets.NCP_NCR }}
-          IMAGE_NAME: ${{env.IMAGE_NAME}}
-
-      - name: Deploy Storybook
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.NCP_SERVER_USERNAME }}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.NCP_SERVER_PASSWORD}}
-        run: |
-          yarn build
-          aws --endpoint-url=${{env.NAVER_S3_ENDPOINT}}
-          s3 cp --recursive ./storybook-static
-          s3://${{env.BUCKET_NAME}}
-
-      - name: Login to NCP Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ secrets.NCP_NCR }}
-          username: ${{ secrets.NCP_NCR_ACCESS_KEY }}
-          password: ${{ secrets.NCP_NCR_SECRET_KEY }}
-
-      - name: Push Docker image / tag with build number
-        run: docker push ${{ secrets.NCP_NCR }}/${{env.IMAGE_NAME}}:${{ github.run_number }}
-
-      - name: Push Docker image / tag latest
-        run: docker push ${{ secrets.NCP_NCR }}/${{env.IMAGE_NAME}}:latest
 
       - name: Copy Docker Compose file to NCP Server
         uses: appleboy/scp-action@master
