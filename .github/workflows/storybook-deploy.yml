@@ -18,6 +18,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Package Install
+        # 스토리북 관련 패키지만 install 하면 되지만... 패키지를 일일이 해 주기 힘드니 일단은 전체...
+        run: yarn install
+
       - name: Build Storybook
         run: yarn build-storybook
 
