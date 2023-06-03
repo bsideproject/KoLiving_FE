@@ -1,0 +1,58 @@
+name: Build and Push Docker image
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: koliving_fe
+  GITHUB_REPOSITORY: bsideproject/KoLiving_FE
+
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+    if: github.repository == 'bsideproject/KoLiving_FE'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Docker image / tag with build number
+        run: docker-compose build
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          NCP_NCR: ${{ secrets.NCP_NCR }}
+          IMAGE_NAME: ${{env.IMAGE_NAME}}
+
+      - name: Build Docker image / tag latest
+        run: docker-compose build
+        env:
+          BUILD_NUMBER: latest
+          NCP_NCR: ${{ secrets.NCP_NCR }}
+          IMAGE_NAME: ${{env.IMAGE_NAME}}
+
+      - name: Login to NCP Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.NCP_NCR }}
+          username: ${{ secrets.NCP_NCR_ACCESS_KEY }}
+          password: ${{ secrets.NCP_NCR_SECRET_KEY }}
+
+      - name: Push Docker image / tag with build number
+        run: docker push ${{ secrets.NCP_NCR }}/${{env.IMAGE_NAME}}:${{ github.run_number }}
+
+      - name: Push Docker image / tag latest
+        run: docker push ${{ secrets.NCP_NCR }}/${{env.IMAGE_NAME}}:latest
+
+  trigger-deploy:
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Deploy workflow
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.YOUNGWOO_TOKEN }}
+          repository: ${{env.GITHUB_REPOSITORY}}
+          event-type: deploy
