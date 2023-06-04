@@ -3,3 +3,12 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+@layer base {
+  h2 {
+    @apply font-poppins font-semibold text-[20px];
+  }
+  p {
+    @apply font-pretendard font-normal text-[16px] text-g5;
+  }
+}
