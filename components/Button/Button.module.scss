@@ -1,0 +1,16 @@
+.button {
+  @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-center 
+  border-g4 border-solid border-[1px] rounded-[2px] bg-g0 transition duration-300;
+  
+  &.primary-button {
+    @apply bg-blue-500 text-white;
+
+    &:hover {
+      @apply bg-blue-600;
+    }
+
+    &:disabled {
+      @apply bg-gray-400 cursor-not-allowed;
+    }
+  }
+}
