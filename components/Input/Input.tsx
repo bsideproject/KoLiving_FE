@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import styles from './Input.module.scss';
 
@@ -10,10 +10,7 @@ interface InputProps {
   maxLength?: number;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { placeholder, register, type, error, maxLength }: InputProps,
-  ref
-) {
+function Input({ placeholder, register, type, error, maxLength }: InputProps) {
   const hasError = error && error.message;
 
   return (
@@ -28,7 +25,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {hasError && <p className={styles.warning}>{error.message}</p>}
     </>
   );
-});
+}
 
 Input.defaultProps = {
   type: 'text',
