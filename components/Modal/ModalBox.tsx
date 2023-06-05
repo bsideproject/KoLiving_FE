@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import styles from './Modal.module.scss';
 
 interface ModalProps {
@@ -9,6 +9,19 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose }:
   const handleClose = () => {
     onClose?.();
   };
+
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (body === null) {
+      return undefined;
+    }
+    const { overflow } = body.style;
+    body.style.overflow = 'hidden';
+
+    return () => {
+      body.style.overflow = overflow;
+    };
+  }, []);
 
   return (
     <div className={styles.overlay}>
