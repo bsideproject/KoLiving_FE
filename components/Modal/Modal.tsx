@@ -5,22 +5,26 @@ import useOutSideClick from '../../hooks/useOutSideClick.ts';
 
 interface ModalProps {
   onClose?: () => void;
+  children?: React.ReactNode;
 }
 
-function Modal({ onClose }: ModalProps) {
+function Modal({ onClose, children }: ModalProps) {
   const modalRef = useRef(null);
 
   useOutSideClick(modalRef, onClose);
 
   return (
     <ModalContainer>
-      <ModalBox onClose={onClose} ref={modalRef} />
+      <ModalBox onClose={onClose} ref={modalRef}>
+        {children}
+      </ModalBox>
     </ModalContainer>
   );
 }
 
 Modal.defaultProps = {
   onClose: undefined,
+  children: undefined,
 };
 
 export default Modal;

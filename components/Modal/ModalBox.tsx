@@ -3,9 +3,10 @@ import styles from './Modal.module.scss';
 
 interface ModalProps {
   onClose?: () => void;
+  children?: React.ReactNode;
 }
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose }: ModalProps, ref) {
+const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose, children }: ModalProps, ref) {
   const handleClose = () => {
     onClose?.();
   };
@@ -31,10 +32,12 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose }:
             <img src="/icons/close.png" alt="close" />
           </button>
         </div>
-        <div>
-          <h2>Title</h2>
-          <p>Lorem ipsum dolor sit amet consectetur. Varius nunc aliquam nullam vitae.</p>
-        </div>
+        {children || (
+          <div>
+            <h2>Title</h2>
+            <p>Lorem ipsum dolor sit amet consectetur. Varius nunc aliquam nullam vitae.</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -42,6 +45,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose }:
 
 Modal.defaultProps = {
   onClose: undefined,
+  children: undefined,
 };
 
 export default Modal;
