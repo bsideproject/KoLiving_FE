@@ -1,5 +1,7 @@
 {
 	"welcome": "Welcome to KoLiving",
 	"email": "Email",
-	"password": "Password"
+	"password": "Password",
+	"signup": "Sign up now!",
+	"resetPwd" : "Reset password"
 }
