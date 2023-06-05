@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styles from './Modal.module.scss';
 
 interface ModalProps {
   onClose?: () => void;
 }
 
-function Modal({ onClose }: ModalProps) {
+const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose }: ModalProps, ref) {
   const handleClose = () => {
     onClose?.();
   };
 
   return (
     <div className={styles.overlay}>
-      <div className={styles['modal-wrap']}>
+      <div className={styles['modal-wrap']} ref={ref}>
         <div className={styles.close}>
           <button type="button" onClick={handleClose}>
             <img src="/icons/close.png" alt="close" />
@@ -25,7 +25,7 @@ function Modal({ onClose }: ModalProps) {
       </div>
     </div>
   );
-}
+});
 
 Modal.defaultProps = {
   onClose: undefined,
