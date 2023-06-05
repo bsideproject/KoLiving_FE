@@ -69,9 +69,7 @@ const Home = () => {
             error={errors.name as FieldError}
           />
           <Select options={test} register={register('age')} placeholder="test" size="lg" />
-            <Link href="/resetPassword">
-              {t('resetPwd')}
-            </Link>
+          <Link href="/resetPassword">{t('resetPwd')}</Link>
           {/** TODO email, password 값이 있을 때만 Login Button 활성화 disabled {} 안에 처리 필요  */}
           <Button onClick={doLogin} disabled={false}>
             Login

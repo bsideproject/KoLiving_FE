@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React, { ReactNode } from 'react';
 import styles from './Button.module.scss';
 
@@ -7,7 +6,7 @@ interface ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   className?: string;
-  type: 'button' | 'reset' | 'submit';
+  type?: 'button' | 'reset' | 'submit';
 }
 
 /**
@@ -15,15 +14,20 @@ interface ButtonProps {
  * @param
  * @returns Button Component
  */
-const Button: React.FC<ButtonProps> = ({ type, children, onClick, disabled = false, className }) => {
+const Button: React.FC<ButtonProps> = ({ type = 'button', children, onClick, disabled, className }) => {
   const buttonClass = `${styles.button} ${className}`;
 
   return (
-    // eslint-disable-next-line react/button-has-type
     <button className={buttonClass} onClick={onClick} disabled={disabled} type={type}>
       {children}
     </button>
   );
+};
+
+Button.defaultProps = {
+  disabled: false,
+  className: '',
+  type: 'button',
 };
 
 export default Button;
