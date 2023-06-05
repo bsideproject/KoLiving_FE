@@ -1,13 +1,18 @@
 import React from 'react';
 import ModalBox from '../components/Modal/ModalBox';
+import ModalProvider from '../context/ModalProvider';
 
 export default {
-  title: 'Components/Modal',
+  title: 'Components/ModalBox',
   component: ModalBox,
 };
 
 const Template = (args) => {
-  return <ModalBox {...args} />;
+  return (
+    <ModalProvider>
+      <ModalBox {...args} />
+    </ModalProvider>
+  );
 };
 
 export const Default = Template.bind({});
