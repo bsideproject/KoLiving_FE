@@ -8,6 +8,7 @@ import Input from '../components/Input/Input.tsx';
 import { isRequired } from '../utils/validCheck.ts';
 import Select from '../components/Select/Select.tsx';
 import Button from '../components/Button/Button.tsx';
+import Modal from '../components/Modal/Modal.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -41,6 +42,8 @@ const Home = () => {
     console.log('Button clicked');
   };
 
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <div className="font-pretendard bg-slate-400 py-20 px-10 grid gap-10 min-h-screen">
       <div className="bg-white p-10 rounded-3xl shadow-xl">
@@ -56,13 +59,11 @@ const Home = () => {
             error={errors.name as FieldError}
           />
           <Select options={test} register={register('age')} placeholder="test" size="lg" />
-          <Button onClick={handleClick} disabled>
-            Disabled
-          </Button>
-          <Button onClick={handleClick} primary>
-            Primary
-          </Button>
         </form>
+        <button type="button" onClick={() => setIsOpen(true)}>
+          test
+        </button>
+        {isOpen && <Modal onClose={() => setIsOpen(false)} />}
       </div>
     </div>
   );
