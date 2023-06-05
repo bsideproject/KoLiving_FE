@@ -9,6 +9,7 @@ import { isRequired } from '../utils/validCheck.ts';
 import Select from '../components/Select/Select.tsx';
 import Button from '../components/Button/Button.tsx';
 import Link from '../components/Link/HyperLink.tsx';
+import useModal from '../hooks/useModal.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -37,13 +38,24 @@ const Home = () => {
     register,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
+  const { openModal } = useModal();
 
   const doLogin = () => {
     console.log('버튼 클릭 시 Login 완료 이후 페이지로 이동 필요');
   };
 
+  const handleClick = () => {
+    openModal({
+      props: {
+        hasCloseButton: true,
+        overlayClose: true,
+      },
+      children: <div>test</div>,
+    });
+  };
+
   return (
-    <div className="font-pretendard bg-slate-400 py-20 px-10 grid gap-10 min-h-screen">
+    <div className="font-pretendard bg-slate-400 w-full min-h-screen">
       <div className="bg-white p-10 rounded-3xl shadow-xl">
         <span className="font-semibold text-2xl text-r1 font-poppins">{t('welcome')}</span>
         <form>
@@ -65,6 +77,9 @@ const Home = () => {
             Login
           </Button>
         </form>
+        <button type="button" onClick={() => handleClick()}>
+          test
+        </button>
       </div>
     </div>
   );
