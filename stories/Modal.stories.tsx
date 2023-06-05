@@ -1,13 +1,13 @@
 import React from 'react';
-import Modal from '../components/Modal/Modal';
+import ModalBox from '../components/Modal/ModalBox';
 
 export default {
   title: 'Components/Modal',
-  component: Modal,
+  component: ModalBox,
 };
 
 const Template = (args) => {
-  return <Modal {...args} />;
+  return <ModalBox {...args} />;
 };
 
 export const Default = Template.bind({});

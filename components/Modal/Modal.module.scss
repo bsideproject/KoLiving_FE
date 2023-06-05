@@ -2,6 +2,10 @@
   @apply bg-g0 w-default rounded-[4px] shadow-[0_16px_32px_rgba(0,0,0,0.08)] p-[16px] pt-[20px] justify-center items-center text-center gap-[20px] absolute top-[50%] left-[50%];
 
   transform: translate(-50%, -50%);
+
+  .close {
+    @apply flex justify-end;
+  }
 }
 
 .overlay {
