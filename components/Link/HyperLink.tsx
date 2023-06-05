@@ -4,9 +4,9 @@ import Link from 'next/link';
 import styles from './HyperLink.module.scss';
 
 interface LinkProps {
-  outerClassName ?: string;
+  outerClassName?: string;
   className?: string;
-  href?: string;
+  href: string;
   children: ReactNode;
 }
 
@@ -15,12 +15,12 @@ interface LinkProps {
  */
 const HyperLink: React.FC<LinkProps> = ({ href, children, className, outerClassName }) => {
   return (
-    <div className={ (outerClassName || '' ) !== '' ? outerClassName : styles.outerLink}>
+    <div className={(outerClassName || '') !== '' ? outerClassName : styles.outerLink}>
       <Link href={href}>
-        <div clasName={(className || '') !== '' ? className : `${styles.link}`}>{children}</div>
+        <div className={(className || '') !== '' ? className : `${styles.link}`}>{children}</div>
       </Link>
     </div>
- )
-}
+  );
+};
 
 export default HyperLink;
