@@ -30,9 +30,10 @@
     "prettier/prettier": [
       "error",
       {
-          "endOfLine": "auto"
+        "endOfLine": "auto"
       }
-    ]
+    ],
+    "react/button-has-type": 0
   },
   "settings": {
     "import/resolver": {
