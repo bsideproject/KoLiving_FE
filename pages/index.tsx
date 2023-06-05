@@ -8,6 +8,7 @@ import Input from '../components/Input/Input.tsx';
 import { isRequired } from '../utils/validCheck.ts';
 import Select from '../components/Select/Select.tsx';
 import Button from '../components/Button/Button.tsx';
+import Link from '../components/Link/HyperLink.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -37,8 +38,8 @@ const Home = () => {
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
-  const handleClick = () => {
-    console.log('Button clicked');
+  const doLogin = () => {
+    console.log('버튼 클릭 시 Login 완료 이후 페이지로 이동 필요');
   };
 
   return (
@@ -56,11 +57,12 @@ const Home = () => {
             error={errors.name as FieldError}
           />
           <Select options={test} register={register('age')} placeholder="test" size="lg" />
-          <Button onClick={handleClick} disabled>
-            Disabled
-          </Button>
-          <Button onClick={handleClick} primary>
-            Primary
+            <Link href="/resetPassword">
+              {t('resetPwd')}
+            </Link>
+          {/** TODO email, password 값이 있을 때만 Login Button 활성화 disabled {} 안에 처리 필요  */}
+          <Button onClick={doLogin} disabled={false}>
+            Login
           </Button>
         </form>
       </div>

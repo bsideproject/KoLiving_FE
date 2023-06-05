@@ -1,17 +1,9 @@
-.button {
+.link {
   @apply inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-center 
   border-g4 border-solid border-[1px] rounded-[2px] bg-g0 transition duration-300 w-full
   bg-yellow-500 hover:bg-yellow-600 text-white;
-  
-  &.primary-button {
-    @apply bg-blue-500 text-white;
+}
 
-    &:hover {
-      @apply bg-blue-600;
-    }
-
-    &:disabled {
-      @apply bg-gray-400 cursor-not-allowed;
-    }
-  }
+.outerLink {
+  @apply flex justify-end
 }
