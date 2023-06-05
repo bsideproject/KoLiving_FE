@@ -1,15 +1,19 @@
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 import styles from './Modal.module.scss';
+import { ModalProps } from './ModalContainer.tsx';
+import useModal from '../../hooks/useModal.ts';
+import useOutSideClick from '../../hooks/useOutSideClick.ts';
 
-interface ModalProps {
-  onClose?: () => void;
-  children?: React.ReactNode;
-}
+function Modal({ children, hasCloseButton, overlayClose }: ModalProps) {
+  const { closeModal } = useModal();
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose, children }: ModalProps, ref) {
+  const modalRef = useRef(null);
+
   const handleClose = () => {
-    onClose?.();
+    closeModal();
   };
+
+  useOutSideClick(modalRef, closeModal);
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -26,12 +30,14 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose, c
 
   return (
     <div className={styles.overlay}>
-      <div className={styles['modal-wrap']} ref={ref}>
-        <div className={styles.close}>
-          <button type="button" onClick={handleClose}>
-            <img src="/icons/close.png" alt="close" />
-          </button>
-        </div>
+      <div className={styles['modal-wrap']} ref={overlayClose ? modalRef : undefined}>
+        {hasCloseButton && (
+          <div className={styles.close}>
+            <button type="button" onClick={handleClose}>
+              <img src="/icons/close.png" alt="close" />
+            </button>
+          </div>
+        )}
         {children || (
           <div>
             <h2>Title</h2>
@@ -41,7 +47,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({ onClose, c
       </div>
     </div>
   );
-});
+}
 
 Modal.defaultProps = {
   onClose: undefined,

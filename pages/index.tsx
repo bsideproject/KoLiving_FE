@@ -7,8 +7,7 @@ import { FieldError, useForm } from 'react-hook-form';
 import Input from '../components/Input/Input.tsx';
 import { isRequired } from '../utils/validCheck.ts';
 import Select from '../components/Select/Select.tsx';
-import Button from '../components/Button/Button.tsx';
-import Modal from '../components/Modal/Modal.tsx';
+import useModal from '../hooks/useModal.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -37,12 +36,17 @@ const Home = () => {
     register,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
+  const { openModal } = useModal();
 
   const handleClick = () => {
-    console.log('Button clicked');
+    openModal({
+      props: {
+        hasCloseButton: true,
+        overlayClose: true,
+      },
+      children: <div>test</div>,
+    });
   };
-
-  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <div className="font-pretendard bg-slate-400 w-full min-h-screen">
@@ -60,10 +64,9 @@ const Home = () => {
           />
           <Select options={test} register={register('age')} placeholder="test" size="lg" />
         </form>
-        <button type="button" onClick={() => setIsOpen(true)}>
+        <button type="button" onClick={() => handleClick()}>
           test
         </button>
-        {isOpen && <Modal onClose={() => setIsOpen(false)} />}
       </div>
     </div>
   );
