@@ -45,7 +45,7 @@ const Home = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <div className="font-pretendard bg-slate-400 py-20 px-10 grid gap-10 min-h-screen">
+    <div className="font-pretendard bg-slate-400 w-full min-h-screen">
       <div className="bg-white p-10 rounded-3xl shadow-xl">
         <span className="font-semibold text-2xl text-r1 font-poppins">{t('welcome')}</span>
         <form>
