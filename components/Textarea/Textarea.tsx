@@ -10,12 +10,7 @@ interface TextareaProps {
 
 function Textarea({ placeholder, value, onChange, className }: TextareaProps) {
   return (
-    <textarea
-      className={className ?? styles.textArea}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-    />
+    <textarea className={className ?? styles.textArea} placeholder={placeholder} value={value} onChange={onChange} />
   );
 }
 
@@ -24,4 +19,5 @@ export default Textarea;
 Textarea.defaultProps = {
   value: '',
   placeholder: '',
+  className: '',
 };
