@@ -48,7 +48,6 @@ const radioOptions = [
   },
 ];
 
-
 const Home = () => {
   const { t } = useTranslation('common');
   const {
