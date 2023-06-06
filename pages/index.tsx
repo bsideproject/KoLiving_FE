@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { GetStaticPropsContext } from 'next';
 import 'tailwindcss/tailwind.css';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -10,6 +10,7 @@ import Select from '../components/Select/Select.tsx';
 import Button from '../components/Button/Button.tsx';
 import Link from '../components/Link/HyperLink.tsx';
 import useModal from '../hooks/useModal.ts';
+import Radio from '../components/Radio/Radio.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -32,6 +33,22 @@ const test = [
   },
 ];
 
+const radioOptions = [
+  {
+    value: '1',
+    label: 'test1',
+  },
+  {
+    value: '2',
+    label: 'test2',
+  },
+  {
+    value: '3',
+    label: 'test3',
+  },
+];
+
+
 const Home = () => {
   const { t } = useTranslation('common');
   const {
@@ -52,6 +69,12 @@ const Home = () => {
       },
       children: <button onClick={() => openModal({ props: { hasCloseButton: true } })}>test2</button>,
     });
+  };
+
+  const [selectedRadioOption, setSelectedRadioOption] = useState('');
+
+  const handleRadioChange = (value: string) => {
+    setSelectedRadioOption(value);
   };
 
   return (
@@ -78,6 +101,7 @@ const Home = () => {
         <button type="button" onClick={() => handleClick()}>
           test
         </button>
+        <Radio options={radioOptions} onChange={handleRadioChange} selectedOption={selectedRadioOption} />
       </div>
     </div>
   );

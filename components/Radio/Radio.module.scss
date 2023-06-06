@@ -1,0 +1,15 @@
+.radio-group {
+    @apply space-y-2;
+  }
+  
+  .radio-label {
+    @apply flex items-center space-x-2;
+  }
+  
+  .radio-input {
+    @apply form-radio text-indigo-600 h-4 w-4;
+  }
+  
+  .radio-text {
+    @apply text-gray-900;
+  }
