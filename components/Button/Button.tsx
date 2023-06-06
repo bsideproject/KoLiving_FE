@@ -14,7 +14,7 @@ interface ButtonProps {
  * @param
  * @returns Button Component
  */
-const Button: React.FC<ButtonProps> = ({ type = 'button', children, onClick, disabled, className }) => {
+function Button({ type = 'button', children, onClick, disabled, className }: ButtonProps) {
   const buttonClass = `${styles.button} ${className}`;
 
   return (
