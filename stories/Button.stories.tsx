@@ -1,6 +1,7 @@
 import React from 'react';
-import { FieldError, useForm } from 'react-hook-form';
 import Button from '../components/Button/Button';
+
+import { FieldError, useForm } from 'react-hook-form';
 import { isRequired, isValidEmail, isValidPassword } from '../utils/validCheck';
 
 export default {
@@ -25,23 +26,24 @@ const Template = (args) => {
 
 export const Small = Template.bind({});
 Small.args = {
-  // type: 'text',
-  // name: 'name',
-  // placeholder: '기본 Input',
-  size: 'small',
+  type: 'button',
+  size: 'sm',
+  color: 'r1'
 };
 export const Medium = Template.bind({});
 Medium.args = {
-  // type: 'text',
-  // name: 'name',
-  // placeholder: '기본 Input',
-  size: 'medium',
+  type: 'button',
+  size: 'md',
+  color: 'r1'
 };
-
+export const Large = Template.bind({});
+Large.args = {
+  type: 'button',
+  size: 'lg',
+  color: 'r1'
+};
 export const Disabled = Template.bind({});
 Disabled.args = {
-  // type: 'text',
-  // name: 'name',
-  // placeholder: '기본 Input',
+  type: 'button',
   disabled: true,
 };
