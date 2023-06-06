@@ -18,7 +18,7 @@ function Button({ type = 'button', children, onClick, disabled, className }: But
   const buttonClass = `${styles.button} ${className}`;
 
   return (
-    <button className={buttonClass} onClick={onClick} disabled={disabled} type={type}>
+    <button className={styles.button} onClick={onClick} disabled={disabled} type={type}>
       {children}
     </button>
   );
