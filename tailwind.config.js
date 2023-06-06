@@ -6,6 +6,7 @@ module.exports = {
         r1: '#FF8E00',
         r2: '#FE75B9',
         r3: '#FFD3DD',
+        r4: '#DD5D18',
         a1: '#F42500',
         a2: '#717D96',
         g0: '#FFFFFF',
