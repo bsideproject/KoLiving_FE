@@ -27,9 +27,12 @@ function ModalContainer() {
     return null;
   }
 
-  if (!modalState.props) {
-    return null;
-  }
+  const renderModal = modalState.map(({ props, children }) => {
+    if (!props) {
+      return null;
+    }
+    return <ModalBox {...props}>{children}</ModalBox>;
+  });
 
   const modalRoot = document.getElementById('modal-root');
 
@@ -37,7 +40,7 @@ function ModalContainer() {
     return null;
   }
 
-  return createPortal(<ModalBox {...modalState.props}>{modalState.children}</ModalBox>, modalRoot);
+  return createPortal(renderModal, modalRoot);
 }
 
 export default ModalContainer;
