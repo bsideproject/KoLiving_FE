@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { GetStaticPropsContext } from 'next';
 import 'tailwindcss/tailwind.css';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -11,6 +11,7 @@ import Button from '../components/Button/Button.tsx';
 import Link from '../components/Link/HyperLink.tsx';
 import useModal from '../hooks/useModal.ts';
 import Radio from '../components/Radio/Radio.tsx';
+import Textarea from '../components/Textarea/Textarea.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -71,9 +72,15 @@ const Home = () => {
   };
 
   const [selectedRadioOption, setSelectedRadioOption] = useState('');
+  const [text, setText] = useState('');
 
   const handleRadioChange = (value: string) => {
     setSelectedRadioOption(value);
+  };
+
+  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    setText(value);
   };
 
   return (
@@ -100,7 +107,8 @@ const Home = () => {
         <button type="button" onClick={() => handleClick()}>
           test
         </button>
-        <Radio options={radioOptions} onChange={handleRadioChange} selectedOption={selectedRadioOption} />
+        {/* <Radio options={radioOptions} onChange={handleRadioChange} selectedOption={selectedRadioOption} /> */}
+        {/* <Textarea placeholder="Koliving" value={text} onChange={handleTextChange} /> */}
       </div>
     </div>
   );
