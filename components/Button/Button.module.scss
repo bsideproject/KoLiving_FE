@@ -1,25 +1,31 @@
-// .button {
-//   @apply inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-center
-//   border-g4 border-solid border-[1px] rounded-[2px] bg-g0 transition duration-300 w-full
-//   bg-yellow-500 hover:bg-yellow-600 text-white;
-
-//   &.primary-button {
-//     @apply bg-blue-500 text-white;
-
-//     &:hover {
-//       @apply bg-blue-600;
-//     }
-
-//     &:disabled {
-//       @apply bg-gray-400 cursor-not-allowed;
-//     }
-//   }
-// }
-
 .button {
-  @apply w-default bg-r1 h-[54px] rounded-[2px] px-[13px] font-pretendard font-normal text-[18px] text-g0;
+  @apply h-[54px] rounded-[2px] font-pretendard font-normal text-[18px];
 
-  &:disabled {
+  &.lg {
+    @apply w-max px-[13px];
+  }
+  &.md {
+    @apply w-default px-[12px];
+  }
+  &.sm {
+    @apply w-min px-[11px];
+  }
+
+  &.r1 {
+    @apply bg-r1 text-g0;
+  }
+
+  &.r4 {
+    @apply bg-r4 text-g0;
+  }
+
+  &.g2 {
     @apply bg-g2 text-g4;
   }
+
+  &.none {
+    @apply bg-transparent font-black border-none text-r1;
+  }
+  
 }
+
