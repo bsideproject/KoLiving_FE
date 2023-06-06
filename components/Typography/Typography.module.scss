@@ -1,0 +1,14 @@
+.heading {
+  @apply text-4xl font-bold;
+}
+.subHeading {
+  @apply text-2xl font-semibold
+}
+.body { 
+  @apply text-base
+}
+.caption {
+  @apply text-sm text-gray-500
+}
+
+
