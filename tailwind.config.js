@@ -30,6 +30,8 @@ module.exports = {
       },
       width: {
         default: '335px',
+        medium: '125px',
+        small: '77px',
       },
     },
   },
