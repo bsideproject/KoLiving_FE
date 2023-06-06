@@ -50,7 +50,7 @@ const Home = () => {
         hasCloseButton: true,
         overlayClose: true,
       },
-      children: <div>test</div>,
+      children: <button onClick={() => openModal({ props: { hasCloseButton: true } })}>test2</button>,
     });
   };
 

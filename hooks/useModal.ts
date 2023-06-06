@@ -8,15 +8,15 @@ function useModal() {
     throw new Error('ModalSetterContext is not properly initialized');
   }
 
-  const openModal = ({ type, props = null, children = null }: StateProps) => {
+  const openModal = ({ props = null, children = null }: StateProps) => {
     if (setModalState) {
-      setModalState.setState({ type, props, children });
+      setModalState.setState((modals) => [...modals, { props, children }]);
     }
   };
 
   const closeModal = () => {
     if (setModalState) {
-      setModalState.setState({ type: null, props: null, children: null });
+      setModalState.setState((modals) => modals.filter((_, index) => index !== modals.length - 1));
     }
   };
 

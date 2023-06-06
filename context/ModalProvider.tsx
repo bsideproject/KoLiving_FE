@@ -6,24 +6,19 @@ interface ComponentProps {
 }
 
 export interface StateProps {
-  type?: string | null;
   props: ModalProps | null;
   children?: React.ReactNode;
 }
 
 interface SetterProps {
-  setState: React.Dispatch<React.SetStateAction<StateProps>>;
+  setState: React.Dispatch<React.SetStateAction<StateProps[]>>;
 }
 
-export const ModalStateContext = React.createContext<StateProps | null>(null);
+export const ModalStateContext = React.createContext<StateProps[] | null>(null);
 export const ModalSetterContext = React.createContext<SetterProps | null>(null);
 
 function ModalProvider({ children }: ComponentProps) {
-  const [state, setState] = useState<StateProps>({
-    type: null,
-    props: null,
-    children: null,
-  });
+  const [state, setState] = useState<StateProps[]>([]);
 
   const memoizedSetterValue = useMemo(() => ({ setState }), [setState]);
   const memoizedStateValue = useMemo(() => state, [state]);
