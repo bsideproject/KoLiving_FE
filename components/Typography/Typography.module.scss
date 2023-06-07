@@ -1,14 +1,47 @@
-.heading {
-  @apply text-4xl font-bold;
-}
-.subHeading {
-  @apply text-2xl font-semibold
-}
-.body { 
-  @apply text-base
-}
-.caption {
-  @apply text-sm text-gray-500
+.header {
+  @apply font-poppins font-semibold;
 }
 
+.title {
+  @apply font-pretendard text-[18px];
+}
 
+.body {
+  @apply font-pretendard;
+}
+
+.label {
+  @apply font-pretendard;
+}
+
+.semiBold {
+  @apply font-semibold;
+}
+.medium {
+  @apply font-medium;
+}
+
+&.24 {
+  @apply text-[24px];
+}
+&.20 {
+  @apply text-[20px];
+}
+&.18 {
+  @apply text-[18px];
+}
+&.16 {
+  @apply text-[16px];
+}
+&.16_24 {
+  @apply text-[16_24px];
+}
+&.16_19 {
+  @apply text-[16_19px];
+}
+&.14 {
+  @apply text-[14px];
+}
+&.12 {
+  @apply text-[12px];
+}
