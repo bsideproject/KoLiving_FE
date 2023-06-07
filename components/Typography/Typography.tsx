@@ -2,25 +2,28 @@ import React, { ReactNode } from 'react';
 import styles from './Typography.module.scss';
 
 interface TypographyProps {
-  variant: 'heading' | 'subheading' | 'body' | 'caption';
+  variant?: 'header' | 'title' | 'body' | 'label';
   children: ReactNode;
+  font?: 'poppins' | 'pretendard';
+  textSize?: '24' | '20' | '18' | '16' | '16_24' | '16_19' | '14' | '12';
+  fontStyle?: 'semiBold' | 'medium' | 'regular';
 }
 
-function Typography({ variant, children }: TypographyProps) {
-  let className = styles.body;
+function Typography({ variant, children, font, textSize, fontStyle }: TypographyProps) {
+  let className = '';
 
   switch (variant) {
-    case 'heading':
-      className = styles.heading;
+    case 'header':
+      className = `${styles.header} ${styles[`${font}`]}`;
       break;
-    case 'subheading':
-      className = styles.subHeading;
+    case 'title':
+      className = `${styles.title} ${styles[`${fontStyle}`]}`;
       break;
     case 'body':
-      className = styles.body;
+      className = `${styles.body} ${styles[`${fontStyle}`]} ${styles[`${textSize}`]}`;
       break;
-    case 'caption':
-      className = styles.caption;
+    case 'label':
+      className = `${styles.label} ${styles[`${fontStyle}`]} ${styles[`${textSize}`]}`;
       break;
     default:
       break;
@@ -30,3 +33,10 @@ function Typography({ variant, children }: TypographyProps) {
 }
 
 export default Typography;
+
+Typography.defaultProps = {
+  font: 'poppins',
+  variant: 'header',
+  textSize: '24',
+  fontStyle: 'semibold',
+};
