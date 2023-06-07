@@ -10,8 +10,6 @@ import Select from '../components/Select/Select.tsx';
 import Button from '../components/Button/Button.tsx';
 import Link from '../components/Link/HyperLink.tsx';
 import useModal from '../hooks/useModal.ts';
-import Radio from '../components/Radio/Radio.tsx';
-import Textarea from '../components/Textarea/Textarea.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -100,7 +98,7 @@ const Home = () => {
           <Select options={test} register={register('age')} placeholder="test" size="lg" />
           <Link href="/resetPassword">{t('resetPwd')}</Link>
           {/** TODO email, password 값이 있을 때만 Login Button 활성화 disabled {} 안에 처리 필요  */}
-          <Button onClick={doLogin} disabled={false}>
+          <Button onClick={doLogin} disabled={false} size="lg">
             Login
           </Button>
         </form>

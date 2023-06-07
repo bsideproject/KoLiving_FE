@@ -1,9 +1,6 @@
 import React from 'react';
 import Button from '../components/Button/Button';
 
-import { FieldError, useForm } from 'react-hook-form';
-import { isRequired, isValidEmail, isValidPassword } from '../utils/validCheck';
-
 export default {
   title: 'Components/Button',
   component: Button,
