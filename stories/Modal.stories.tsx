@@ -5,6 +5,11 @@ import ModalProvider from '../context/ModalProvider';
 export default {
   title: 'Components/ModalBox',
   component: ModalBox,
+  argTypes: {
+    overlayClose: { table: { disable: true } },
+    custom: { table: { disable: true } },
+    onClose: { table: { disable: true } },
+  },
 };
 
 const Template = (args) => {
@@ -17,6 +22,33 @@ const Template = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  // placeholder: '기본 Input',
-  // size: 'sm',
+  title: 'Test',
+  content: '내용입니다',
+};
+export const WithCloseButton = Template.bind({});
+WithCloseButton.args = {
+  title: 'Test',
+  content: '내용입니다',
+  hasCloseButton: true,
+};
+export const WithTwoButtons = Template.bind({});
+WithTwoButtons.args = {
+  title: 'Test',
+  content: '내용입니다',
+  hasCloseButton: true,
+  buttonType: 'both',
+};
+export const WithOutlineButton = Template.bind({});
+WithOutlineButton.args = {
+  title: 'Test',
+  content: '내용입니다',
+  hasCloseButton: true,
+  buttonType: 'outline',
+};
+export const WithDefaultButton = Template.bind({});
+WithDefaultButton.args = {
+  title: 'Test',
+  content: '내용입니다',
+  hasCloseButton: true,
+  buttonType: 'default',
 };
