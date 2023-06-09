@@ -6,6 +6,7 @@ import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
+import AppLayout from '../components/layout/AppLayout.tsx';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,8 +16,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <ModalProvider>
-        <Component {...pageProps} />
-        <ModalContainer />
+        <AppLayout>
+          <Component {...pageProps} />
+          <ModalContainer />
+        </AppLayout>
       </ModalProvider>
     </>
   );

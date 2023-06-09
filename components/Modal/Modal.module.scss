@@ -10,8 +10,4 @@
 
 .overlay {
   @apply bg-[rgba(0,0,0,0.2)] w-full h-full fixed top-0 z-[1000];
-
-  max-width: 448px;
-  min-width: 360px;
-  margin: 0 auto;
 }

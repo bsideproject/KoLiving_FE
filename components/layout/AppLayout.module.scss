@@ -1,0 +1,13 @@
+.appLayout {
+  &.center {
+    @apply flex justify-center;
+  }
+
+  &.width {
+    @apply max-w-[448px] min-w-[360px] mx-auto;
+
+    @media (max-width: 448px) {
+      width: 500px;
+    }
+  }
+}
