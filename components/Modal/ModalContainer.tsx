@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { v4 as uuidv4 } from 'uuid';
 import { ModalStateContext } from '../../context/ModalProvider.tsx';
 import ModalBox from './ModalBox.tsx';
 
@@ -36,7 +37,11 @@ function ModalContainer() {
     if (!props) {
       return null;
     }
-    return <ModalBox {...props}>{children}</ModalBox>;
+    return (
+      <ModalBox {...props} key={uuidv4()}>
+        {children}
+      </ModalBox>
+    );
   });
 
   const modalRoot = document.getElementById('modal-root');

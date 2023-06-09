@@ -65,6 +65,8 @@ function Modal({
             test
           </Button>
         );
+      default:
+        return null;
     }
   };
 
