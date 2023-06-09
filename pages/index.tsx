@@ -64,8 +64,9 @@ const Home = () => {
       props: {
         hasCloseButton: true,
         overlayClose: true,
+        title: 'Title',
+        content: 'Lorem ipsum dolor sit amet consectetur. Varius nunc aliquam nullam vitae.',
       },
-      children: <button onClick={() => openModal({ props: { hasCloseButton: true } })}>test2</button>,
     });
   };
 

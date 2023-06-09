@@ -1,15 +1,25 @@
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './Modal.module.scss';
 import { ModalProps } from './ModalContainer.tsx';
 import useModal from '../../hooks/useModal.ts';
 import useOutSideClick from '../../hooks/useOutSideClick.ts';
+import Button from '../Button/Button.tsx';
 
-function Modal({ children, hasCloseButton, overlayClose }: ModalProps) {
+function Modal({
+  children,
+  hasCloseButton,
+  overlayClose,
+  title = '',
+  content = '',
+  custom = false,
+  buttonType = 'none',
+  handleClose,
+}: ModalProps) {
   const { closeModal } = useModal();
 
   const modalRef = useRef(null);
 
-  const handleClose = () => {
+  const onClose = () => {
     closeModal();
   };
 
@@ -28,30 +38,58 @@ function Modal({ children, hasCloseButton, overlayClose }: ModalProps) {
     };
   }, []);
 
+  const renderButton = () => {
+    switch (buttonType) {
+      case 'none':
+        return null;
+      case 'both':
+        return (
+          <>
+            <Button onClick={() => handleClose?.()} disabled size="lg">
+              test
+            </Button>
+            <Button onClick={() => handleClose?.()} color="r1" size="lg">
+              test
+            </Button>
+          </>
+        );
+      case 'outline':
+        return (
+          <Button onClick={() => handleClose?.()} color="noBg" size="lg">
+            test
+          </Button>
+        );
+      case 'default':
+        return (
+          <Button onClick={() => handleClose?.()} color="r1" size="lg">
+            test
+          </Button>
+        );
+    }
+  };
+
   return (
     <div className={styles.overlay}>
       <div className={styles['modal-wrap']} ref={overlayClose ? modalRef : undefined}>
         {hasCloseButton && (
           <div className={styles.close}>
-            <button type="button" onClick={handleClose}>
+            <button type="button" onClick={onClose}>
               <img src="/icons/close.png" alt="close" />
             </button>
           </div>
         )}
-        {children || (
+        {custom ? (
+          children
+        ) : (
           <div>
-            <h2>Title</h2>
-            <p>Lorem ipsum dolor sit amet consectetur. Varius nunc aliquam nullam vitae.</p>
+            <h2>{title}</h2>
+            <p>{content}</p>
           </div>
         )}
+        {buttonType && buttonType !== 'none' && <div className="mt-[20px] flex gap-x-2">{renderButton()}</div>}
       </div>
     </div>
   );
 }
-
-Modal.defaultProps = {
-  onClose: undefined,
-  children: undefined,
-};
 
 export default Modal;

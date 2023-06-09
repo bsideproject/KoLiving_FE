@@ -8,6 +8,11 @@ export interface ModalProps {
   children?: React.ReactNode;
   hasCloseButton?: boolean;
   overlayClose?: boolean;
+  title?: string;
+  content?: string;
+  custom?: boolean;
+  buttonType?: 'none' | 'both' | 'outline' | 'default';
+  handleClose?: () => void;
 }
 
 function ModalContainer() {
