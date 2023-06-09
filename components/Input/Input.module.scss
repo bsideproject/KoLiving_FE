@@ -9,6 +9,10 @@
   }
 }
 
+.eye {
+  @apply w-[24px] h-[24px];
+}
+
 .warning {
   @apply text-a1 font-pretendard text-[14px] max-w-default h-[14px] mt-[4px];
 }
