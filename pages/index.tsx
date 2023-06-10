@@ -106,8 +106,6 @@ const Home = () => {
         <button type="button" onClick={() => handleClick()}>
           test
         </button>
-        {/* <Radio options={radioOptions} onChange={handleRadioChange} selectedOption={selectedRadioOption} /> */}
-        {/* <Textarea placeholder="Koliving" value={text} onChange={handleTextChange} /> */}
       </div>
     </div>
   );
