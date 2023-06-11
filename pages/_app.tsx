@@ -7,6 +7,7 @@ import Head from 'next/head';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layout/AppLayout.tsx';
+import Footer from './Footer.tsx';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -19,6 +20,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <AppLayout>
           <Component {...pageProps} />
           <ModalContainer />
+          <footer>
+            <Footer />
+          </footer>
         </AppLayout>
       </ModalProvider>
     </>
