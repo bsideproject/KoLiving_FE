@@ -5,16 +5,13 @@ import styles from './CustomImage.module.scss';
 interface CustomImageProps {
   src?: string;
   alt?: string;
-  className?: string;
-  customStyles?: string;
+  width?: number;
+  height?: number;
+  tp?: string;
 }
 
-function CustomImage({ src, alt, className, customStyles }: CustomImageProps) {
-  return (
-    <div className={customStyles === '' ? styles[`${customStyles}`] : className}>
-      <Image src={`${src}`} alt={`${alt}`} className="rounded-md" />
-    </div>
-  );
+function CustomImage({ src, alt, width, height, tp }: CustomImageProps) {
+  return <Image src={`${src}`} alt={`${alt}`} className={styles[`${tp}`]} width={width} height={height} />;
 }
 
 export default CustomImage;
@@ -22,6 +19,7 @@ export default CustomImage;
 CustomImage.defaultProps = {
   src: '',
   alt: '',
-  className: 'custom-image',
-  customStyles: '',
+  width: 0,
+  height: 0,
+  tp: '',
 };

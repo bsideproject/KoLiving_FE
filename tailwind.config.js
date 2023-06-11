@@ -27,11 +27,18 @@ module.exports = {
       },
       spacing: {
         default: '335px',
+        footerImg: '93.75px',
       },
       width: {
         default: '335px',
         medium: '125px',
         small: '77px',
+        footerImg: '20px',
+        footerContainer: '93.75px',
+      },
+      height: {
+        footerImg: '18px',
+        footerContainer: '66px',
       },
     },
   },
