@@ -5,11 +5,17 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: 'standalone',
+  webpack5: true,
   webpack: (config) => {
-    config.module.rules.push({
+    const modifiedConfig = { ...config };
+
+    modifiedConfig.module.rules.push({
       test: /(\\|\/)(\.storybook|stories)(\\|\/)/,
       loader: 'ignore-loader',
     });
+    modifiedConfig.resolve.fallback = {
+      fs: false,
+    };
     return config;
   },
 };
