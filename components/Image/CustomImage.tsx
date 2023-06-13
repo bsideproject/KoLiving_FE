@@ -23,7 +23,7 @@ export default CustomImage;
 CustomImage.defaultProps = {
   src: '',
   alt: '',
-  width: 0,
-  height: 0,
+  width: 10,
+  height: 10,
   tp: '',
 };
