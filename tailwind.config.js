@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['./pages/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
+  content: ['./pages/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}', './container/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -35,10 +35,12 @@ module.exports = {
         small: '77px',
         footerImg: '20px',
         footerContainer: '93.75px',
+        loginImg: '375px',
       },
       height: {
         footerImg: '18px',
         footerContainer: '66px',
+        loginImg: '440px',
       },
     },
   },

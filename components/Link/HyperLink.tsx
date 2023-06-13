@@ -8,19 +8,22 @@ interface LinkProps {
   className?: string;
   href: string;
   children: ReactNode;
+  innerText?: string;
+  innerClassType?: string;
 }
 
 /**
  * Link Component 랑 이름이 동일해서 HyperLink 로 명명
  */
-const HyperLink: React.FC<LinkProps> = ({ href, children, className, outerClassName }) => {
+function HyperLink({ href, children, className, outerClassName, innerText, innerClassType }: LinkProps) {
   return (
     <div className={(outerClassName || '') !== '' ? outerClassName : styles.outerLink}>
+      <span className={styles[`${innerClassType}`]}>{innerText}</span>
       <Link href={href}>
         <div className={(className || '') !== '' ? className : `${styles.link}`}>{children}</div>
       </Link>
     </div>
   );
-};
+}
 
 export default HyperLink;

@@ -10,6 +10,7 @@ import Select from '../components/Select/Select.tsx';
 import Button from '../components/Button/Button.tsx';
 import Link from '../components/Link/HyperLink.tsx';
 import useModal from '../hooks/useModal.ts';
+import Login from '../container/Login/login.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -82,33 +83,7 @@ const Home = () => {
     setText(value);
   };
 
-  return (
-    <div className="font-pretendard bg-slate-400 w-full min-h-screen">
-      <div className="bg-white p-10 rounded-3xl shadow-xl">
-        <span className="font-semibold text-2xl text-r1 font-poppins">{t('welcome')}</span>
-        <form>
-          <Input
-            placeholder="test"
-            register={register('name', {
-              validate: (value) => {
-                return isRequired(value, '필수 항목');
-              },
-            })}
-            error={errors.name as FieldError}
-          />
-          <Select options={test} register={register('age')} placeholder="test" size="lg" />
-          <Link href="/resetPassword">{t('resetPwd')}</Link>
-          {/** TODO email, password 값이 있을 때만 Login Button 활성화 disabled {} 안에 처리 필요  */}
-          <Button onClick={doLogin} disabled={false} size="lg">
-            Login
-          </Button>
-        </form>
-        <button type="button" onClick={() => handleClick()}>
-          test
-        </button>
-      </div>
-    </div>
-  );
+  return <Login />;
 };
 
 export default Home;
