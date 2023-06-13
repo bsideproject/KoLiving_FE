@@ -32,7 +32,7 @@ export default function Login() {
   return (
     <div className="font-pretendard bg-slate-400 w-full min-h-screen">
       <div className="bg-white p-10 rounded-3xl shadow-xl">
-        <CustomImage src="/images/thumb.png" alt="Koliving" tp="signin" />
+        <CustomImage src="/images/thumb.png" alt="Koliving" tp="signin" width={331} />
         <span className="font-semibold text-2xl text-G6 font-poppins">{t('welcome')}</span>
         <form>
           <Input
