@@ -43,7 +43,7 @@ export default function Login() {
                 return isRequired(value, '필수 항목') || isValidEmail(value, `${t('validEmail')}`);
               },
             })}
-            error={errors['email'] as FieldError}
+            error={errors.email as FieldError}
           />
           <Input
             type="password"
@@ -53,7 +53,7 @@ export default function Login() {
                 return isRequired(value, '필수 항목') || isValidPassword(value, `${t('validPassword')}`);
               },
             })}
-            error={errors['password'] as FieldError}
+            error={errors.password as FieldError}
           />
           <Link href="/resetPassword">{t('resetPwd')}</Link>
           <Button onClick={doLogin} disabled={false} size="lg">
