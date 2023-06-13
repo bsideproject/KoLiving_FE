@@ -1,7 +1,11 @@
 .link {
-  @apply  text-g5 underline
+  @apply text-g5 underline;
 }
 
 .outerLink {
-  @apply flex justify-end
+  @apply flex justify-end;
+}
+
+.login {
+  @apply pr-2;
 }

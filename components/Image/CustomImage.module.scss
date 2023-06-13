@@ -1,11 +1,15 @@
 .custom-image {
   @apply relative h-0 pb-[56.25%];
 }
-  
+
 .custom-image > :global(img) {
   @apply rounded-md;
 }
 
 .footer {
-  @apply w-footerImg h-footerImg left-2.5 top-[20%]
+  @apply w-footerImg h-footerImg left-2.5 top-[20%];
+}
+
+.signin {
+  @apply relative w-loginImg h-loginImg my-4;
 }

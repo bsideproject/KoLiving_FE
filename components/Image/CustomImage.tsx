@@ -11,7 +11,11 @@ interface CustomImageProps {
 }
 
 function CustomImage({ src, alt, width, height, tp }: CustomImageProps) {
-  return <Image src={`${src}`} alt={`${alt}`} className={styles[`${tp}`]} width={width} height={height} />;
+  return (
+    <div className={styles[`${tp}`]}>
+      <Image src={`${src}`} alt={`${alt}`} layout="fill" objectFit="cover" />
+    </div>
+  );
 }
 
 export default CustomImage;
