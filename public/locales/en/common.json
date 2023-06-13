@@ -1,7 +1,9 @@
 {
-	"welcome": "Welcome to KoLiving",
-	"email": "Email",
-	"password": "Password",
-	"signup": "Sign up now!",
-	"resetPwd" : "Reset password"
+  "welcome": "Welcome to KoLiving",
+  "email": "Email",
+  "password": "Password",
+  "signup": "Sign up now!",
+  "resetPwd": "Reset password",
+  "validEmail": "Please provide a valid email",
+  "validPassword": "Invalid email or password"
 }
