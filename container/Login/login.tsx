@@ -7,7 +7,7 @@ import { FieldError, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import Button from '../../components/Button/Button.tsx';
 import Input from '../../components/Input/Input.tsx';
-import { isRequired, isValidEmail } from '../../utils/validCheck.ts';
+import { isRequired, isValidEmail, isValidPassword } from '../../utils/validCheck.ts';
 import Link from '../../components/Link/HyperLink.tsx';
 import CustomImage from '../../components/Image/CustomImage.tsx';
 
@@ -40,23 +40,22 @@ export default function Login() {
             placeholder="Email"
             register={register('email', {
               validate: (value) => {
-                return isRequired(value, '필수 항목');
+                return isRequired(value, '필수 항목') || isValidEmail(value, `${t('validEmail')}`);
               },
             })}
-            error={errors.name as FieldError}
+            error={errors['email'] as FieldError}
           />
           <Input
             type="password"
             placeholder="Password"
             register={register('password', {
               validate: (value) => {
-                return isRequired(value, '필수 항목');
+                return isRequired(value, '필수 항목') || isValidPassword(value, `${t('validPassword')}`);
               },
             })}
-            error={errors.name as FieldError}
+            error={errors['password'] as FieldError}
           />
           <Link href="/resetPassword">{t('resetPwd')}</Link>
-          {/** TODO email, password 값이 있을 때만 Login Button 활성화 disabled {} 안에 처리 필요  */}
           <Button onClick={doLogin} disabled={false} size="lg">
             Login
           </Button>
