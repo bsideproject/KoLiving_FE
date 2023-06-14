@@ -20,7 +20,7 @@ function HyperLink({ href, children, className, outerClassName, innerText, inner
     <div className={(outerClassName || '') !== '' ? outerClassName : styles.outerLink}>
       <span className={styles[`${innerClassType}`]}>{innerText}</span>
       <Link href={href}>
-        <div className={(className || '') !== '' ? className : `${styles.link}`}>{children}</div>
+        <div className={`${(className || '') !== '' ? className : `${styles.link}`}`}>{children}</div>
       </Link>
     </div>
   );

@@ -32,33 +32,50 @@ export default function Login() {
   return (
     <div className="font-pretendard bg-slate-400 w-full min-h-screen">
       <div className="bg-white p-10 rounded-3xl shadow-xl">
-        <CustomImage src="/images/thumb.png" alt="Koliving" tp="signin" width={331} />
-        <span className="font-semibold text-2xl text-G6 font-poppins">{t('welcome')}</span>
+        <div className="relative w-full h-[422px] mb-7">
+          <CustomImage
+            src="/images/thumb.png"
+            alt="Koliving"
+            width={0}
+            height={0}
+            layout="fill"
+            objectFit="object-cover"
+          />
+        </div>
+        <div className="font-semibold text-2xl text-G6 font-poppins mb-4">{t('welcome')}</div>
         <form>
-          <Input
-            type="email"
-            placeholder="Email"
-            register={register('email', {
-              validate: (value) => {
-                return isRequired(value, '필수 항목') || isValidEmail(value, `${t('validEmail')}`);
-              },
-            })}
-            error={errors.email as FieldError}
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            register={register('password', {
-              validate: (value) => {
-                return isRequired(value, '필수 항목') || isValidPassword(value, `${t('validPassword')}`);
-              },
-            })}
-            error={errors.password as FieldError}
-          />
-          <Link href="/resetPassword">{t('resetPwd')}</Link>
-          <Button onClick={doLogin} disabled={false} size="lg">
-            Login
-          </Button>
+          <div className="mb-2">
+            <Input
+              type="email"
+              placeholder="Email"
+              register={register('email', {
+                validate: (value) => {
+                  return isRequired(value, '필수 항목') || isValidEmail(value, `${t('validEmail')}`);
+                },
+              })}
+              error={errors.email as FieldError}
+            />
+          </div>
+          <div className="mb-2">
+            <Input
+              type="password"
+              placeholder="Password"
+              register={register('password', {
+                validate: (value) => {
+                  return isRequired(value, '필수 항목') || isValidPassword(value, `${t('validPassword')}`);
+                },
+              })}
+              error={errors.password as FieldError}
+            />
+          </div>
+          <div className="mb-9">
+            <Link href="/resetPassword">{t('resetPwd')}</Link>
+          </div>
+          <div className="mb-2">
+            <Button onClick={doLogin} disabled={false} size="lg">
+              Login
+            </Button>
+          </div>
           <Link href="/signup" innerText={"Don't have Account?"} innerClassType="login">
             {t('signup')}
           </Link>

@@ -7,11 +7,22 @@ interface CustomImageProps {
   alt?: string;
   width?: number;
   height?: number;
-  tp?: string;
+  layout?: string;
+  objectFit?: string;
 }
 
-function CustomImage({ src, alt, width, height, tp }: CustomImageProps) {
-  return <Image src={`${src}`} alt={`${alt}`} fill={width ? false : true} width={width} height={height} />;
+function CustomImage({ src, alt, width, height, layout, objectFit }: CustomImageProps) {
+  return (
+    <Image
+      src={`${src}`}
+      alt={`${alt}`}
+      width={width ? width : 0}
+      height={height ? height : 0}
+      layout={layout ? layout : ''}
+      // fill={layout ? true : false}
+      className={objectFit ? 'objectFit' : ''}
+    />
+  );
 }
 
 export default CustomImage;
@@ -21,5 +32,6 @@ CustomImage.defaultProps = {
   alt: '',
   width: 10,
   height: 10,
-  tp: '',
+  layout: '',
+  objectFit: '',
 };
