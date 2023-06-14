@@ -34,9 +34,9 @@ function Input({ placeholder, register, type, error, maxLength }: InputProps) {
       >
         {type === 'password' &&
           (isPasswordShow ? (
-            <img src="/icons/eye.png" alt="eye" className={styles.eye} />
+            <img src="/icons/eye.svg" alt="eye" className={styles.eye} />
           ) : (
-            <img src="/icons/eye-close.png" alt="eye" className={styles.eye} />
+            <img src="/icons/eye-close.svg" alt="eye" className={styles.eye} />
           ))}
       </button>
       {hasError && <p className={styles.warning}>{error.message}</p>}

@@ -1,24 +1,26 @@
 import React from 'react';
+import Like from '@/public/icons/like.svg';
+import Home from '@/public/icons/home.svg';
+import Me from '@/public/icons/me.svg';
 import styles from './Nav.module.scss';
-import CustomImage from '../Image/CustomImage';
 
 const menus = [
   {
     name: 'Rooms',
-    icon: '/icons/home.png',
+    icon: () => <Home className="stroke-g7 stroke-[1.5px]" />,
   },
   {
     name: 'Chat',
     // TODO: chat 아이콘 받으면 변경 필요
-    icon: '/icons/like.png',
+    icon: () => <Like className="stroke-g7 stroke-[1.5px]" />,
   },
   {
     name: 'Liked',
-    icon: '/icons/like.png',
+    icon: () => <Like className="stroke-g7 stroke-[1.5px]" />,
   },
   {
     name: 'My',
-    icon: '/icons/me.png',
+    icon: () => <Me className="stroke-g7 stroke-[1.5px]" />,
   },
 ];
 
@@ -27,9 +29,7 @@ export default function Nav() {
     <div className="grid grid-cols-4 fixed bottom-0 bg-g0 w-full h-[66px] text-center ">
       {menus.map((menu) => (
         <div className="my-[9px] align-middle items-center" key={menu.name}>
-          <div className="grid justify-center">
-            <img src={menu.icon} alt={menu.name} width={25} height={25} />
-          </div>
+          <div className="grid justify-center">{menu.icon()}</div>
           <div className={styles['nav-text']}>{menu.name}</div>
         </div>
       ))}
