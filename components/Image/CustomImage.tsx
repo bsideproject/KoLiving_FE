@@ -9,9 +9,10 @@ interface CustomImageProps {
   height?: number;
   layout?: string;
   objectFit?: string;
+  tp?: string;
 }
 
-function CustomImage({ src, alt, width, height, layout, objectFit }: CustomImageProps) {
+function CustomImage({ src, alt, width, height, layout, objectFit, tp }: CustomImageProps) {
   return (
     <Image
       src={`${src}`}
@@ -20,7 +21,7 @@ function CustomImage({ src, alt, width, height, layout, objectFit }: CustomImage
       height={height ? height : 0}
       layout={layout ? layout : ''}
       // fill={layout ? true : false}
-      className={objectFit ? 'objectFit' : ''}
+      className={objectFit ? 'objectFit' : styles[`${tp}`]}
     />
   );
 }
@@ -34,4 +35,5 @@ CustomImage.defaultProps = {
   height: 10,
   layout: '',
   objectFit: '',
+  tp: '',
 };
