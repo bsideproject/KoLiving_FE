@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/nextjs';
 const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const config: StorybookConfig = {
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -28,6 +29,27 @@ const config: StorybookConfig = {
     autodocs: 'tag',
   },
   webpackFinal: async (config) => {
+    const imageRule = config.module?.rules?.find((rule) => {
+      const test = (rule as { test: RegExp }).test;
+
+      if (!test) {
+        return false;
+      }
+
+      return test.test('.svg');
+    }) as { [key: string]: any };
+
+    imageRule.exclude = /\.svg$/;
+
+    config.module?.rules?.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    if (config.resolve?.alias) {
+      config.resolve.alias['@'] = path.resolve(__dirname, '../');
+    }
+    // config.resolve?.plugins?.push(new TsconfigPathsPlugin());
+
     return config;
   },
   previewHead: (head) => `
