@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomImage from '../../components/Image/CustomImage.tsx';
+import CustomImage from '../../components/CustomImage/CustomImage.tsx';
 import styles from './Footer.module.scss';
 
 export default function Footer() {
