@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import styles from './Input.module.scss';
 
@@ -13,6 +13,12 @@ interface InputProps {
 function Input({ placeholder, register, type, error, maxLength }: InputProps) {
   const hasError = error && error.message;
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const inputType = useMemo(() => {
+    if (type === 'password') {
+      return isPasswordShow ? 'text' : 'password';
+    }
+    return type;
+  }, [type, isPasswordShow]);
 
   const togglePasswordVisibility = () => {
     setIsPasswordShow((state) => !state);
@@ -23,7 +29,7 @@ function Input({ placeholder, register, type, error, maxLength }: InputProps) {
       <input
         className={`${styles.input} ${hasError ? styles.error : ''}`}
         placeholder={placeholder}
-        type={type === 'password' ? (isPasswordShow ? 'text' : 'password') : type}
+        type={inputType}
         maxLength={maxLength}
         {...register}
       />
