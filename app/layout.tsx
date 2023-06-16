@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from './head.tsx';
-import Nav from './Nav/Nav.tsx';
-import Header from './Header/Header.tsx';
+import Nav from './components/Nav/Nav.tsx';
+import Header from './components/Header/Header.tsx';
 import '../styles/tailwind.scss';
 import '../styles/globals.scss';
 

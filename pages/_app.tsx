@@ -7,7 +7,6 @@ import Head from 'next/head';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layout/AppLayout.tsx';
-import Footer from '../container/Footer/Footer.tsx';
 import Nav from '../components/Nav/Nav.tsx';
 
 function MyApp({ Component, pageProps }: AppProps) {
