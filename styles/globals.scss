@@ -1,3 +1,7 @@
 input:focus {
   outline: none;
 }
+
+body {
+  @apply justify-center max-w-[448px] min-w-[360px] mx-auto;
+}

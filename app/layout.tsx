@@ -9,8 +9,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <Head />
-      <body className="justify-center max-w-[448px] min-w-[360px] mx-auto">
-        <Header />
+      <body>
+        <Header type="back" title="Title" right="pencil" />
         {children}
         <Nav />
       </body>
