@@ -34,7 +34,7 @@ const renderHandler = (type: string, color: string) => {
   }
 };
 
-export default function Header({ type, title, right = '', logoColor = 'black', bgColor = 'white' }: HeaderProps) {
+export default function Header({ type, title, right = 'plus', logoColor = 'black', bgColor = 'white' }: HeaderProps) {
   const strokeColor = bgColor === 'white' ? 'stroke-g7' : 'stroke-g0';
   const Logo = LOGOS[`logo-${logoColor}`];
   const backGroundColor = bgColor === 'white' ? 'bg-g0' : 'bg-transparent';
@@ -45,9 +45,7 @@ export default function Header({ type, title, right = '', logoColor = 'black', b
         <div className="flex w-full">
           <div className={styles.logo}>{Logo()}</div>
           <Space />
-          <div className="pt-[13px] pr-[13px]">
-            <Plus className={`${strokeColor} stroke-[2]`} />
-          </div>
+          <div className="pt-[13px] pr-[13px]">{renderHandler(right, strokeColor)}</div>
         </div>
       )}
       {type === 'back' && (
