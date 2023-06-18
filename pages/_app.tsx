@@ -12,6 +12,8 @@ import Footer from '../container/Footer/Footer.tsx';
 import Nav from '../components/Nav/Nav.tsx';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const AnyComponent = Component as any;
+
   return (
     <>
       <Head>
@@ -22,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ModalProvider>
         <AppLayout>
           <Header type="back" title="Title" right="pencil" bgColor="white" />
-          <Component {...pageProps} />
+          <AnyComponent {...pageProps} />
           <ModalContainer />
           <Nav />
         </AppLayout>
