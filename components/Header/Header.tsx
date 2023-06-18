@@ -40,7 +40,7 @@ export default function Header({ type, title, right = 'plus', logoColor = 'black
   const backGroundColor = bgColor === 'white' ? 'bg-g0' : 'bg-transparent';
 
   return (
-    <div className={`${backGroundColor} w-full h-[66px] text-center`}>
+    <div className={`${backGroundColor} w-full h-[66px] text-center z-[999] fixed`}>
       {type === 'logo' && (
         <div className="flex w-full">
           <div className={styles.logo}>{Logo()}</div>

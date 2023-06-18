@@ -3,5 +3,8 @@ input:focus {
 }
 
 body {
-  @apply justify-center max-w-[448px] min-w-[360px] mx-auto;
+  @apply justify-center max-w-[448px] min-w-[360px];
+
+  margin-left: auto !important;
+  margin-right: auto !important;
 }

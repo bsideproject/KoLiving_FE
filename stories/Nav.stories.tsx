@@ -1,5 +1,5 @@
 import React from 'react';
-import Nav from '../app/components/Nav/Nav';
+import Nav from '../components/Nav/Nav';
 
 export default {
   title: 'Components/Nav',
