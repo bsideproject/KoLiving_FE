@@ -17,9 +17,9 @@ function CustomImage({ src, alt, width, height, layout, objectFit, tp }: CustomI
     <Image
       src={`${src}`}
       alt={`${alt}`}
-      width={width ? width : 0}
-      height={height ? height : 0}
-      layout={layout ? layout : ''}
+      width={width || 0}
+      height={height || 0}
+      layout={layout || ''}
       // fill={layout ? true : false}
       className={objectFit ? 'objectFit' : styles[`${tp}`]}
     />
