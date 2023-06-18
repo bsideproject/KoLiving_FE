@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import Close from '@/public/icons/close.svg';
 import styles from './Modal.module.scss';
 import { ModalProps } from './ModalContainer.tsx';
 import useModal from '../../hooks/useModal.ts';
@@ -76,7 +77,7 @@ function Modal({
         {hasCloseButton && (
           <div className={styles.close}>
             <button type="button" onClick={onClose}>
-              <img src="/icons/close.png" alt="close" />
+              <Close />
             </button>
           </div>
         )}

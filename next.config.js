@@ -16,7 +16,11 @@ const nextConfig = {
     modifiedConfig.resolve.fallback = {
       fs: false,
     };
-    return config;
+    modifiedConfig.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+    return modifiedConfig;
   },
 };
 
