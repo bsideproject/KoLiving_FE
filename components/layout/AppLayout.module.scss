@@ -4,7 +4,7 @@
   }
 
   &.width {
-    @apply max-w-[448px] min-w-[360px] mx-auto;
+    @apply max-w-[448px] min-w-[360px] mx-auto w-full;
 
     @media (max-width: 448px) {
       width: 500px;
