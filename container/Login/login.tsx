@@ -9,7 +9,7 @@ import Button from '../../components/Button/Button.tsx';
 import Input from '../../components/Input/Input.tsx';
 import { isRequired, isValidEmail, isValidPassword } from '../../utils/validCheck.ts';
 import Link from '../../components/Link/HyperLink.tsx';
-import CustomImage from '../../components/Image/CustomImage.tsx';
+import CustomImage from '../../components/CustomImage/CustomImage.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
