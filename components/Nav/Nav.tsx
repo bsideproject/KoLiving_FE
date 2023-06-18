@@ -26,7 +26,7 @@ const menus = [
 
 export default function Nav() {
   return (
-    <div className="grid grid-cols-4 fixed bottom-0 bg-g0 w-full h-[66px] text-center ">
+    <div className={`${styles.container} grid grid-cols-4 fixed bottom-0 bg-g0 w-full h-[66px] text-center`}>
       {menus.map((menu) => (
         <div className="my-[9px] align-middle items-center" key={menu.name}>
           <div className="grid justify-center">{menu.icon()}</div>
