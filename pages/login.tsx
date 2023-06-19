@@ -1,5 +1,4 @@
 import React from 'react';
-import 'tailwindcss/tailwind.css';
 import type { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -8,8 +7,10 @@ import { useRouter } from 'next/router';
 import Button from '@/components/Button/Button.tsx';
 import Input from '@/components/Input/Input.tsx';
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validCheck.ts';
-import Link from '@/components/Link/HyperLink.tsx';
+import Link from 'next/link';
 import CustomImage from '@/components/CustomImage/CustomImage.tsx';
+import LoginLayout from '@/components/layouts/LoginLayout.tsx';
+import Space from '@/components/Space.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -30,18 +31,18 @@ export default function Login() {
   } = useForm({ mode: 'onChange' });
 
   return (
-    <div className="font-pretendard bg-slate-400 w-full min-h-screen">
-      <div className="bg-white p-10 rounded-3xl shadow-xl">
-        <div className="relative w-full h-[422px] mb-7">
-          <CustomImage
-            src="/images/thumb.png"
-            alt="Koliving"
-            width={0}
-            height={0}
-            layout="fill"
-            objectFit="object-cover"
-          />
-        </div>
+    <div className="font-pretendard w-full">
+      <div className="relative w-full h-[422px] mb-7">
+        <CustomImage
+          src="/images/thumb.png"
+          alt="Koliving"
+          width={0}
+          height={0}
+          layout="fill"
+          objectFit="object-cover"
+        />
+      </div>
+      <div className="m-[auto] w-[fit-content]">
         <div className="font-semibold text-2xl text-G6 font-poppins mb-4">{t('welcome')}</div>
         <form>
           <div className="mb-2">
@@ -68,19 +69,27 @@ export default function Login() {
               error={errors.password as FieldError}
             />
           </div>
-          <div className="mb-9">
-            <Link href="/resetPassword">{t('resetPwd')}</Link>
+          <div className="flex mb-[37px]">
+            <Space />
+            <Link href="/resetPassword" className="underline text-g5 text-[14px]">
+              {t('resetPwd')}
+            </Link>
           </div>
-          <div className="mb-2">
-            <Button onClick={doLogin} disabled={false} size="lg">
-              Login
-            </Button>
+          <Button onClick={doLogin} disabled={false} size="lg">
+            Login
+          </Button>
+          <div className="flex items-center justify-center mt-[9px]">
+            <p className="mr-[4px] text-g6 text-[14px]">Don&apos;t have account?</p>
+            <Link href="/signup" className="underline text-r1 font-semibold text-[14px]">
+              {t('signup')}
+            </Link>
           </div>
-          <Link href="/signup" innerText={"Don't have Account?"} innerClassType="login">
-            {t('signup')}
-          </Link>
         </form>
       </div>
     </div>
   );
 }
+
+Login.getLayout = function getLayout(page: React.ReactElement) {
+  return <LoginLayout>{page}</LoginLayout>;
+};
