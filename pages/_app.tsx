@@ -8,12 +8,9 @@ import Header from '@/components/Header/Header.tsx';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layout/AppLayout.tsx';
-import Footer from '../container/Footer/Footer.tsx';
 import Nav from '../components/Nav/Nav.tsx';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const AnyComponent = Component as any;
-
   return (
     <>
       <Head>
@@ -24,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ModalProvider>
         <AppLayout>
           <Header type="back" title="Title" right="pencil" bgColor="white" />
-          <AnyComponent {...pageProps} />
+          <Component {...pageProps} />
           <ModalContainer />
           <Nav />
         </AppLayout>
