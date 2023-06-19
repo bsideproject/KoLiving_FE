@@ -4,13 +4,22 @@ import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
-import Header from '@/components/Header/Header.tsx';
+import { NextPage } from 'next';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
-import AppLayout from '../components/layout/AppLayout.tsx';
-import Nav from '../components/Nav/Nav.tsx';
+import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
 
-function MyApp({ Component, pageProps }: AppProps) {
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
+};
+
+interface LayoutAppProps extends AppProps {
+  Component: NextPageWithLayout;
+}
+
+function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <>
       <Head>
@@ -20,10 +29,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <ModalProvider>
         <AppLayout>
-          <Header type="back" title="Title" right="pencil" bgColor="white" />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
           <ModalContainer />
-          <Nav />
         </AppLayout>
       </ModalProvider>
     </>
