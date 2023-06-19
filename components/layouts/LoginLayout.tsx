@@ -8,7 +8,7 @@ interface AppLayoutProps {
 function DefaultLayout({ children }: AppLayoutProps) {
   return (
     <>
-      <Header type="logo" bgColor="transparent" right="close" />
+      <Header type="logo" bgColor="transparent" right="close" logoColor="white" />
       {children}
     </>
   );
