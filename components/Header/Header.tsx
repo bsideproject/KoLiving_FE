@@ -22,7 +22,7 @@ const LOGOS = {
   'logo-white': () => <LogoWhite width="110px" height="26px" />,
 };
 
-const renderHandler = (type: string, color: string) => {
+const renderHandler = (type: string | undefined, color: string) => {
   switch (type) {
     case 'plus':
       return <Plus className={`${color} stroke-[2]`} />;
@@ -38,7 +38,7 @@ const renderHandler = (type: string, color: string) => {
 export default function Header({
   type,
   title,
-  right = 'plus',
+  right,
   logoColor = 'black',
   bgColor = 'white',
   handleButtonClick,
