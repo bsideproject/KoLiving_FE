@@ -1,5 +1,5 @@
 .header {
-  @apply font-poppins font-semibold;
+  @apply font-poppins font-semibold text-[24px];
 }
 
 .title {
@@ -11,7 +11,7 @@
 }
 
 .label {
-  @apply font-pretendard;
+  @apply font-pretendard text-[14px];
 }
 
 .semiBold {
@@ -19,29 +19,4 @@
 }
 .medium {
   @apply font-medium;
-}
-
-&.24 {
-  @apply text-[24px];
-}
-&.20 {
-  @apply text-[20px];
-}
-&.18 {
-  @apply text-[18px];
-}
-&.16 {
-  @apply text-[16px];
-}
-&.16_24 {
-  @apply text-[16_24px];
-}
-&.16_19 {
-  @apply text-[16_19px];
-}
-&.14 {
-  @apply text-[14px];
-}
-&.12 {
-  @apply text-[12px];
 }

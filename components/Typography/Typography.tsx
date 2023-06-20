@@ -5,11 +5,10 @@ interface TypographyProps {
   variant?: 'header' | 'title' | 'body' | 'label';
   children: ReactNode;
   font?: 'poppins' | 'pretendard';
-  textSize?: '24' | '20' | '18' | '16' | '16_24' | '16_19' | '14' | '12';
   fontStyle?: 'semiBold' | 'medium' | 'regular';
 }
 
-function Typography({ variant, children, font, textSize, fontStyle }: TypographyProps) {
+function Typography({ variant, children, font, fontStyle }: TypographyProps) {
   let className = '';
 
   switch (variant) {
@@ -20,10 +19,10 @@ function Typography({ variant, children, font, textSize, fontStyle }: Typography
       className = `${styles.title} ${styles[`${fontStyle}`]}`;
       break;
     case 'body':
-      className = `${styles.body} ${styles[`${fontStyle}`]} ${styles[`${textSize}`]}`;
+      className = `${styles.body} ${styles[`${fontStyle}`]}`;
       break;
     case 'label':
-      className = `${styles.label} ${styles[`${fontStyle}`]} ${styles[`${textSize}`]}`;
+      className = `${styles.label} ${styles[`${fontStyle}`]}`;
       break;
     default:
       break;
@@ -37,6 +36,5 @@ export default Typography;
 Typography.defaultProps = {
   font: 'poppins',
   variant: 'header',
-  textSize: '24',
   fontStyle: 'semibold',
 };
