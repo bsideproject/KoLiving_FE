@@ -65,7 +65,7 @@ export default function Header({
       )}
       {type === 'back' && (
         <div className="flex w-full pt-[14.5px] px-[20px]">
-          <Back className="stroke-g7 stroke-[2]" />
+          <Back className="stroke-g7 stroke-[2] cursor-pointer" onClick={handleClick} />
           <Space />
           <div className="font-pretendard font-medium text-[18px]">{title}</div>
           <Space />
