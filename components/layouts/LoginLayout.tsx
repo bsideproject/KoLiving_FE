@@ -6,9 +6,12 @@ interface AppLayoutProps {
 }
 
 function DefaultLayout({ children }: AppLayoutProps) {
+  const goBack = () => {
+    window.history.back();
+  };
   return (
     <>
-      <Header type="logo" bgColor="transparent" right="close" logoColor="white" />
+      <Header type="logo" bgColor="transparent" right="close" logoColor="white" handleButtonClick={goBack} />
       {children}
     </>
   );

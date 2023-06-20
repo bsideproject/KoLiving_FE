@@ -14,6 +14,7 @@ interface HeaderProps {
   right?: 'plus' | 'close' | 'pencil';
   logoColor?: 'black' | 'white';
   bgColor?: 'white' | 'transparent';
+  handleButtonClick?: () => void;
 }
 
 const LOGOS = {
@@ -34,10 +35,22 @@ const renderHandler = (type: string, color: string) => {
   }
 };
 
-export default function Header({ type, title, right = 'plus', logoColor = 'black', bgColor = 'white' }: HeaderProps) {
+export default function Header({
+  type,
+  title,
+  right = 'plus',
+  logoColor = 'black',
+  bgColor = 'white',
+  handleButtonClick,
+}: HeaderProps) {
   const strokeColor = bgColor === 'white' ? 'stroke-g7' : 'stroke-g0';
   const Logo = LOGOS[`logo-${logoColor}`];
   const backGroundColor = bgColor === 'white' ? 'bg-g0' : 'bg-transparent';
+  const handleClick = () => {
+    if (handleButtonClick) {
+      handleButtonClick();
+    }
+  };
 
   return (
     <div className={`${backGroundColor} w-full h-[54px] text-center z-[999] fixed max-w-[inherit]`}>
@@ -45,7 +58,9 @@ export default function Header({ type, title, right = 'plus', logoColor = 'black
         <div className="flex w-full">
           <div className={styles.logo}>{Logo()}</div>
           <Space />
-          <div className="pt-[13px] pr-[13px]">{renderHandler(right, strokeColor)}</div>
+          <div className="pt-[13px] pr-[13px]">
+            <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
+          </div>
         </div>
       )}
       {type === 'back' && (
@@ -54,7 +69,7 @@ export default function Header({ type, title, right = 'plus', logoColor = 'black
           <Space />
           <div className="font-pretendard font-medium text-[18px]">{title}</div>
           <Space />
-          {renderHandler(right, strokeColor)}
+          <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
         </div>
       )}
     </div>
