@@ -13,8 +13,12 @@ const Template = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   type: 'basic',
+  label: 'default',
+  bold: false,
 };
 export const Outlined = Template.bind({});
 Outlined.args = {
   type: 'outlined',
+  label: 'outlined',
+  bold: true,
 };
