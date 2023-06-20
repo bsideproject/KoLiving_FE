@@ -1,17 +1,16 @@
 import Header from '@/components/Header/Header.tsx';
-import Nav from '@/components/Nav/Nav.tsx';
 import React, { ReactNode } from 'react';
 
 interface AppLayoutProps {
   children: ReactNode;
+  title: string;
 }
 
-function DefaultLayout({ children }: AppLayoutProps) {
+function DefaultLayout({ children, title }: AppLayoutProps) {
   return (
     <>
-      <Header type="logo" bgColor="transparent" right="close" />
+      <Header type="back" bgColor="white" title={title} />
       {children}
-      <Nav />
     </>
   );
 }
