@@ -51,7 +51,7 @@ export default function resetPassword() {
       <Button onClick={() => console.log('hoi')} disabled={false} size="lg">
         Next
       </Button>
-      <ModalBox title="Check Your Mail Box" content={`A reset link has just been sent to ${}`} buttonType="default" hasCloseButton />
+      {/* <ModalBox title="Check Your Mail Box" content={`A reset link has just been sent to`} buttonType="default" hasCloseButton /> */}
     </div>
   );
 }
