@@ -10,7 +10,7 @@ function DefaultLayout({ children, title }: AppLayoutProps) {
   return (
     <>
       <Header type="back" bgColor="white" title={title} />
-      {children}
+      <div className="mx-[20px] mt-[54px]">{children}</div>
     </>
   );
 }
