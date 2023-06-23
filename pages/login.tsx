@@ -80,7 +80,7 @@ export default function Login() {
           </Button>
           <div className="flex items-center justify-center mt-[9px]">
             <p className="mr-[4px] text-g6 text-[14px]">Don&apos;t have account?</p>
-            <Link href="/signup" className="underline text-r1 font-semibold text-[14px]">
+            <Link href="/signup/step1" className="underline text-r1 font-semibold text-[14px] mb-[8px]">
               {t('signup')}
             </Link>
           </div>

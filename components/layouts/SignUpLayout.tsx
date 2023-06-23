@@ -17,8 +17,12 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 function SignUpLayout({ children }: AppLayoutProps) {
   const { t } = useTranslation('signup');
 
+  const handleButtonClick = () => {
+    window.history.back();
+  };
+
   return (
-    <DefaultLayout title={t('createAccount')}>
+    <DefaultLayout title={t('signup')} handleButtonClick={handleButtonClick}>
       <div className="pt-[31px]">{children}</div>
     </DefaultLayout>
   );

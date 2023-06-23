@@ -7,24 +7,30 @@ interface CheckboxProps {
   type?: 'outlined' | 'basic';
   label?: string;
   bold?: boolean;
+  required?: boolean;
 }
 
-export default function Checkbox({ checked, onChange, type = 'basic', label = '', bold = false }: CheckboxProps) {
-  const [isChecked, setIsChecked] = React.useState(checked);
-
+export default function Checkbox({
+  checked,
+  onChange,
+  type = 'basic',
+  label = '',
+  bold = false,
+  required = false,
+}: CheckboxProps) {
   const fillColor = useMemo(() => {
     if (type === 'basic') {
-      return isChecked ? 'fill-r1' : 'fill-g3';
+      return checked ? 'fill-r1' : 'fill-g3';
     }
 
-    return isChecked ? 'fill-white' : 'fill-g3';
-  }, [isChecked, type]);
+    return checked ? 'fill-white' : 'fill-g3';
+  }, [checked, type]);
 
   const typeClass = useMemo(() => {
     const commonTypeClass = 'rounded-[2px] border-[1px]';
 
     if (type === 'outlined') {
-      if (isChecked) {
+      if (checked) {
         return `${commonTypeClass} bg-r1 border-r1`;
       }
 
@@ -32,7 +38,7 @@ export default function Checkbox({ checked, onChange, type = 'basic', label = ''
     }
 
     return '';
-  }, [type, isChecked]);
+  }, [type, checked]);
 
   const font = useMemo(() => {
     if (bold) {
@@ -43,7 +49,7 @@ export default function Checkbox({ checked, onChange, type = 'basic', label = ''
   }, [bold]);
 
   const handleClick = () => {
-    setIsChecked((value) => !value);
+    // setIsChecked((value) => !value);
     onChange();
   };
 
@@ -54,6 +60,7 @@ export default function Checkbox({ checked, onChange, type = 'basic', label = ''
       </div>
       <button onClick={handleClick} className={`font-pretendard text-[14px] ${font}`}>
         {label}
+        {required && <span className="ml-1">*</span>}
       </button>
     </div>
   );
