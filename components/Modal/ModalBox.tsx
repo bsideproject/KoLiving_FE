@@ -15,6 +15,7 @@ function Modal({
   custom = false,
   buttonType = 'none',
   handleClose,
+  buttonName = '',
 }: ModalProps) {
   const { closeModal } = useModal();
 
@@ -63,7 +64,7 @@ function Modal({
       case 'default':
         return (
           <Button onClick={() => handleClose?.()} color="r1" size="lg">
-            test
+            {buttonName}
           </Button>
         );
       default:
