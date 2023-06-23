@@ -53,23 +53,27 @@ export default function Header({
   };
 
   return (
-    <div className={`${backGroundColor} w-full h-[54px] text-center z-[999] fixed max-w-[inherit]`}>
+    <div className={`${backGroundColor} w-full h-[54px] text-center z-[999] fixed max-w-max ${styles.container}`}>
       {type === 'logo' && (
         <div className="flex w-full">
           <div className={styles.logo}>{Logo()}</div>
           <Space />
-          <div className="pt-[13px] pr-[13px]">
+          <div className="pt-[13px]">
             <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
           </div>
         </div>
       )}
       {type === 'back' && (
-        <div className="flex w-full pt-[14.5px] px-[20px]">
-          <Back className="stroke-g7 stroke-[2] cursor-pointer" onClick={handleClick} />
-          <Space />
-          <div className="font-pretendard font-medium text-[18px]">{title}</div>
-          <Space />
-          <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
+        <div className="text-center pt-[14.5px]">
+          <div className="mx-auto" style={{ maxWidth: '100%' }}>
+            <div className="flex items-center">
+              <Back className="stroke-g7 stroke-[2] cursor-pointer" onClick={handleClick} />
+              <Space />
+              <div className="font-pretendard font-medium text-[18px]">{title}</div>
+              <Space />
+              <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

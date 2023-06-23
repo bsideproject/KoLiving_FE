@@ -25,7 +25,7 @@ function Input({ placeholder, register, type, error, maxLength }: InputProps) {
   };
 
   return (
-    <div className="relative max-w-default w-full">
+    <div className="relative w-full">
       <input
         className={`${styles.input} ${hasError ? styles.error : ''}`}
         placeholder={placeholder}

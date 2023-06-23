@@ -2,7 +2,7 @@
   @apply h-[54px] rounded-[2px] font-pretendard text-[18px] font-bold;
 
   &.lg {
-    @apply w-default px-[13px];
+    @apply w-full px-[13px];
   }
   &.md {
     @apply w-medium px-[12px];
@@ -34,6 +34,4 @@
   &.none {
     @apply bg-transparent font-black border-none text-black;
   }
-  
 }
-

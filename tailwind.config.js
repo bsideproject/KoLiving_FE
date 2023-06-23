@@ -24,6 +24,7 @@ module.exports = {
       },
       maxWidth: {
         default: '335px',
+        max: '440px',
       },
       spacing: {
         default: '335px',
@@ -36,6 +37,7 @@ module.exports = {
         footerImg: '20px',
         footerContainer: '93.75px',
         loginImg: '375px',
+        max: '440px',
       },
       height: {
         footerImg: '18px',
