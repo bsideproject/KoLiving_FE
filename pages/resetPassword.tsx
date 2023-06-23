@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ResetPasswordLayout from '@/components/layouts/ResetPasswordLayout.tsx';
 import Space from '@/components/Space.tsx';
 import Typography from '@/components/Typography/Typography.tsx';
@@ -10,6 +10,7 @@ import Button from '@/components/Button/Button.tsx';
 import ModalBox from '@/components/Modal/ModalBox.tsx';
 import type { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { emit } from 'process';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -19,10 +20,19 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function resetPassword() {
   const { t } = UseTranslation('common');
+  const [authEmail, setAuthEmail] = useState(false);
+
   const {
     register,
+    watch,
+    getValues,
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
+
+  const fnAuthEmail = () => {
+    console.log('error is ??', errors);
+    !errors.email?.message && setAuthEmail(true);
+  };
 
   return (
     <div className="font-pretendard w-full">
@@ -48,10 +58,18 @@ export default function resetPassword() {
           error={errors.email as FieldError}
         />
       </div>
-      <Button onClick={() => console.log('hoi')} disabled={false} size="lg">
+      <Button type="submit" onClick={fnAuthEmail} disabled={!watch('email')} size="lg">
         Next
       </Button>
-      {/* <ModalBox title="Check Your Mail Box" content={`A reset link has just been sent to`} buttonType="default" hasCloseButton /> */}
+      {authEmail && (
+        <ModalBox
+          title="Check Your Mail Box"
+          content={`A reset link has just been sent to ${getValues('email')}`}
+          buttonType="default"
+          hasCloseButton
+          buttonName="Resend link"
+        />
+      )}
     </div>
   );
 }
