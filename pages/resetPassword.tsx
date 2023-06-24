@@ -58,7 +58,7 @@ export default function ResetPassword() {
           error={errors.email as FieldError}
         />
       </div>
-      <Button type="submit" onClick={fnAuthEmail} disabled={errors.email?.message} size="lg">
+      <Button type="submit" onClick={fnAuthEmail} disabled={!!errors.email?.message} size="lg">
         Next
       </Button>
       {authEmail && (
