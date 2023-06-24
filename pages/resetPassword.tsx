@@ -18,20 +18,20 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   },
 });
 
-export default function resetPassword() {
+export default function ResetPassword() {
   const { t } = UseTranslation('common');
   const [authEmail, setAuthEmail] = useState(false);
 
   const {
     register,
-    watch,
+    // watch,
     getValues,
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
 
   const fnAuthEmail = () => {
     console.log('error is ??', errors);
-    !errors.email?.message && setAuthEmail(true);
+    return !errors.email?.message && setAuthEmail(true);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function resetPassword() {
           error={errors.email as FieldError}
         />
       </div>
-      <Button type="submit" onClick={fnAuthEmail} disabled={!watch('email')} size="lg">
+      <Button type="submit" onClick={fnAuthEmail} disabled={errors.email?.message} size="lg">
         Next
       </Button>
       {authEmail && (
@@ -74,6 +74,6 @@ export default function resetPassword() {
   );
 }
 
-resetPassword.getLayout = function getLayout(page: React.ReactElement) {
+ResetPassword.getLayout = function getLayout(page: React.ReactElement) {
   return <ResetPasswordLayout>{page}</ResetPasswordLayout>;
 };
