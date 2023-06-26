@@ -17,3 +17,10 @@ export const isValidPassword = (password: string, message = 'Invalid password') 
   }
   return '';
 };
+
+export const isSamePassword = (password: string, passwordConfirm: string, message = 'Please check again') => {
+  if (password !== passwordConfirm) {
+    return message;
+  }
+  return '';
+};

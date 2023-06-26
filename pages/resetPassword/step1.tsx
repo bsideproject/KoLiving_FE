@@ -18,8 +18,9 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   },
 });
 
-export function step1() {
+export default function step1() {
   const { t } = UseTranslation('common');
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [authEmail, setAuthEmail] = useState(false);
 
   const {
@@ -35,7 +36,7 @@ export function step1() {
   };
 
   return (
-    <div>
+    <div className="font-pretendard w-full">
       <div className="relative w-full h-[60px]">
         <Space />
       </div>
