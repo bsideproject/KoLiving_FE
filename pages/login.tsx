@@ -71,7 +71,7 @@ export default function Login() {
           </div>
           <div className="flex mb-[37px]">
             <Space />
-            <Link href="/resetPassword" className="underline text-g5 text-[14px]">
+            <Link href="/resetPassword/step1" className="underline text-g5 text-[14px]">
               {t('resetPwd')}
             </Link>
           </div>
