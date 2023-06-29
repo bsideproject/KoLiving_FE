@@ -7,7 +7,7 @@ interface ChipProps {
   onDelete?: () => void;
 }
 
-const Chip: React.FC<ChipProps> = ({ label, onDelete }) => {
+export default function Chip({ label, onDelete }: ChipProps) {
   const handleDelete = (event: MouseEvent) => {
     event.preventDefault();
     if (onDelete) {
@@ -27,6 +27,9 @@ const Chip: React.FC<ChipProps> = ({ label, onDelete }) => {
       )}
     </div>
   );
-};
+}
 
-export default Chip;
+Chip.defaultProps = {
+  label: '',
+  onDelete: console.log(),
+};
