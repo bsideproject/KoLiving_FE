@@ -7,6 +7,7 @@ interface ChipProps {
   onDelete?: () => void;
 }
 
+/** Node Version 문제로 다시 올려봅니다람쥐... */
 export default function Chip({ label, onDelete }: ChipProps) {
   const handleDelete = (event: MouseEvent) => {
     event.preventDefault();
