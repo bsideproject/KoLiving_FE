@@ -6,9 +6,10 @@ interface TypographyProps {
   children: ReactNode;
   font?: 'poppins' | 'pretendard';
   fontStyle?: 'semiBold' | 'medium' | 'regular';
+  color?: string;
 }
 
-function Typography({ variant, children, font, fontStyle }: TypographyProps) {
+function Typography({ variant, children, font, fontStyle, color }: TypographyProps) {
   let className = '';
 
   switch (variant) {
@@ -22,7 +23,7 @@ function Typography({ variant, children, font, fontStyle }: TypographyProps) {
       className = `${styles.body} ${styles[`${fontStyle}`]}`;
       break;
     case 'label':
-      className = `${styles.label} ${styles[`${fontStyle}`]}`;
+      className = `${styles.label} ${styles[`${fontStyle}`]} text-${color}`;
       break;
     default:
       break;
@@ -37,4 +38,5 @@ Typography.defaultProps = {
   font: 'poppins',
   variant: 'header',
   fontStyle: 'semibold',
+  color: 'text-black',
 };
