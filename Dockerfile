@@ -1,4 +1,4 @@
-FROM node:18.16.0-alpine
+FROM node:18.16.0-alpine AS base
 
 LABEL maintainer="zestlee1106@gmail.com"
 LABEL description="KoLiving_FE Dockerfile"
