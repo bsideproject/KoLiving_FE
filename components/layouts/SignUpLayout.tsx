@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import SignUpProvider from '@/context/SignUpProvider.tsx';
 import DefaultLayout from './DefaultLayout.tsx';
 
 interface AppLayoutProps {
@@ -22,9 +23,11 @@ function SignUpLayout({ children }: AppLayoutProps) {
   };
 
   return (
-    <DefaultLayout title={t('signup')} handleButtonClick={handleButtonClick}>
-      <div className="pt-[31px]">{children}</div>
-    </DefaultLayout>
+    <SignUpProvider>
+      <DefaultLayout title={t('signup')} handleButtonClick={handleButtonClick}>
+        <div className="pt-[31px]">{children}</div>
+      </DefaultLayout>
+    </SignUpProvider>
   );
 }
 

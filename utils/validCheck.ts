@@ -7,7 +7,7 @@ export const isValidEmail = (email: string, message = 'Invalid email') => {
   if (!regex.test(email)) {
     return message;
   }
-  return '';
+  return true;
 };
 
 export const isValidPassword = (password: string, message = 'Invalid password') => {
@@ -15,12 +15,12 @@ export const isValidPassword = (password: string, message = 'Invalid password') 
   if (!regex.test(password)) {
     return message;
   }
-  return '';
+  return true;
 };
 
 export const isSamePassword = (password: string, passwordConfirm: string, message = 'Please check again') => {
   if (password !== passwordConfirm) {
     return message;
   }
-  return '';
+  return true;
 };

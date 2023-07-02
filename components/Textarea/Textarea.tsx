@@ -1,23 +1,20 @@
-import React, { ChangeEvent } from 'react';
-import styles from './Textarea.module.scss';
+import React from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface TextareaProps {
   placeholder?: string;
   value?: string;
-  className?: string;
-  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  register: UseFormRegisterReturn;
 }
 
-function Textarea({ placeholder, value, onChange, className }: TextareaProps) {
+function Textarea({ placeholder, register }: TextareaProps) {
   return (
-    <textarea className={className ?? styles.textArea} placeholder={placeholder} value={value} onChange={onChange} />
+    <textarea
+      className="w-full h-[120px] rounded-[2px] border-g4 border-[1px] resize-none pl-[14px] pt-[14px] focus:border-g6 focus:outline-none"
+      placeholder={placeholder}
+      {...register}
+    />
   );
 }
 
 export default Textarea;
-
-Textarea.defaultProps = {
-  value: '',
-  placeholder: '',
-  className: '',
-};
