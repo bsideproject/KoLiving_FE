@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
@@ -26,8 +26,9 @@ export default function SignUp() {
     formState: { errors },
     handleSubmit,
     watch,
+    setValue,
   } = useForm({ mode: 'onChange' });
-  const { setSignUpData } = useSignUp();
+  const { setSignUpData, signUpState } = useSignUp();
   const watchPassword1 = watch('password1', '');
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -38,14 +39,21 @@ export default function SignUp() {
     Router.push('/signup/step3');
   };
 
+  useEffect(() => {
+    if (!signUpState) {
+      return;
+    }
+
+    setValue('password1', signUpState.password);
+    setValue('password2', signUpState.password);
+  }, [signUpState, setValue]);
+
+  const password1 = watch('password1');
+  const password2 = watch('password2');
+
   const isDisabled = useMemo(() => {
-    return !(
-      watch('password1') &&
-      errors.password1 === undefined &&
-      watch('password2') &&
-      errors.password2 === undefined
-    );
-  }, [errors.password1, errors.password2, watch]);
+    return !(password1 && password2 && !errors.password1 && !errors.password2);
+  }, [errors.password1, errors.password2, password1, password2]);
 
   return (
     <>

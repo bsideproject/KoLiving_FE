@@ -30,7 +30,7 @@ export default function SignUp() {
     setValue,
     watch,
   } = useForm({ mode: 'onChange' });
-  const { setSignUpData } = useSignUp();
+  const { setSignUpData, signUpState } = useSignUp();
 
   const handleAllCheck = (checked: boolean) => {
     if (!checked) {
@@ -43,6 +43,28 @@ export default function SignUp() {
       setValue('privacyChecked', true);
     }
   };
+
+  useEffect(() => {
+    if (!signUpState) {
+      return;
+    }
+
+    if (signUpState.email) {
+      setValue('email', signUpState.email);
+    }
+
+    if (signUpState.yearChecked) {
+      setValue('yearChecked', signUpState.yearChecked);
+    }
+
+    if (signUpState.termChecked) {
+      setValue('termChecked', signUpState.termChecked);
+    }
+
+    if (signUpState.privacyChecked) {
+      setValue('privacyChecked', signUpState.privacyChecked);
+    }
+  }, [signUpState, setValue]);
 
   const privacyChecked = watch('privacyChecked');
   const termChecked = watch('termChecked');
