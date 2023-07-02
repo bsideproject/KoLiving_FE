@@ -31,6 +31,5 @@ export default function Chip({ label, onDelete }: ChipProps) {
 }
 
 Chip.defaultProps = {
-  label: '',
-  onDelete: console.log(),
+  onDelete: () => '',
 };
