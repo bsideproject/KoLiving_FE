@@ -10,6 +10,11 @@ export interface SignUpProps {
   termChecked?: boolean;
   privacyChecked?: boolean;
   password?: string;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  birth?: string;
+  introduce?: string;
 }
 
 interface SetterProps {

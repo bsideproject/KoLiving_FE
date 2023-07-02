@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import React, { ChangeEvent, useMemo } from 'react';
+import React, { ChangeEvent } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface Option {
@@ -10,7 +10,7 @@ interface Option {
 interface RadioProps {
   options: Option[];
   selectedOption?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   register: UseFormRegisterReturn;
 }
 
@@ -26,7 +26,7 @@ function Radio({ options, selectedOption, onChange, register }: RadioProps) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     register.onChange(event);
-    onChange(value);
+    onChange?.(value);
   };
 
   return (
