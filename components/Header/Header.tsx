@@ -9,7 +9,7 @@ import styles from './Header.module.scss';
 import Space from '../Space.tsx';
 
 interface HeaderProps {
-  type?: 'logo' | 'back';
+  type?: 'logo' | 'back' | 'title';
   title?: string;
   right?: 'plus' | 'close' | 'pencil';
   logoColor?: 'black' | 'white';
@@ -73,6 +73,15 @@ export default function Header({
               <Space />
               <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
             </div>
+          </div>
+        </div>
+      )}
+      {type === 'title' && (
+        <div className="flex w-full">
+          <div className="text-g7 text-[18px] mt-[12.5px]">{title}</div>
+          <Space />
+          <div className="pt-[13px]">
+            <button onClick={handleClick}>{renderHandler(right, strokeColor)}</button>
           </div>
         </div>
       )}

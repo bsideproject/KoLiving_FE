@@ -15,6 +15,7 @@ export interface ModalProps {
   buttonType?: 'none' | 'both' | 'outline' | 'default';
   handleClose?: () => void;
   buttonName?: string;
+  size?: 'md' | 'full';
 }
 
 function ModalContainer() {

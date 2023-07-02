@@ -5,6 +5,8 @@ import { ModalProps } from './ModalContainer.tsx';
 import useModal from '../../hooks/useModal.ts';
 import useOutSideClick from '../../hooks/useOutSideClick.ts';
 import Button from '../Button/Button.tsx';
+import Header from '../Header/Header.tsx';
+import DefaultLayout from '../layouts/DefaultLayout.tsx';
 
 function Modal({
   children,
@@ -16,6 +18,7 @@ function Modal({
   buttonType = 'none',
   handleClose,
   buttonName = '',
+  size = 'md',
 }: ModalProps) {
   const { closeModal } = useModal();
 
@@ -72,7 +75,11 @@ function Modal({
     }
   };
 
-  return (
+  const goBack = () => {
+    closeModal();
+  };
+
+  return size === 'md' ? (
     <div className={styles.overlay}>
       <div className={styles['modal-wrap']} ref={overlayClose ? modalRef : undefined}>
         {hasCloseButton && (
@@ -92,6 +99,11 @@ function Modal({
         )}
         {buttonType && buttonType !== 'none' && <div className="mt-[20px] flex gap-x-2">{renderButton()}</div>}
       </div>
+    </div>
+  ) : (
+    <div className={styles.full}>
+      <Header type="title" title={title} right="close" logoColor="black" handleButtonClick={goBack} />
+      <div className="mt-[62px] px-[20px] text-g6 text-[16px] font-light">{content}</div>
     </div>
   );
 }
