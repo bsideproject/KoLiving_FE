@@ -12,6 +12,7 @@ import Checkbox from '@/components/Checkbox/Checkbox.tsx';
 import Space from '@/components/Space.tsx';
 import Button from '@/components/Button/Button.tsx';
 import Router from 'next/router';
+import useSignUp from '@/hooks/useSignUp.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -29,6 +30,7 @@ export default function SignUp() {
     setValue,
     watch,
   } = useForm({ mode: 'onChange' });
+  const { setSignUpData } = useSignUp();
 
   const handleAllCheck = (checked: boolean) => {
     if (!checked) {
@@ -63,7 +65,14 @@ export default function SignUp() {
   }, [privacyChecked, termChecked, yearChecked, email, errors.email]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+    setSignUpData({
+      email: data.email,
+      yearChecked: data.yearChecked,
+      termChecked: data.termChecked,
+      privacyChecked: data.privacyChecked,
+    });
+
+    Router.push('/signup/step2');
   };
 
   return (
