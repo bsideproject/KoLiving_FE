@@ -1,15 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { ModalProps } from '../components/Modal/ModalContainer.tsx';
 
 interface ComponentProps {
   children: React.ReactNode;
 }
 
 export interface SignUpProps {
-  email: string;
-  yearChecked: boolean;
-  termChecked: boolean;
-  privacyChecked: boolean;
+  email?: string;
+  yearChecked?: boolean;
+  termChecked?: boolean;
+  privacyChecked?: boolean;
+  password?: string;
 }
 
 interface SetterProps {
@@ -20,12 +20,7 @@ export const SignUpStateContext = React.createContext<SignUpProps | null>(null);
 export const SignUpSetterContext = React.createContext<SetterProps | null>(null);
 
 function SignUpProvider({ children }: ComponentProps) {
-  const [state, setState] = useState<SignUpProps>({
-    email: '',
-    yearChecked: false,
-    termChecked: false,
-    privacyChecked: false,
-  });
+  const [state, setState] = useState<SignUpProps>({});
 
   const memoizedSetterValue = useMemo(() => ({ setState }), [setState]);
   const memoizedStateValue = useMemo(() => state, [state]);

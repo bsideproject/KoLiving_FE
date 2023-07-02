@@ -4,5 +4,7 @@
   "acceptAll": "Accept all",
   "14over": "I'm 14 or over",
   "termsAndCondition": "Terms and Conditions",
-  "privacyPolicies": "Privacy Policies"
+  "privacyPolicies": "Privacy Policies",
+  "setYourPassword": "Set your password",
+  "passwordDescription": "Use 6~30 characters with a mix of letters & numbers"
 }

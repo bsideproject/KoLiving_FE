@@ -11,7 +11,9 @@ function useSignUp() {
 
   const setSignUpData = (data: SignUpProps) => {
     if (setSignUpState) {
-      setSignUpState.setState(() => data);
+      setSignUpState.setState((signupData) => {
+        return { ...signupData, ...data };
+      });
     }
   };
 
