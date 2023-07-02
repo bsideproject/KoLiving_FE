@@ -1,5 +1,6 @@
 import React from 'react';
 import Checkbox from '../components/Checkbox/Checkbox';
+import { useForm } from 'react-hook-form';
 
 export default {
   title: 'Components/Checkbox',
@@ -7,7 +8,9 @@ export default {
 };
 
 const Template = (args) => {
-  return <Checkbox {...args} />;
+  const { register } = useForm();
+
+  return <Checkbox {...args} register={register('test')} />;
 };
 
 export const Default = Template.bind({});
