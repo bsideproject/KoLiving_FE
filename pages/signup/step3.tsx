@@ -12,6 +12,8 @@ import useSignUp from '@/hooks/useSignUp.ts';
 import Radio from '@/components/Radio/Radio.tsx';
 import Select from '@/components/Select/Select.tsx';
 import Textarea from '@/components/Textarea/Textarea.tsx';
+import useModal from '@/hooks/useModal.ts';
+import Router from 'next/router';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -56,11 +58,11 @@ export default function SignUp() {
   const signUpTranslation = useTranslation('signup');
   const commonTranslation = useTranslation('common');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const { setSignUpData, signUpState } = useSignUp();
-  const watchPassword1 = watch('password1', '');
+  const { setSignUpData } = useSignUp();
+  const { openModal, closeModal } = useModal();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setSignUpData({
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    await setSignUpData({
       firstName: data.firstName,
       lastName: data.lastName,
       gender: data.gender,
@@ -68,7 +70,20 @@ export default function SignUp() {
       introduce: data.introduce,
     });
 
-    // Router.push('/signup/step2');
+    // TODO: 추후 API 연동
+    openModal({
+      props: {
+        title: signUpTranslation.t('congratulation') as string,
+        content: signUpTranslation.t('welcome') as string,
+        buttonType: 'default',
+        buttonName: signUpTranslation.t('startToExplore') as string,
+        handleClose: () => {
+          Router.push('/');
+          closeModal();
+        },
+        hasCloseButton: true,
+      },
+    });
   };
 
   const firstName = watch('firstName');

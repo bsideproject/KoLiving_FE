@@ -26,5 +26,8 @@
   "month": "Month",
   "day": "Day",
   "year": "Year",
-  "introduce": "Introduce yourself to others!"
+  "introduce": "Introduce yourself to others!",
+  "congratulation": "Congratulation!",
+  "welcome": "You are all set to start finding your room!",
+  "startToExplore": "Start to Explore"
 }

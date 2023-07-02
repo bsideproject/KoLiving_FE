@@ -16,7 +16,7 @@ interface RadioProps {
 
 const isSelectedBackground = (selectedOption: string | undefined, value: string) => {
   if (selectedOption === value) {
-    return 'bg-r1 text-g0';
+    return 'bg-r1 !text-g0';
   }
 
   return '';
