@@ -6,6 +6,7 @@
   "resetPwd": "Reset password",
   "validEmail": "Please provide a valid email",
   "validPassword": "Invalid email or password",
-  "samePassword" : "Please check again",
-  "next": "Next"
+  "samePassword": "Please check again",
+  "next": "Next",
+  "complete": "Complete"
 }

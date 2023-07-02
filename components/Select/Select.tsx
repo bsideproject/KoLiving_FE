@@ -16,9 +16,10 @@ interface SelectProps {
 
 function Select({ placeholder, register, options, size }: SelectProps) {
   const [placeholderStyle, setPlaceholderStyle] = React.useState(styles.placeholder);
-  const handleSelectChange = () => {
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!placeholderStyle) return;
 
+    register.onChange(event);
     setPlaceholderStyle('');
   };
 
