@@ -11,12 +11,47 @@ import { isValidPassword } from '@/utils/validCheck.ts';
 import Button from '@/components/Button/Button.tsx';
 import Router from 'next/router';
 import useSignUp from '@/hooks/useSignUp.ts';
+import Radio from '@/components/Radio/Radio.tsx';
+import Select from '@/components/Select/Select';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
     ...(await serverSideTranslations(locale as string, ['signup', 'common'])),
   },
 });
+
+const options = [
+  {
+    label: 'male',
+    value: 'male',
+  },
+  {
+    label: 'female',
+    value: 'female',
+  },
+  {
+    label: 'other',
+    value: 'other',
+  },
+];
+
+const monthList = Array.from({ length: 12 }, (_, index) => ({
+  value: index + 1,
+  label: `${index + 1}`,
+}));
+
+// Year List
+const currentYear = new Date().getFullYear();
+const yearList = Array.from({ length: 10 }, (_, index) => ({
+  value: currentYear - index,
+  label: `${currentYear - index}`,
+}));
+
+// Day List
+const dayList = Array.from({ length: 31 }, (_, index) => ({
+  value: index + 1,
+  label: `${index + 1}`,
+}));
 
 export default function SignUp() {
   const signUpTranslation = useTranslation('signup');
@@ -47,6 +82,8 @@ export default function SignUp() {
     );
   }, [errors.password1, errors.password2, watch]);
 
+  const handleGenderChange = () => {};
+
   return (
     <>
       <Stepper step={3} totalStep={3} />
@@ -65,11 +102,28 @@ export default function SignUp() {
         </section>
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('gender')}</p>
-          <Input register={register('firstName')} placeholder={signUpTranslation.t('firstName') as string} />
+          <Radio
+            options={options}
+            register={register('gender')}
+            onChange={handleGenderChange}
+            selectedOption={watch('gender')}
+          />
         </section>
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('dateOfBirth')}</p>
-          <Input register={register('firstName')} placeholder={signUpTranslation.t('firstName') as string} />
+          <div className="grid grid-cols-3 gap-[8px]">
+            <Select
+              options={monthList}
+              register={register('month')}
+              placeholder={signUpTranslation.t('month') as string}
+            />
+            <Select
+              options={yearList}
+              register={register('year')}
+              placeholder={signUpTranslation.t('year') as string}
+            />
+            <Select options={dayList} register={register('day')} placeholder={signUpTranslation.t('day') as string} />
+          </div>
         </section>
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('aboutYou')}</p>
