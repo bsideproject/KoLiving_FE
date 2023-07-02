@@ -11,3 +11,7 @@
 .overlay {
   @apply bg-[rgba(0,0,0,0.2)] w-full h-full fixed top-0 z-[1000];
 }
+
+.full {
+  @apply w-full h-full fixed top-0 z-[998] bg-g0;
+}

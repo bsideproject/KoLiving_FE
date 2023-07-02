@@ -13,6 +13,7 @@ import Space from '@/components/Space.tsx';
 import Button from '@/components/Button/Button.tsx';
 import Router from 'next/router';
 import useSignUp from '@/hooks/useSignUp.ts';
+import useModal from '@/hooks/useModal.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -30,7 +31,9 @@ export default function SignUp() {
     setValue,
     watch,
   } = useForm({ mode: 'onChange' });
+
   const { setSignUpData, signUpState } = useSignUp();
+  const { openModal } = useModal();
 
   const handleAllCheck = (checked: boolean) => {
     if (!checked) {
@@ -97,6 +100,30 @@ export default function SignUp() {
     Router.push('/signup/step2');
   };
 
+  const getTitle = (type: string) => {
+    switch (type) {
+      case 'year':
+        return signUpTranslation.t('14over') as string;
+      case 'term':
+        return signUpTranslation.t('termsAndCondition') as string;
+      case 'privacy':
+        return signUpTranslation.t('privacyPolicies') as string;
+      default:
+        return '';
+    }
+  };
+
+  const viewDetail = (type: string) => () => {
+    openModal({
+      props: {
+        title: getTitle(type),
+        content: `Lorem ipsum dolor sit amet consectetur. Libero diam mattis orci malesuada pellentesque rutrum placerat porta. Neque nulla sit vitae sit at. Sapien iaculis ac consequat amet rhoncus sagittis. Viverra arcu commodo non enim felis sem. Tortor duis nunc aliquam odio dictumst risus ac amet. Etiam lorem ac non id ut rutrum ornare. In quisque rhoncus ac cursus ullamcorper sit. Cras diam lobortis faucibus lectus viverra. Nulla sit at mi eget faucibus viverra consequat in scelerisque.
+        Lorem ipsum dolor sit amet consectetur. Libero diam mattis orci malesuada pellentesque rutrum placerat porta. Neque nulla sit vitae sit at. Sapien iaculis ac consequat amet rhoncus sagittis. Viverra arcu commodo non enim felis sem. Tortor duis nunc aliquam odio dictumst risus ac amet. Etiam lorem ac non id ut rutrum ornare. In quisque rhoncus ac cursus ullamcorper sit. Cras diam lobortis faucibus lectus viverra. Nulla sit at mi eget faucibus viverra consequat in scelerisque.`,
+        size: 'full',
+      },
+    });
+  };
+
   return (
     <>
       <Stepper step={1} totalStep={3} />
@@ -135,7 +162,9 @@ export default function SignUp() {
                 checked={watch('yearChecked')}
               />
               <Space />
-              <span className="underline text-g5 text-[12px]">{signUpTranslation.t('view')}</span>
+              <button className="underline text-g5 text-[12px]" onClick={viewDetail('year')} type="button">
+                {signUpTranslation.t('view')}
+              </button>
             </div>
             <div className="flex mb-[12px]">
               <Checkbox
@@ -145,7 +174,9 @@ export default function SignUp() {
                 checked={watch('termChecked')}
               />
               <Space />
-              <span className="underline text-g5 text-[12px]">{signUpTranslation.t('view')}</span>
+              <button className="underline text-g5 text-[12px]" onClick={viewDetail('term')} type="button">
+                {signUpTranslation.t('view')}
+              </button>
             </div>
             <div className="flex mb-[16px]">
               <Checkbox
@@ -155,7 +186,9 @@ export default function SignUp() {
                 checked={watch('privacyChecked')}
               />
               <Space />
-              <span className="underline text-g5 text-[12px]">{signUpTranslation.t('view')}</span>
+              <button className="underline text-g5 text-[12px]" onClick={viewDetail('privacy')} type="button">
+                {signUpTranslation.t('view')}
+              </button>
             </div>
             <div className="mb-[13px]">
               <Button size="lg" type="submit" disabled={isNextDisabled}>
