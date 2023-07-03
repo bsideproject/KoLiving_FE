@@ -1,6 +1,7 @@
 import React from 'react';
 import Like from '@/public/icons/like.svg';
 import Home from '@/public/icons/home.svg';
+import Chat from '@/public/icons/chat.svg';
 import Me from '@/public/icons/me.svg';
 import styles from './Nav.module.scss';
 
@@ -12,7 +13,7 @@ const menus = [
   {
     name: 'Chat',
     // TODO: chat 아이콘 받으면 변경 필요
-    icon: () => <Like className="stroke-g7 stroke-[1.5px]" />,
+    icon: () => <Chat className="stroke-g7 stroke-[1.5px]" />,
   },
   {
     name: 'Liked',
