@@ -14,6 +14,7 @@ interface HeaderProps {
   right?: 'plus' | 'close' | 'pencil';
   logoColor?: 'black' | 'white';
   bgColor?: 'white' | 'transparent';
+  hasButton?: boolean;
   handleButtonClick?: () => void;
 }
 
@@ -42,6 +43,7 @@ export default function Header({
   logoColor = 'black',
   bgColor = 'white',
   handleButtonClick,
+  hasButton = true,
 }: HeaderProps) {
   const strokeColor = bgColor === 'white' ? 'stroke-g7' : 'stroke-g0';
   const Logo = LOGOS[`logo-${logoColor}`];
@@ -67,7 +69,7 @@ export default function Header({
         <div className="text-center pt-[14.5px]">
           <div className="mx-auto" style={{ maxWidth: '100%' }}>
             <div className="flex items-center">
-              <Back className="stroke-g7 stroke-[2] cursor-pointer" onClick={handleClick} />
+              {hasButton && <Back className="stroke-g7 stroke-[2] cursor-pointer" onClick={handleClick} />}
               <Space />
               <div className="font-pretendard font-medium text-[18px]">{title}</div>
               <Space />
