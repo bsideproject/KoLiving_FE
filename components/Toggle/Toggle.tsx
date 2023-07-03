@@ -16,7 +16,7 @@ export default function Toggle() {
         onClick={handleToggle}
       >
         <OnIcon
-          className={`absolute inset-0 w-11 h-11 translate-y-1 transition-transform ${isOn ? 'translate-x-5' : ''}`}
+          className={`absolute inset-0 w-11 h-11 translate-y-1 transition-transform ${isOn ? 'translate-x-6' : ''}`}
         />
       </button>
     </div>
