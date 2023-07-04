@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import OnIcon from '@/public/icons/on.svg'; // 켜진 상태 아이콘 SVG 파일 경로
-import OffIcon from '@/public/icons/off.svg';
+import OnIcon from '@/public/icons/on.svg';
 
 export default function Toggle() {
   const [isOn, setIsOn] = useState<boolean>(false);
