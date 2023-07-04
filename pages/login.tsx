@@ -4,13 +4,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { FieldError, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import Button from '@/components/Button/Button.tsx';
-import Input from '@/components/Input/Input.tsx';
+import { LoginLayout, Link, CustomImage, Chip, Button, Input, Space } from '@/components/index.tsx';
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validCheck.ts';
-import Link from 'next/link';
-import CustomImage from '@/components/CustomImage/CustomImage.tsx';
-import LoginLayout from '@/components/layouts/LoginLayout.tsx';
-import Space from '@/components/Space.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -84,6 +79,7 @@ export default function Login() {
               {t('signup')}
             </Link>
           </div>
+          {/* <Chip label="테스트" onDelete={console.log} clicked /> */}
         </form>
       </div>
     </div>
