@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ResetPasswordLayout from '@/components/layouts/ResetPasswordLayout.tsx';
-import Space from '@/components/Space.tsx';
-import Typography from '@/components/Typography/Typography.tsx';
+import { Link, Stepper, Button, ModalBox, Input, Space, Typography } from '@/components/index.tsx';
 import { FieldError, useForm as UseForm } from 'react-hook-form';
-import Input from '@/components/Input/Input.tsx';
 import { isValidEmail } from '@/utils/validCheck.ts';
 import { useTranslation as UseTranslation } from 'next-i18next';
-import Button from '@/components/Button/Button.tsx';
-import ModalBox from '@/components/Modal/ModalBox.tsx';
 import type { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { emit } from 'process';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -41,9 +36,7 @@ export default function step1() {
         <Space />
       </div>
       <div className="h-[69px]">
-        <Typography variant="label">
-          STEP <span className="font-bold">1</span> OF <span className="font-bold">2</span>{' '}
-        </Typography>
+        <Stepper step={1} totalStep={2} />
       </div>
       <Typography variant="header">Forgotten your password? </Typography>
       <Typography variant="label">We&apos;ll send you a reset link to your email</Typography>
@@ -62,6 +55,12 @@ export default function step1() {
       <Button type="submit" onClick={fnAuthEmail} disabled={!watch('email') || !!errors.email?.message} size="lg">
         Next
       </Button>
+      <div className="flex items-center justify-center mt-[9px]">
+        <p className="mr-[4px] text-g6 text-[14px]">Remember password?</p>
+        <Link href="/signup/step1" className="underline text-r1 font-semibold text-[14px] mb-[1px]">
+          &nbsp;Log In
+        </Link>
+      </div>
       {authEmail && (
         <ModalBox
           title="Check Your Mail Box"
