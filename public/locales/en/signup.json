@@ -29,5 +29,8 @@
   "introduce": "Introduce yourself to others!",
   "congratulation": "Congratulation!",
   "welcome": "You are all set to start finding your room!",
-  "startToExplore": "Start to Explore"
+  "startToExplore": "Start to Explore",
+  "returnToSignUp": "Return to sign up",
+  "expired": "Expired!",
+  "expiredDescription": "This link has expired. Return to the sign up page and send a new email."
 }

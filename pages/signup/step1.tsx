@@ -202,6 +202,7 @@ export default function SignUp() {
                 onClick={() => {
                   Router.push('/login');
                 }}
+                type="button"
               >
                 {signUpTranslation.t('login')}
               </button>
