@@ -15,3 +15,4 @@ export { default as Textarea } from '@/components/Textarea/Textarea.tsx';
 export { default as Toggle } from '@/components/Toggle/Toggle.tsx';
 export { default as Typography } from '@/components/Typography/Typography.tsx';
 export { default as Space } from '@/components/Space.tsx';
+export { default as LoginLayout } from '@/components/layouts/LoginLayout.tsx';
