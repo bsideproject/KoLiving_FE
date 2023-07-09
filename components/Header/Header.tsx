@@ -1,7 +1,8 @@
 import React from 'react';
 import LogoBlack from '@/public/icons/logo-black.svg';
 import LogoWhite from '@/public/icons/logo-white.svg';
-import Plus from '@/public/icons/plus.svg';
+// import Plus from '@/public/icons/plus.svg';
+import Plus from '@/public/icons/plus2.svg';
 import Back from '@/public/icons/back.svg';
 import Close from '@/public/icons/close.svg';
 import Pencil from '@/public/icons/pencil.svg';
@@ -26,7 +27,7 @@ const LOGOS = {
 const renderHandler = (type: string | undefined, color: string) => {
   switch (type) {
     case 'plus':
-      return <Plus className={`${color} stroke-[2]`} />;
+      return <Plus className="stroke-r1" />;
     case 'close':
       return <Close className={`${color} stroke-[2]`} />;
     case 'pencil':
