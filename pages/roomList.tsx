@@ -1,10 +1,17 @@
 import React from 'react';
-// import { useTranslation } from 'next-i18next';
-import Header from '@/components/Header/Header.tsx';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
+import Chip from '@/components/Chip/Chip.tsx';
 
 export default function RoomList() {
-  return <div>hi</div>;
+  const deleteRoom = () => {
+    console.log('삭제');
+  };
+
+  return (
+    <>
+      <Chip label="test" onDelete={deleteRoom} clicked={false} />{' '}
+    </>
+  );
 }
 
 RoomList.getLayout = function getLayout(page: React.ReactElement) {
