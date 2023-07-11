@@ -14,6 +14,7 @@ export default function RoomList() {
   );
 }
 
+/** RoomList 주석 추가 */
 RoomList.getLayout = function getLayout(page: React.ReactElement) {
   return <RoomListLayout>{page}</RoomListLayout>;
 };
