@@ -1,17 +1,16 @@
 import React from 'react';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
-import Chip from '@/components/Chip/Chip.tsx';
+import Filter from '@/public/icons/filter.svg';
+import Router, { useRouter } from 'next/router';
 
 export default function RoomList() {
-  const deleteRoom = () => {
-    console.log('삭제');
+  const router = useRouter();
+
+  const getFilterPage = () => {
+    router.push('/filter');
   };
 
-  return (
-    <>
-      <Chip label="test" onDelete={deleteRoom} clicked={false} />{' '}
-    </>
-  );
+  return <Filter className="stroke-g7 stroke-[2] cursor-pointer" onClick={getFilterPage} />;
 }
 
 /** RoomList 주석 추가 */
