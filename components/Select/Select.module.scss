@@ -19,4 +19,8 @@
   &:focus {
     outline: none;
   }
+
+  &.disabled {
+    @apply bg-g4 text-g3
+  }
 }
