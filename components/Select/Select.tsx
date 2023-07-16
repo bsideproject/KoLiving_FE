@@ -12,10 +12,12 @@ interface SelectProps {
   register: UseFormRegisterReturn;
   options: Option[];
   size?: 'sm' | 'lg';
+  disabled?: boolean;
 }
 
-function Select({ placeholder, register, options, size }: SelectProps) {
+function Select({ placeholder, register, options, size, disabled }: SelectProps) {
   const [placeholderStyle, setPlaceholderStyle] = React.useState(styles.placeholder);
+  const disabledStyle = disabled ? styles.disabled : '';
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!placeholderStyle) return;
 
@@ -25,10 +27,11 @@ function Select({ placeholder, register, options, size }: SelectProps) {
 
   return (
     <select
-      className={`${styles.select} ${placeholderStyle} ${size === 'lg' && styles.lg}`}
+      className={`${styles.select} ${placeholderStyle} ${size === 'lg' && styles.lg} ${disabledStyle}`}
       {...register}
       onChange={handleSelectChange}
       defaultValue=""
+      disabled={disabled}
     >
       {placeholder && (
         <option value="" disabled hidden>
