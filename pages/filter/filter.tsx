@@ -41,7 +41,7 @@ export default function Filter() {
         <Select
           options={GuList}
           register={register('Gu', {
-            validate: (value) => {
+            validate: (value: any) => {
               setGuValue(watch('Gu'));
               return value;
             },
@@ -54,8 +54,8 @@ export default function Filter() {
           placeholder={filterTranslation.t('Dong') as string}
           disabled={!watch('Gu')}
         />
-        <div className="py-[64px] ">
-          <div className="mt-[9px] mb-[20px]">
+        <div className="py-[64px]">
+          <div className="mt-[9px] mb-[4px]">
             <Typography variant="header" fontStyle="semiBold">
               {filterTranslation.t('Deposit')}
             </Typography>
@@ -76,7 +76,7 @@ export default function Filter() {
               placeholder={filterTranslation.t('Min') as string}
               type="text"
               register={register('min', {
-                validate: (value) => {
+                validate: (value: any) => {
                   return value;
                 },
               })}
@@ -86,58 +86,191 @@ export default function Filter() {
             placeholder={filterTranslation.t('Max') as string}
             type="text"
             register={register('max', {
-              validate: (value) => {
+              validate: (value: any) => {
+                return value;
+              },
+            })}
+          />
+          <div className="mt-[28px] mb-[4px]">
+            <Typography variant="header" fontStyle="semiBold">
+              {filterTranslation.t('Monthly rent')}
+            </Typography>
+          </div>
+          <div className="flex justify-between items-center mb-[20px]">
+            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
+              {filterTranslation.t('Include maintenance fee')}
+            </Typography>
+            <Toggle className="ml-2" />
+          </div>
+          <div className="mb-[8px]">
+            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
+              {filterTranslation.t('Min 0 ￦ - Max 500,000,000 ￦ ')}
+            </Typography>
+          </div>
+          <div className="mb-[8px]">
+            <Input
+              placeholder={filterTranslation.t('Min') as string}
+              type="text"
+              register={register('min', {
+                validate: (value: any) => {
+                  return value;
+                },
+              })}
+            />
+          </div>
+          <Input
+            placeholder={filterTranslation.t('Max') as string}
+            type="text"
+            register={register('max', {
+              validate: (value: any) => {
                 return value;
               },
             })}
           />
         </div>
-        <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+        <div className="mt-[72px] mb-[4px]">
+          <Typography variant="header" fontStyle="semiBold">
+            {filterTranslation.t('Date available')}
+          </Typography>
+        </div>
+        <div className="flex justify-between items-center mb-[20px]">
+          <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
+            {filterTranslation.t('View rooms available now')}
+          </Typography>
+          <Toggle className="ml-2" />
+        </div>
+        <div className="mb-[16px]">
+          <Input
+            placeholder={filterTranslation.t('MM-DD-YYYY') as string}
+            type="text"
+            register={register('min', {
+              validate: (value: any) => {
+                return value;
+              },
+            })}
+          />
+        </div>
+        <hr className="mt-[40px] border-x-0" />
+        <div className="mt-[32px] mb-[4px]">
+          <Typography variant="header" fontStyle="semiBold">
+            {filterTranslation.t('Type of housing')}
+          </Typography>
+        </div>
+        <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Studio') as string}
+            register={register('studioChecked')}
+            checked={watch('studioChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('1bed flats') as string}
+            register={register('bedFlatsChecked')}
+            checked={watch('bedFlatsChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Share house') as string}
+            register={register('shareHouseChecked')}
+            checked={watch('shareHouseChecked')}
+          />
+        </div>
+        <hr className="mt-[32px] border-x-0" />
+        <div className="mt-[32px] mb-[4px]">
+          <Typography variant="header" fontStyle="semiBold">
+            {filterTranslation.t('Furnishing')}
+          </Typography>
+        </div>
+        <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px] ">
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Bed') as string}
+            register={register('bedChecked')}
+            checked={watch('bedChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Wardrobe') as string}
+            register={register('wardrobeChecked')}
+            checked={watch('wardrobeChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('TV') as string}
+            register={register('TVChecked')}
+            checked={watch('TVChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('AirconditionerChecked') as string}
+            register={register('airconditionerChecked')}
+            checked={watch('airconditionerChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('HeaterChecked') as string}
+            register={register('heaterChecked')}
+            checked={watch('heaterChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('AirconditionerChecked') as string}
+            register={register('airconditionerChecked')}
+            checked={watch('airconditionerChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('HeaterChecked') as string}
+            register={register('heaterChecked')}
+            checked={watch('heaterChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('AirconditionerChecked') as string}
+            register={register('airconditionerChecked')}
+            checked={watch('airconditionerChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('HeaterChecked') as string}
+            register={register('heaterChecked')}
+            checked={watch('heaterChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Washing machine') as string}
+            register={register('washingMachineChecked')}
+            checked={watch('washingMachineChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Stove') as string}
+            register={register('stoveChecked')}
+            checked={watch('stoveChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Refrigerator') as string}
+            register={register('refrigeratorChecked')}
+            checked={watch('refrigeratorChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Door lock') as string}
+            register={register('doorLockChecked')}
+            checked={watch('doorLockChecked')}
+          />
+        </div>
+        <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
-            <hr className="my-[18px] border-x-0" />
-            <div className="flex mb-[12px]">
-              <Checkbox
-                label={filterTranslation.t('14over') as string}
-                required
-                register={register('yearChecked')}
-                checked={watch('yearChecked')}
-              />
-              <Space />
-            </div>
-            <div className="flex mb-[12px]">
-              <Checkbox
-                label={filterTranslation.t('termsAndCondition') as string}
-                required
-                register={register('termChecked')}
-                checked={watch('termChecked')}
-              />
-              <Space />
-            </div>
-            <div className="flex mb-[16px]">
-              <Checkbox
-                label={filterTranslation.t('privacyPolicies') as string}
-                required
-                register={register('privacyChecked')}
-                checked={watch('privacyChecked')}
-              />
-              <Space />
-            </div>
-            <div className="mb-[13px]">
-              <Button size="lg" type="submit" disabled={false}>
-                {commonTranslation.t('next')}
+            <div className="mb-[13px] space-x-[8px]">
+              <Button type="reset" size="reset" color="noBg">
+                {commonTranslation.t('Reset')}
               </Button>
-            </div>
-            <div className="flex mb-[6px] justify-center">
-              <p className="text-[14px]">{filterTranslation.t('checkMember')}</p>
-              <button
-                className="text-[16px] text-r1 ml-1 underline"
-                onClick={() => {
-                  Router.push('/login');
-                }}
-                type="button"
-              >
-                {filterTranslation.t('login')}
-              </button>
+              <Button type="submit" size="apply">
+                {commonTranslation.t('Apply')}
+              </Button>
             </div>
           </div>
         </div>
