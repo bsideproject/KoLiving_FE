@@ -1,9 +1,9 @@
-import { Room } from '@/public/types/room';
+import { ROOM_TYPE, Room } from '@/public/types/room';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Room[]>) {
   const userInfo = {
-    name: '김철수',
+    name: 'Dennis',
     image: 'https://source.unsplash.com/random',
     year: 1995,
     gender: 'male',
@@ -16,10 +16,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Room[]
       'https://source.unsplash.com/random',
       'https://source.unsplash.com/random',
     ],
-    dong: '신림동',
-    gu: '관악구',
+    dong: 'Sinseol-dong',
+    gu: 'Dongdaemun-gu',
     deposit: 1000,
     availableDate: '2021-08-01',
+    roomType: ROOM_TYPE.ONE_ROOM,
+    bedCount: 2,
+    bathCount: 3,
+    housemateCount: 4,
   };
 
   res.status(200).json([room, room, room, room, room, room]);
