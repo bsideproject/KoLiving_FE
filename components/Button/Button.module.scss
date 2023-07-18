@@ -11,10 +11,10 @@
     @apply w-small px-[11px];
   }
   &.reset {
-    @apply h-[54px] w-[110px] rounded-[2px] font-pretendard bg-transparent border border-solid border-r1 text-r1 font-semibold text-[18px]
+    @apply h-[54px] w-[110px] rounded-[2px] font-pretendard bg-transparent border border-solid border-r1 text-r1 font-semibold text-[18px];
   }
   &.apply {
-    @apply bg-r1 w-[233px] text-g0 font-semibold h-[54px] rounded-[2px] border-r1 font-pretendard border-solid
+    @apply bg-r1 w-[217px] text-g0 font-semibold h-[54px] rounded-[2px] border-r1 font-pretendard border-solid;
   }
   &.r1 {
     @apply bg-r1 text-g0;
@@ -45,6 +45,9 @@
 }
 
 .submit {
-  @apply bg-r1 w-[233px] text-g0 font-semibold h-[54px] rounded-[2px] border-r1 font-pretendard border-solid
+  @apply bg-r1 w-[233px] text-g0 font-semibold h-[54px] rounded-[2px] border-r1 font-pretendard border-solid;
 }
 
+.button-wrapper {
+  width: 100%;
+}
