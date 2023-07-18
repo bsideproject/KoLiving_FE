@@ -10,7 +10,7 @@ function FilterLayout({ children }: AppLayoutProps) {
   const childrenName = children;
 
   const handleButtonClick = () => {
-    history.back();
+    window.history.back();
   };
 
   return (
