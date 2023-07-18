@@ -7,7 +7,7 @@ import { GetStaticPropsContext } from 'next';
 import { Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import useRoomList from '@/hooks/useRoomList.ts';
-import { guList as GuList, dongList as DongList } from './guDongList.ts';
+import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
