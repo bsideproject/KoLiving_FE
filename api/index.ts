@@ -1,5 +1,5 @@
 // TODO: 일단은 로컬로 한다
-const baseURL = 'http://localhost:3000';
+const baseURL = window.location.origin;
 
 export const fetchData = async <T>(url: string, options?: RequestInit): Promise<T> => {
   try {
