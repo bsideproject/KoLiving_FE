@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
 import Router from 'next/router';
 import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
@@ -7,7 +7,7 @@ import { GetStaticPropsContext } from 'next';
 import { Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import useRoomList from '@/hooks/useRoomList.ts';
-import { guList as GuList, dongList as DongList } from './guDongList.tsx';
+import { guList as GuList, dongList as DongList } from './guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
