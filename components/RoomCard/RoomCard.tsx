@@ -1,6 +1,9 @@
 import { ROOM_TYPE, Room } from '@/public/types/room';
 import React from 'react';
 import { User } from '@/public/types/user';
+import { formatAge, formatPrice } from '@/utils/transform';
+import Dot from '@/public/icons/dot.svg';
+import Like from '@/public/icons/like.svg';
 import Card from '../Card/Card';
 
 interface CardProps {
@@ -16,7 +19,7 @@ interface PhotoProps {
 }
 
 const UserInfo = ({ userInfo }: UserInfoProps) => {
-  const age = new Date().getFullYear() - userInfo.year;
+  const age = formatAge(userInfo.year);
 
   return (
     <div className="flex">
@@ -41,16 +44,21 @@ const Footer = ({ room }: CardProps) => {
   const roomType = room.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
 
   return (
-    <div className="py-[12px]">
+    <div className="py-[12px] relative">
+      <Like className="stroke-g7 stroke-[1.5px] absolute right-[-6px]" />
       <div className="text-g6 text-[12px]">
         {room.dong}, {room.gu}
       </div>
       <div className="font-poppins text-[20px] font-semibold text-g7">
-        &#8361;{room.deposit} <span className="font-pretendard text-[14px] font-medium">/ month</span>
+        &#8361;{formatPrice(room.deposit)} <span className="font-pretendard text-[14px] font-medium">/ month</span>
       </div>
       <div className="text-[14px] font-medium">{roomType}</div>
-      <div className="text-g5 text-[12px] pb-[12px]">
-        {room.bedCount} bedrooms, {room.bathCount} bathrooms, {room.housemateCount} housemates in total
+      <div className="text-g5 text-[12px] pb-[12px] flex items-center gap-[6px]">
+        {room.bedCount} bedrooms
+        <Dot className="fill-g5 stroke-[1.5px]" />
+        {room.bathCount} bathrooms
+        <Dot className="fill-g5 stroke-[1.5px]" />
+        {room.housemateCount} housemates in total
       </div>
       <hr />
       <p className="pt-[10px] font-medium text-[12px]">Available {room.availableDate}</p>
