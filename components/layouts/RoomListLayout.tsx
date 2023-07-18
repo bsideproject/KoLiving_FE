@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import Header from '@/components/Header/Header.tsx';
-
 interface AppLayoutProps {
   children: ReactNode;
 }
