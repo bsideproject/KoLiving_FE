@@ -1,4 +1,4 @@
-import { Room } from '@/public/types/room';
+import { ROOM_TYPE, Room } from '@/public/types/room';
 import React from 'react';
 import { User } from '@/public/types/user';
 import Card from '../Card/Card';
@@ -34,22 +34,26 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 };
 
 const Photo = ({ photos }: PhotoProps) => {
-  return <div className="h-[190px]" style={{ backgroundImage: `url(${photos[0]})` }} />;
+  return <div className="h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }} />;
 };
 
 const Footer = ({ room }: CardProps) => {
+  const roomType = room.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
+
   return (
-    <div>
-      <div>
+    <div className="py-[12px]">
+      <div className="text-g6 text-[12px]">
         {room.dong}, {room.gu}
       </div>
-      <div>&#8361;{room.deposit} / month</div>
-      <div>{room.roomType}</div>
-      <div>
+      <div className="font-poppins text-[20px] font-semibold text-g7">
+        &#8361;{room.deposit} <span className="font-pretendard text-[14px] font-medium">/ month</span>
+      </div>
+      <div className="text-[14px] font-medium">{roomType}</div>
+      <div className="text-g5 text-[12px] pb-[12px]">
         {room.bedCount} bedrooms, {room.bathCount} bathrooms, {room.housemateCount} housemates in total
       </div>
       <hr />
-      Available {room.availableDate}
+      <p className="pt-[10px] font-medium text-[12px]">Available {room.availableDate}</p>
     </div>
   );
 };
