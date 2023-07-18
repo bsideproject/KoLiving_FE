@@ -264,12 +264,13 @@ export default function Filter() {
         </div>
         <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
-            <div className="mb-[13px] space-x-[8px]">
+            <div className="mb-[13px] space-x-[8px] max-w-max">
               <Button type="reset" size="reset" color="noBg">
                 {commonTranslation.t('Reset')}
               </Button>
               <Button type="submit" size="apply">
-                {commonTranslation.t('Apply')}
+                {/* TODO : 조회된 Room 개수로 변경 필요  */}
+                {`${commonTranslation.t('Apply')} (230 Rooms)`}
               </Button>
             </div>
           </div>
