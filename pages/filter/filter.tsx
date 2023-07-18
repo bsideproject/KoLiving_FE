@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
 import Router from 'next/router';
 import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
@@ -6,8 +6,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { guList as GuList, dongList as DongList } from './guDongList.tsx';
 import useRoomList from '@/hooks/useRoomList.ts';
+import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -39,9 +39,8 @@ export default function Filter() {
     });
     Router.push('/roomList');
   };
-  const guValue = useMemo(() => {
-    return watch('gu');
-  }, watch('gu'));
+
+  const guValue = watch('gu');
 
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
   return (
@@ -56,7 +55,7 @@ export default function Filter() {
           options={GuList}
           register={register('gu', {
             validate: (value: any) => {
-              //setGuValue(watch('gu'));
+              // setGuValue(watch('gu'));
               return value;
             },
           })}

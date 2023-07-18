@@ -15,7 +15,7 @@ export default function RoomList() {
   useEffect(() => {
     console.log('roonListState', roomListState);
     console.log('setRoomListData', setRoomListData);
-  }, []);
+  }, [roomListState, setRoomListData]);
 
   return <Filter className="stroke-g7 stroke-[2] cursor-pointer" onClick={getFilterPage} />;
 }

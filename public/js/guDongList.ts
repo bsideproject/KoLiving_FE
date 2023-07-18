@@ -1,4 +1,4 @@
-export const guList = [
+export const GuList = [
   { value: '110', label: '종로구' },
   { value: '140', label: '중구' },
   { value: '170', label: '용산구' },
@@ -26,7 +26,7 @@ export const guList = [
   { value: '740', label: '강동구' },
 ];
 
-export const dongList = [
+export const DongList = [
   { gu: '110', value: '515', label: '청운효자동' },
   { gu: '110', value: '530', label: '사직동' },
   { gu: '110', value: '540', label: '삼청동' },
