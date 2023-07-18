@@ -1,27 +1,23 @@
-import React, { ReactNode } from 'react';
+import React, { Children, ReactNode } from 'react';
 import Header from '@/components/Header/Header.tsx';
+import RoomListProvider from '@/context/RoomListProvider';
 
 interface AppLayoutProps {
   children: ReactNode;
 }
 
 function FilterLayout({ children }: AppLayoutProps) {
+  const childrenName = children;
+
   const handleButtonClick = () => {
-    alert('add!!');
+    history.back();
   };
 
   return (
-    <>
-      <Header
-        type="title"
-        bgColor="white"
-        title="Filters"
-        handleButtonClick={handleButtonClick}
-        right="close"
-        titleStyles="font-pretendard font-bold pt-[13px]"
-      />
+    <RoomListProvider>
+      <Header type="title" bgColor="white" title="Filters" handleButtonClick={handleButtonClick} right="close" />
       <div className="mx-auto mt-[54px]">{children}</div>
-    </>
+    </RoomListProvider>
   );
 }
 
