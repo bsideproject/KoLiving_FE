@@ -1,7 +1,7 @@
 import { ROOM_TYPE, Room } from '@/public/types/room';
 import React from 'react';
 import { User } from '@/public/types/user';
-import { formatAge, formatPrice } from '@/utils/transform';
+import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import Dot from '@/public/icons/dot.svg';
 import Like from '@/public/icons/like.svg';
 import Card from '../Card/Card';
@@ -61,7 +61,7 @@ const Footer = ({ room }: CardProps) => {
         {room.housemateCount} housemates in total
       </div>
       <hr />
-      <p className="pt-[10px] font-medium text-[12px]">Available {room.availableDate}</p>
+      <p className="pt-[10px] font-medium text-[12px]">Available {formatDate(room.availableDate)}</p>
     </div>
   );
 };
