@@ -1,5 +1,5 @@
 // TODO: 일단은 로컬로 한다
-const baseURL = window.location.origin;
+const baseURL = process.env.NEXT_PUBLIC_API_HOST;
 
 export const fetchData = async <T>(url: string, options?: RequestInit): Promise<T> => {
   try {

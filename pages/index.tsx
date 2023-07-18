@@ -28,8 +28,8 @@ const Home = () => {
 
   return (
     <div>
-      {rooms.map((room) => (
-        <RoomCard room={room} />
+      {rooms.map((room, idx) => (
+        <RoomCard room={room} key={`room-${idx}`} />
       ))}
     </div>
   );
