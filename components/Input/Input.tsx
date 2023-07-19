@@ -34,6 +34,7 @@ function Input({ placeholder, register, type, error, maxLength, disabled }: Inpu
         maxLength={maxLength}
         disabled={disabled}
         {...register}
+        disabled={disabled}
       />
       <button
         className="absolute inset-y-0 right-0 flex items-center mx-4 text-gray-600 h-fit pt-[12px]"
