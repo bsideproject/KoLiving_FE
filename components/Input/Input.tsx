@@ -8,9 +8,10 @@ interface InputProps {
   type?: string;
   error?: FieldError;
   maxLength?: number;
+  disabled?: boolean;
 }
 
-function Input({ placeholder, register, type, error, maxLength }: InputProps) {
+function Input({ placeholder, register, type, error, maxLength, disabled }: InputProps) {
   const hasError = error && error.message;
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const inputType = useMemo(() => {
@@ -32,6 +33,7 @@ function Input({ placeholder, register, type, error, maxLength }: InputProps) {
         type={inputType}
         maxLength={maxLength}
         {...register}
+        disabled={disabled}
       />
       <button
         className="absolute inset-y-0 right-0 flex items-center mx-4 text-gray-600 h-fit pt-[12px]"
