@@ -19,13 +19,22 @@ export default function Toggle({ className, register }: ToggleProps) {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     register.onChange(event);
+  };
+
+  const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.preventDefault();
   };
 
   const defaultStyle = `relative text-white font-bold w-[52px] h-[32px] rounded-full ${isOn ? 'bg-r1' : 'bg-g2'}`;
   return (
     <div>
-      <button className={className ? `${defaultStyle} ${className}` : `${defaultStyle}`} onClick={handleToggle}>
+      <button
+        type="button"
+        className={className ? `${defaultStyle} ${className}` : `${defaultStyle}`}
+        onClick={handleToggle}
+      >
         <OnIcon
           className={`absolute inset-0 w-11 h-11 translate-y-1 transition-transform ${isOn ? 'translate-x-6' : ''}`}
         />
@@ -37,6 +46,7 @@ export default function Toggle({ className, register }: ToggleProps) {
         className="hidden"
         {...register}
         onChange={handleChange}
+        onFocus={handleInputFocus}
         ref={(el) => {
           inputRef.current = el;
           register.ref(el);

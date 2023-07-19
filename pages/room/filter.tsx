@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
 import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
@@ -21,7 +21,6 @@ export default function Filter() {
     register,
     formState: { errors, isValid },
     handleSubmit,
-    setValue,
     watch,
   } = useForm({ mode: 'onChange' });
   const { setRoomListData, roomListState } = useRoomList();
@@ -40,9 +39,9 @@ export default function Filter() {
     Router.push('/roomList');
   };
 
-  const guValue = watch('gu');
-
+  const [guValue, setGuValue] = useState('');
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
+
   return (
     <>
       <div className="mt-[9px] mb-[20px]" key="filter">
@@ -55,7 +54,7 @@ export default function Filter() {
           options={GuList}
           register={register('gu', {
             validate: (value: any) => {
-              // setGuValue(watch('gu'));
+              setGuValue(watch('gu'));
               return value;
             },
           })}
@@ -63,7 +62,11 @@ export default function Filter() {
         />
         <Select
           options={filteredDongList}
-          register={register('dong')}
+          register={register('dong', {
+            validate: (value: any) => {
+              return value;
+            },
+          })}
           placeholder={filterTranslation.t('dong') as string}
           disabled={!watch('gu')}
         />

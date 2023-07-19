@@ -9,7 +9,7 @@ export default function RoomList() {
   const { setRoomListData, roomListState } = useRoomList();
 
   const getFilterPage = () => {
-    router.push('/filter/filter');
+    router.push('/room/filter');
   };
 
   useEffect(() => {
