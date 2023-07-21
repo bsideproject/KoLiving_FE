@@ -5,9 +5,10 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { FieldValues, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 import useRoomList from '@/hooks/useRoomList.ts';
 import { GuList, DongList } from '../../public/js/guDongList.ts';
+import { isValidDate, isRequired } from '@/utils/validCheck.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -16,18 +17,20 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 });
 
 export default function Filter() {
-  const filterTranslation = useTranslation('filter');
+  const filterTranslation = useTranslation('common');
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
     watch,
+    getValues,
   } = useForm({ mode: 'onChange' });
   const { setRoomListData, roomListState } = useRoomList();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    alert('data');
     const { gu, dong, depositMin, depositMax, monthMin, monthMax, mmddyyyy } = data;
-    setRoomListData({
+    await setRoomListData({
       gu,
       dong,
       depositMin,
@@ -36,7 +39,8 @@ export default function Filter() {
       monthMax,
       mmddyyyy,
     });
-    Router.push('/roomList');
+    console.log('context data', data);
+    Router.push('/room/roomList');
   };
 
   const [guValue, setGuValue] = useState('');
@@ -62,11 +66,7 @@ export default function Filter() {
         />
         <Select
           options={filteredDongList}
-          register={register('dong', {
-            validate: (value: any) => {
-              return value;
-            },
-          })}
+          register={register('dong')}
           placeholder={filterTranslation.t('dong') as string}
           disabled={!watch('gu')}
         />
@@ -92,22 +92,24 @@ export default function Filter() {
               placeholder={filterTranslation.t('min') as string}
               type="number"
               register={register('depositMin', {
-                validate: (value: any) => {
-                  return value;
+                validate: (value) => {
+                  return !!watch('depositToggle') && isRequired(value, '필수 항목');
                 },
               })}
               disabled={!watch('depositToggle')}
+              error={errors.depositMin as FieldError}
             />
           </div>
           <Input
             placeholder={filterTranslation.t('max') as string}
             type="number"
             register={register('depositMax', {
-              validate: (value: any) => {
-                return value;
+              validate: (value) => {
+                return !!watch('depositToggle') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('depositToggle')}
+            error={errors.depositMax as FieldError}
           />
           <div className="mt-[28px] mb-[4px]">
             <Typography variant="header" fontStyle="semiBold">
@@ -129,23 +131,25 @@ export default function Filter() {
             <Input
               placeholder={filterTranslation.t('monthMin') as string}
               type="number"
-              register={register('min', {
-                validate: (value: any) => {
-                  return value;
+              register={register('monthMin', {
+                validate: (value) => {
+                  return !!watch('monthToggle') && isRequired(value, '필수 항목');
                 },
               })}
               disabled={!watch('monthToggle')}
+              error={errors.monthMin as FieldError}
             />
           </div>
           <Input
             placeholder={filterTranslation.t('monthMax') as string}
             type="number"
-            register={register('max', {
-              validate: (value: any) => {
-                return value;
+            register={register('monthMax', {
+              validate: (value) => {
+                return !!watch('monthToggle') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('monthToggle')}
+            error={errors.monthMax as FieldError}
           />
         </div>
         <div className="mt-[72px] mb-[4px]">
@@ -165,10 +169,13 @@ export default function Filter() {
             type="text"
             register={register('mmddyyyy', {
               validate: (value: any) => {
-                return value;
+                return (
+                  !!watch('dateAvailable') && (isRequired(value, '필수 항목') || isValidDate(value, 'Invalid date'))
+                );
               },
             })}
             disabled={!watch('dateAvailable')}
+            error={errors.mmddyyyy as FieldError}
           />
         </div>
         <hr className="mt-[40px] border-x-0" />
