@@ -24,3 +24,13 @@ export const isSamePassword = (password: string, passwordConfirm: string, messag
   }
   return true;
 };
+
+export const isValidDate = (date: string, message = 'Invalid date') => {
+  const regex = /^\d{2}-\d{2}-\d{4}$/;
+  const regex2 = /^(0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2}$/;
+
+  if (!regex.test(date) || !regex2.test(date)) {
+    return message;
+  }
+  return true;
+};

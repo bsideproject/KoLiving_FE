@@ -1,5 +1,7 @@
 {
   "location": "Location",
+  "gu": "Gu",
+  "koo": "Gu",
   "dong": "Dong",
   "deposit": "Deposit",
   "viewRoomsWithoutDeposit": "View rooms without deposit",
@@ -29,6 +31,5 @@
   "kitchenette": "Kitchenette",
   "reset": "Reset",
   "apply": "Apply",
-  "gu": "Gu",
   "mmddyyyy": "MM-DD-YYYY"
 }
