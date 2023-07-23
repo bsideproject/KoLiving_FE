@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Router from 'next/router';
 import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
@@ -7,8 +7,8 @@ import { GetStaticPropsContext } from 'next';
 import { Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 import useRoomList from '@/hooks/useRoomList.ts';
-import { GuList, DongList } from '../../public/js/guDongList.ts';
 import { isValidDate, isRequired } from '@/utils/validCheck.ts';
+import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -23,14 +23,16 @@ export default function Filter() {
     formState: { errors, isValid },
     handleSubmit,
     watch,
-    getValues,
+    setValue,
   } = useForm({ mode: 'onChange' });
   const { setRoomListData, roomListState } = useRoomList();
+  const [guValue, setGuValue] = useState('');
+  const filteredDongList = DongList.filter((v) => v.gu === guValue);
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     alert('data');
     const { gu, dong, depositMin, depositMax, monthMin, monthMax, mmddyyyy } = data;
-    await setRoomListData({
+    setRoomListData({
       gu,
       dong,
       depositMin,
@@ -43,9 +45,6 @@ export default function Filter() {
     Router.push('/room/roomList');
   };
 
-  const [guValue, setGuValue] = useState('');
-  const filteredDongList = DongList.filter((v) => v.gu === guValue);
-
   return (
     <>
       <div className="mt-[9px] mb-[20px]" key="filter">
@@ -57,9 +56,9 @@ export default function Filter() {
         <Select
           options={GuList}
           register={register('gu', {
-            validate: (value: any) => {
+            validate: (value) => {
               setGuValue(watch('gu'));
-              return value;
+              return true;
             },
           })}
           placeholder={filterTranslation.t('gu') as string}
@@ -93,7 +92,8 @@ export default function Filter() {
               type="number"
               register={register('depositMin', {
                 validate: (value) => {
-                  return !!watch('depositToggle') && isRequired(value, '필수 항목');
+                  return value;
+                  // return !!watch('depositToggle') && isRequired(value, '필수 항목');
                 },
               })}
               disabled={!watch('depositToggle')}
@@ -105,7 +105,8 @@ export default function Filter() {
             type="number"
             register={register('depositMax', {
               validate: (value) => {
-                return !!watch('depositToggle') && isRequired(value, '필수 항목');
+                return value;
+                // return !!watch('depositToggle') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('depositToggle')}
@@ -133,7 +134,8 @@ export default function Filter() {
               type="number"
               register={register('monthMin', {
                 validate: (value) => {
-                  return !!watch('monthToggle') && isRequired(value, '필수 항목');
+                  return value;
+                  // return !!watch('monthToggle') && isRequired(value, '필수 항목');
                 },
               })}
               disabled={!watch('monthToggle')}
@@ -145,7 +147,8 @@ export default function Filter() {
             type="number"
             register={register('monthMax', {
               validate: (value) => {
-                return !!watch('monthToggle') && isRequired(value, '필수 항목');
+                return value;
+                // return !!watch('monthToggle') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('monthToggle')}
@@ -169,9 +172,8 @@ export default function Filter() {
             type="text"
             register={register('mmddyyyy', {
               validate: (value: any) => {
-                return (
-                  !!watch('dateAvailable') && (isRequired(value, '필수 항목') || isValidDate(value, 'Invalid date'))
-                );
+                return value;
+                // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('dateAvailable')}

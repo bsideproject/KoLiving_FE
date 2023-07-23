@@ -1,4 +1,16 @@
-export const GuList = [
+type GuListItem = {
+  id: string;
+  value: string;
+  label: string;
+};
+
+type DongListItem = {
+  gu: string;
+  value: string;
+  label: string;
+};
+
+export const GuList: GuListItem[] = [
   { id: '1', value: '110', label: '종로구' },
   { id: '2', value: '140', label: '중구' },
   { id: '3', value: '170', label: '용산구' },
@@ -26,7 +38,7 @@ export const GuList = [
   { id: '25', value: '740', label: '강동구' },
 ];
 
-export const DongList = [
+export const DongList: DongListItem[] = [
   { gu: '110', value: '515', label: '청운효자동' },
   { gu: '110', value: '530', label: '사직동' },
   { gu: '110', value: '540', label: '삼청동' },
