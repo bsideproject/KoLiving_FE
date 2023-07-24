@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
 import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
@@ -23,26 +23,18 @@ export default function Filter() {
     formState: { errors, isValid },
     handleSubmit,
     watch,
-    setValue,
   } = useForm({ mode: 'onChange' });
-  const { setRoomListData, roomListState } = useRoomList();
   const [guValue, setGuValue] = useState('');
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    alert('data');
-    const { gu, dong, depositMin, depositMax, monthMin, monthMax, mmddyyyy } = data;
-    setRoomListData({
-      gu,
-      dong,
-      depositMin,
-      depositMax,
-      monthMin,
-      monthMax,
-      mmddyyyy,
-    });
-    console.log('context data', data);
-    Router.push('/room/roomList');
+    Router.push(
+      {
+        pathname: '/',
+        query: data,
+      },
+      '/'
+    );
   };
 
   return (
@@ -92,12 +84,11 @@ export default function Filter() {
               type="number"
               register={register('depositMin', {
                 validate: (value) => {
-                  return value;
+                  return true;
                   // return !!watch('depositToggle') && isRequired(value, '필수 항목');
                 },
               })}
               disabled={!watch('depositToggle')}
-              error={errors.depositMin as FieldError}
             />
           </div>
           <Input
@@ -105,12 +96,11 @@ export default function Filter() {
             type="number"
             register={register('depositMax', {
               validate: (value) => {
-                return value;
+                return true;
                 // return !!watch('depositToggle') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('depositToggle')}
-            error={errors.depositMax as FieldError}
           />
           <div className="mt-[28px] mb-[4px]">
             <Typography variant="header" fontStyle="semiBold">
@@ -134,12 +124,11 @@ export default function Filter() {
               type="number"
               register={register('monthMin', {
                 validate: (value) => {
-                  return value;
+                  return true;
                   // return !!watch('monthToggle') && isRequired(value, '필수 항목');
                 },
               })}
               disabled={!watch('monthToggle')}
-              error={errors.monthMin as FieldError}
             />
           </div>
           <Input
@@ -147,12 +136,11 @@ export default function Filter() {
             type="number"
             register={register('monthMax', {
               validate: (value) => {
-                return value;
+                return true;
                 // return !!watch('monthToggle') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('monthToggle')}
-            error={errors.monthMax as FieldError}
           />
         </div>
         <div className="mt-[72px] mb-[4px]">
@@ -172,12 +160,12 @@ export default function Filter() {
             type="text"
             register={register('mmddyyyy', {
               validate: (value: any) => {
-                return value;
+                return true;
                 // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
               },
             })}
             disabled={!watch('dateAvailable')}
-            error={errors.mmddyyyy as FieldError}
+            // error={errors.mmddyyyy as FieldError}
           />
         </div>
         <hr className="mt-[40px] border-x-0" />
