@@ -13,16 +13,24 @@ interface SelectProps {
   options: Option[];
   size?: 'sm' | 'lg';
   disabled?: boolean;
+  onChange?: (selectedValue: string, selectedLabel: string) => void; // 새로운 onChange prop 추가
 }
 
-function Select({ placeholder, register, options, size, disabled }: SelectProps) {
+function Select({ placeholder, register, options, size, disabled, onChange }: SelectProps) {
   const [placeholderStyle, setPlaceholderStyle] = React.useState(styles.placeholder);
   const disabledStyle = disabled ? styles.disabled : '';
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!placeholderStyle) return;
 
+    /** value, label값이 필요할 경우!! */
+    const selectedValue = event.target.value;
+    const selectedLabel = event.target.selectedOptions[0].text;
+
     register.onChange(event);
     setPlaceholderStyle('');
+
+    // 선택된 value와 label을 부모 컴포넌트로 전달
+    onChange?.(selectedValue, selectedLabel);
   };
 
   return (

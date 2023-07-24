@@ -6,7 +6,7 @@ type GuListItem = {
 
 type DongListItem = {
   gu: string;
-  value: string;
+  value: string | number;
   label: string;
 };
 
