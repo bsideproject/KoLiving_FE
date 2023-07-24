@@ -8,6 +8,7 @@ import Card from '../Card/Card';
 
 interface CardProps {
   room: Room;
+  onClick?: () => void;
 }
 
 interface UserInfoProps {
@@ -40,7 +41,7 @@ const Photo = ({ photos }: PhotoProps) => {
   return <div className="h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }} />;
 };
 
-const Footer = ({ room }: CardProps) => {
+const Footer = ({ room, onClick }: CardProps) => {
   const roomType = room.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
 
   return (
@@ -66,12 +67,13 @@ const Footer = ({ room }: CardProps) => {
   );
 };
 
-export default function RoomCard({ room }: CardProps) {
+export default function RoomCard({ room, onClick }: CardProps) {
   return (
     <Card
       title={<UserInfo userInfo={room?.userInfo} />}
       content={<Photo photos={room.images} />}
       footer={<Footer room={room} />}
+      onClick={onClick}
     />
   );
 }
