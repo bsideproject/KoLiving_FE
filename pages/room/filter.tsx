@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Router from 'next/router';
 import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
-import { Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
+import { Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, FieldError, SubmitHandler, useForm } from 'react-hook-form';
 import useRoomList from '@/hooks/useRoomList.ts';
 import { isValidDate, isRequired } from '@/utils/validCheck.ts';
@@ -23,8 +23,15 @@ export default function Filter() {
     formState: { errors, isValid },
     handleSubmit,
     watch,
+    setValue,
   } = useForm({ mode: 'onChange' });
   const [guValue, setGuValue] = useState('');
+  const [dongValue, setDongValue] = useState<{ gu: string; value: string; label: string }>({
+    gu: '',
+    value: '',
+    label: '',
+  });
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -36,6 +43,33 @@ export default function Filter() {
       '/'
     );
   };
+
+  // 옵션 선택 시 실행될 함수
+  const handleOptionSelect = (option: string) => {
+    setSelectedOptions((prevSelectedOptions) => [...prevSelectedOptions, option]);
+  };
+
+  // 옵션 제거 시 실행될 함수
+  const handleOptionRemove = (option: string) => {
+    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+  };
+
+  useEffect(() => {
+    if (dongValue.value !== '') {
+      handleOptionSelect(dongValue.label);
+    }
+  }, [dongValue]);
+
+  /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
+  const handleDongChange = useCallback(
+    (selectedValue: string, selectedLabel: string) => {
+      // 선택된 value와 label 값을 이용하여 원하는 작업 수행
+      setDongValue({ value: selectedValue, label: selectedLabel, gu: watch('gu') });
+      setValue('dong', selectedValue);
+      alert('dongChanged');
+    },
+    [dongValue]
+  );
 
   return (
     <>
@@ -57,10 +91,21 @@ export default function Filter() {
         />
         <Select
           options={filteredDongList}
-          register={register('dong')}
+          register={register('dong', {
+            validate: (value) => {
+              return true;
+            },
+          })}
           placeholder={filterTranslation.t('dong') as string}
           disabled={!watch('gu')}
+          onChange={handleDongChange}
         />
+        <div>
+          {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
+          {selectedOptions.map((option) => {
+            return <Chip key={option} label={option} onDelete={() => handleOptionRemove(option)} clicked={true} />;
+          })}
+        </div>
         <div className="py-[64px]">
           <div className="mt-[9px] mb-[4px]">
             <Typography variant="header" fontStyle="semiBold">

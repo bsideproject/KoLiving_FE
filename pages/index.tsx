@@ -49,6 +49,9 @@ function Home() {
      * @TODO filter 내용에 따라 조회되는 내용 다르게 할 수 있도록 파라미터 정보 보내는 로직 추가 필요
      */
     (async () => {
+      const filterParams = router.query;
+      console.log('filterParams', filterParams);
+
       await selectRooms();
     })();
   }, [router.query]);
