@@ -56,11 +56,15 @@ function Home() {
     })();
   }, [router.query]);
 
+  const handleCardClick = (id: number) => {
+    router.push(`/room/${id}`);
+  };
+
   return (
     <div>
       <Filter className="stroke-g7 stroke-[2] cursor-pointer" onClick={getFilterPage} />
       {rooms.map((room, idx) => (
-        <RoomCard room={room} key={`room-${idx}`} />
+        <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
       ))}
     </div>
   );
