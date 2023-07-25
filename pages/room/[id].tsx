@@ -1,34 +1,55 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Header } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Swiper as SwiperType } from 'swiper/types';
+import { fetchRoom } from '@/api/room';
+import { useRouter } from 'next/router';
+import { Room } from '@/public/types/room';
 import styles from './room.module.scss';
 
 export default function Login() {
+  const router = useRouter();
+  const { id } = router.query;
+
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [room, setRoom] = React.useState<Room | undefined>();
 
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
   };
 
+  useEffect(() => {
+    (async () => {
+      if (id && typeof id === 'string') {
+        const data = await fetchRoom(id);
+        setRoom(data);
+      }
+    })();
+  }, [id]);
+
   return (
-    <div className="font-pretendard w-full">
-      <Swiper
-        effect="coverflow"
-        slidesPerView={1}
-        loop
-        className="mySwiper !mx-[-20px] h-[240px] relative"
-        onSlideChangeTransitionEnd={(event) => handleSlideChange(event.realIndex)}
-      >
-        <SwiperSlide className={styles['swiper-slide']}>
-          <img src="https://picsum.photos/300/300/?image=100" alt="img1" />
-        </SwiperSlide>
-        <SwiperSlide className={styles['swiper-slide']}>
-          <img src="https://picsum.photos/300/300/?image=1" alt="img2" />
-        </SwiperSlide>
-        <div className={styles.tag}>{currentSlide + 1}/2</div>
-      </Swiper>
+    <div>
+      {room && (
+        <div className="font-pretendard w-full">
+          <Swiper
+            effect="coverflow"
+            slidesPerView={1}
+            loop
+            className="mySwiper !mx-[-20px] h-[240px] relative"
+            onSlideChangeTransitionEnd={(event) => handleSlideChange(event.realIndex)}
+          >
+            {room.images.map((image, idx) => (
+              <SwiperSlide className={styles['swiper-slide']} key={`room-image-${idx}`}>
+                <img src={image} alt={`room-${idx}`} />
+              </SwiperSlide>
+            ))}
+            <div className={styles.tag}>
+              {currentSlide + 1}/{room.images.length}
+            </div>
+          </Swiper>
+        </div>
+      )}
     </div>
   );
 }

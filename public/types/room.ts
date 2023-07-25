@@ -17,4 +17,8 @@ export interface Room {
   bedCount: number;
   bathCount: number;
   housemateCount: number;
+  maintenanceFee?: number;
+  maintenanceFeeItems?: string[];
+  furnishings?: string[];
+  description?: string;
 }
