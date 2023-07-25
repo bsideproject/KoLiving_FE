@@ -3,4 +3,5 @@ export interface User {
   image: string;
   year: number;
   gender: string;
+  description?: string;
 }

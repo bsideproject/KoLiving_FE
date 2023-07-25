@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { Header } from '@/components/index.tsx';
+import { Header, Space } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { Swiper as SwiperType } from 'swiper/types';
 import { fetchRoom } from '@/api/room';
 import { useRouter } from 'next/router';
 import { Room } from '@/public/types/room';
+import { formatAge, formatDate } from '@/utils/transform';
+import ArrowDown from '@/public/icons/arrow-down.svg';
+import Pin from '@/public/icons/pin.svg';
+import Calendar from '@/public/icons/calendar.svg';
 import styles from './room.module.scss';
 
 export default function Login() {
@@ -14,6 +17,7 @@ export default function Login() {
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [room, setRoom] = React.useState<Room | undefined>();
+  const age = room ? formatAge(room.userInfo.year) : 0;
 
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
@@ -48,6 +52,33 @@ export default function Login() {
               {currentSlide + 1}/{room.images.length}
             </div>
           </Swiper>
+          <div className="flex py-[20px]">
+            <img className="rounded-[40px] w-[40px] h-[40px]" src={room.userInfo.image} alt="user" />
+            <div className="ml-[12px]">
+              <div className="text-[16px] text-g7 font-semibold">{room.userInfo.name}</div>
+              <div className="text-a2 text-[12px]">
+                {age} years old
+                <span className="text-g3">&nbsp;|&nbsp;</span>
+                {room.userInfo.gender}
+              </div>
+            </div>
+            <Space />
+            <div className="flex items-center">
+              <ArrowDown />
+            </div>
+          </div>
+          <hr />
+          <div className="font-pretendard text-[14px] text-g6 py-[20px]">
+            <div className="flex items-center">
+              <Pin className="mr-[12px]" />
+              {room.dong}, {room.gu}
+            </div>
+            <div className="flex items-center">
+              <Calendar className="mr-[12px]" />
+              From {formatDate(room.availableDate)}
+            </div>
+          </div>
+          <hr />
         </div>
       )}
     </div>

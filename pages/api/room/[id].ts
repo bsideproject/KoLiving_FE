@@ -7,6 +7,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Room>)
     image: 'https://source.unsplash.com/random',
     year: 1995,
     gender: 'male',
+    description:
+      'Lorem ipsum dolor sit amet consectetur. Nec eget morbi a enim. Pellentesque eget est vestibulum lobortis sit vitae sed sit consectetur.',
   };
 
   const room = {
