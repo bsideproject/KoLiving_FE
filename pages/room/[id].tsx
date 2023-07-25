@@ -7,14 +7,14 @@ import styles from './room.module.scss';
 export default function Login() {
   return (
     <div className="font-pretendard w-full">
-      <Swiper effect="coverflow" slidesPerView={1} loop className="mySwiper !mx-[-20px]">
+      <Swiper effect="coverflow" slidesPerView={1} loop className="mySwiper !mx-[-20px] h-[240px] relative">
         <SwiperSlide className={styles['swiper-slide']}>
           <img src="https://picsum.photos/300/300/?image=100" alt="img1" />
         </SwiperSlide>
         <SwiperSlide className={styles['swiper-slide']}>
           <img src="https://picsum.photos/300/300/?image=1" alt="img2" />
         </SwiperSlide>
-        태그
+        <div className={styles.tag}>태그</div>
       </Swiper>
     </div>
   );
