@@ -68,7 +68,7 @@ export default function Filter() {
       setValue('dong', selectedValue);
       alert('dongChanged');
     },
-    [dongValue]
+    [setValue, watch]
   );
 
   return (
@@ -103,7 +103,7 @@ export default function Filter() {
         <div>
           {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
           {selectedOptions.map((option) => {
-            return <Chip key={option} label={option} onDelete={() => handleOptionRemove(option)} clicked={true} />;
+            return <Chip key={option} label={option} onDelete={() => handleOptionRemove(option)} clicked />;
           })}
         </div>
         <div className="py-[64px]">
