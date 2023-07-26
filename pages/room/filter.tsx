@@ -49,8 +49,7 @@ export default function Filter() {
     let resultOptions: string[];
     setSelectedOptions((prevSelectedOptions) => {
       if (prevSelectedOptions.indexOf(option) <= -1) {
-        const filteredOptions = prevSelectedOptions.filter((v) => v !== option);
-        resultOptions = [...filteredOptions, option];
+        resultOptions = [...prevSelectedOptions, option];
       } else {
         resultOptions = prevSelectedOptions;
       }
