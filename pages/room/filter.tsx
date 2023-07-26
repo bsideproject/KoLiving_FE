@@ -9,6 +9,7 @@ import { FieldValues, FieldError, SubmitHandler, useForm } from 'react-hook-form
 import useRoomList from '@/hooks/useRoomList.ts';
 import { isValidDate, isRequired } from '@/utils/validCheck.ts';
 import { GuList, DongList } from '../../public/js/guDongList.ts';
+import { FilterType } from '@/public/types/filter.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -33,12 +34,65 @@ export default function Filter() {
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
+  const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
+  const furnishings = [
+    'bedChecked',
+    'inductionChecked',
+    'airconditionerChecked',
+    'gasStoveChecked',
+    'refrigeratorChecked',
+    'wardrobeChecked',
+    'washingMachineChecked',
+    'doorLockChecked',
+    'tvChecked',
+    'kitchenetteChecked',
+  ];
+
+  const makeSubmitParam = (data: FieldValues) => {
+    let typeOfHousing = 'false';
+    let furnishing = 'false';
+    let monthRent = 'false';
+    let deposit = 'false';
+    let location = 'false';
+
+    // typeofhousing 중 하나라도 체크되면 true
+    typeOfHousings.forEach((key) => {
+      if (data[`${key}`] === 'true') {
+        typeOfHousing = 'true';
+      }
+    });
+
+    // furnishing 중 하나라도 체크되면 true
+    furnishings.forEach((key) => {
+      if (data[`${key}`] === 'true') {
+        furnishing = 'true';
+      }
+    });
+
+    // monthRent 비용 체크
+    if (data[`${'monthMax'}`] !== '' || data[`${'monthMin'}`] !== '') {
+      monthRent = 'true';
+    }
+
+    // deposit 비용 체크
+    if (data[`${'depositMax'}`] !== '' || data[`${'depositMin'}`] !== '') {
+      deposit = 'true';
+    }
+
+    if ((data.gu || '') !== '') {
+      location = 'true';
+    }
+
+    return { typeOfHousing, furnishing, monthRent, deposit, location };
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const roomFilter = makeSubmitParam(data);
+
     Router.push(
       {
         pathname: '/',
-        query: data,
+        query: roomFilter as FilterType,
       },
       '/'
     );
