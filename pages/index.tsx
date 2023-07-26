@@ -9,6 +9,8 @@ import { NextComponentType, NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
 import Filter from '@/public/icons/filter.svg';
 import Router, { useRouter, withRouter } from 'next/router';
+import Chip from '@/components/Chip/Chip.tsx';
+import { FilterType } from '@/public/types/filter';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -22,6 +24,7 @@ type HomeProps = NextPage & {
 
 function Home() {
   const [rooms, setRooms] = React.useState<Room[]>([]);
+  const [filters, setFilters] = React.useState<string[]>([]);
   const router = useRouter();
   const getFilterPage = () => {
     router.push('/room/filter', undefined, { shallow: true });
@@ -36,33 +39,48 @@ function Home() {
     }
   };
 
+  const makeFilters = (filterParams: FilterType) => {
+    const resultFilter: string[] = [];
+    for (const key in filterParams) {
+      filterParams[`${key}`] === 'true' && resultFilter.push(key);
+    }
+    setFilters((prevSelectedOptions) => [...resultFilter]);
+  };
+
   // 최초 접근 시 Room 정보 조회
   useEffect(() => {
     (async () => {
       await selectRooms();
+      const filterParams: FilterType = router.query as FilterType;
+      makeFilters(filterParams);
     })();
   }, []);
 
   // Filter 변경 시 Room 정보 조회
-  useEffect(() => {
-    /**
-     * @TODO filter 내용에 따라 조회되는 내용 다르게 할 수 있도록 파라미터 정보 보내는 로직 추가 필요
-     */
-    (async () => {
-      const filterParams = router.query;
-      console.log('filterParams', filterParams);
-
-      await selectRooms();
-    })();
-  }, [router.query]);
+  // useEffect(() => {
+  //   /**
+  //    * @TODO filter 내용에 따라 조회되는 내용 다르게 할 수 있도록 파라미터 정보 보내는 로직 추가 필요
+  //    */
+  //   (async () => {
+  //     const filterParams: FilterType = router.query as FilterType;
+  //     makeFilters(filterParams);
+  //   })();
+  // }, [filters]);
 
   const handleCardClick = (id: number) => {
     router.push(`/room/${id}`);
   };
 
+  const handleOptionRemove = (option: string) => {
+    setFilters((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+  };
+
   return (
     <div>
       <Filter className="stroke-g7 stroke-[2] cursor-pointer" onClick={getFilterPage} />
+      {filters.map((label, index) => {
+        return <Chip key={`${label}-${index}`} label={label} onDelete={() => handleOptionRemove(label)} clicked />;
+      })}
       {rooms.map((room, idx) => (
         <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
       ))}
