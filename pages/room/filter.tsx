@@ -46,7 +46,16 @@ export default function Filter() {
 
   // 옵션 선택 시 실행될 함수
   const handleOptionSelect = (option: string) => {
-    setSelectedOptions((prevSelectedOptions) => [...prevSelectedOptions, option]);
+    let resultOptions: string[];
+    setSelectedOptions((prevSelectedOptions) => {
+      if (prevSelectedOptions.indexOf(option) <= -1) {
+        const filteredOptions = prevSelectedOptions.filter((v) => v !== option);
+        resultOptions = [...filteredOptions, option];
+      } else {
+        resultOptions = prevSelectedOptions;
+      }
+      return [...resultOptions];
+    });
   };
 
   // 옵션 제거 시 실행될 함수
@@ -65,12 +74,9 @@ export default function Filter() {
     (selectedValue: string, selectedLabel: string) => {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
       setDongValue({ value: selectedValue, label: selectedLabel, gu: watch('gu') });
-      setValue('dong', selectedValue);
-      alert('dongChanged');
     },
-    [setValue, watch]
+    [setValue]
   );
-
   return (
     <>
       <div className="mt-[9px] mb-[20px]" key="filter">

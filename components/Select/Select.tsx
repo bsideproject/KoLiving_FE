@@ -20,7 +20,7 @@ function Select({ placeholder, register, options, size, disabled, onChange }: Se
   const [placeholderStyle, setPlaceholderStyle] = React.useState(styles.placeholder);
   const disabledStyle = disabled ? styles.disabled : '';
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!placeholderStyle) return;
+    //if (!placeholderStyle) return;
 
     /** value, label값이 필요할 경우!! */
     const selectedValue = event.target.value;
