@@ -9,7 +9,7 @@ import { NextComponentType, NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
 import Filter from '@/public/icons/filter.svg';
 import Router, { useRouter, withRouter } from 'next/router';
-import Chip from '@/components/Chip/Chip.tsx';
+import { Chip, Typography } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
@@ -77,10 +77,23 @@ function Home() {
 
   return (
     <div>
-      <Filter className="stroke-g7 stroke-[2] cursor-pointer" onClick={getFilterPage} />
-      {filters.map((label, index) => {
-        return <Chip key={`${label}-${index}`} label={label} onDelete={() => handleOptionRemove(label)} clicked />;
-      })}
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+        <Filter
+          className="stroke-g7 stroke-[2] cursor-pointer "
+          onClick={getFilterPage}
+          style={{ alignSelf: 'flex-start' }}
+        />
+        {filters.map((label, index) => {
+          return (
+            <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }}>
+              <Chip key={`${label}-${index}`} label={label} onDelete={() => handleOptionRemove(label)} clicked />
+            </div>
+          );
+        })}
+      </div>
+      <Typography variant="title" customClassName="text-left text-g0 ">
+        {`There are ${rooms.length} rooms in total!`}
+      </Typography>
       {rooms.map((room, idx) => (
         <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
       ))}

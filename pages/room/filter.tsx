@@ -53,6 +53,7 @@ export default function Filter() {
     let monthRent = 'false';
     let deposit = 'false';
     let location = 'false';
+    let dateAvailable = 'false';
 
     // typeofhousing 중 하나라도 체크되면 true
     typeOfHousings.forEach((key) => {
@@ -69,12 +70,12 @@ export default function Filter() {
     });
 
     // monthRent 비용 체크
-    if (data[`${'monthMax'}`] !== '' || data[`${'monthMin'}`] !== '') {
+    if ((data[`${'monthMax'}`] || '') !== '' || (data[`${'monthMin'}`] || '') !== '') {
       monthRent = 'true';
     }
 
     // deposit 비용 체크
-    if (data[`${'depositMax'}`] !== '' || data[`${'depositMin'}`] !== '') {
+    if ((data[`${'depositMax'}`] || '') !== '' || (data[`${'depositMin'}`] || '') !== '') {
       deposit = 'true';
     }
 
@@ -82,7 +83,11 @@ export default function Filter() {
       location = 'true';
     }
 
-    return { typeOfHousing, furnishing, monthRent, deposit, location };
+    if ((data.dateAvailable || '') !== '') {
+      dateAvailable = 'true';
+    }
+
+    return { typeOfHousing, furnishing, monthRent, deposit, location, dateAvailable };
   };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
