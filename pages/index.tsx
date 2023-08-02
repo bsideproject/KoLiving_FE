@@ -1,16 +1,19 @@
-import React, { Component, useEffect, ReactElement, ReactNode } from 'react';
+import React, { useEffect } from 'react';
 import type { GetStaticPropsContext } from 'next';
+import { useTranslation } from 'next-i18next';
 import 'tailwindcss/tailwind.css';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import RoomCard from '@/components/RoomCard/RoomCard';
 import { fetchRooms } from '@/api/room';
 import { Room } from '@/public/types/room';
-import { NextComponentType, NextPage, NextPageContext } from 'next';
+import { NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
-import Filter from '@/public/icons/filter.svg';
-import Router, { useRouter, withRouter } from 'next/router';
+import FilterImg from '@/public/icons/filter.svg';
+import { useRouter } from 'next/router';
 import { Chip, Typography } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
+import Filter from '@/pages/room/filter.tsx';
+import useModal from '@/hooks/useModal.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -26,8 +29,16 @@ function Home() {
   const [rooms, setRooms] = React.useState<Room[]>([]);
   const [filters, setFilters] = React.useState<string[]>([]);
   const router = useRouter();
-  const getFilterPage = () => {
-    router.push('/room/filter', undefined, { shallow: true });
+  const { openModal } = useModal();
+  const openFilterPopup = () => {
+    openModal({
+      props: {
+        title: 'Filters',
+        size: 'full',
+        custom: true,
+      },
+      children: <Filter />,
+    });
   };
 
   const selectRooms = async () => {
@@ -55,18 +66,7 @@ function Home() {
       const filterParams: FilterType = router.query as FilterType;
       makeFilters(filterParams);
     })();
-  }, []);
-
-  // Filter 변경 시 Room 정보 조회
-  // useEffect(() => {
-  //   /**
-  //    * @TODO filter 내용에 따라 조회되는 내용 다르게 할 수 있도록 파라미터 정보 보내는 로직 추가 필요
-  //    */
-  //   (async () => {
-  //     const filterParams: FilterType = router.query as FilterType;
-  //     makeFilters(filterParams);
-  //   })();
-  // }, [filters]);
+  }, [router.query]);
 
   const handleCardClick = (id: number) => {
     router.push(`/room/${id}`);
@@ -79,20 +79,15 @@ function Home() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-        <Filter
+        <FilterImg
           className="stroke-g7 stroke-[2] cursor-pointer "
-          onClick={getFilterPage}
+          onClick={openFilterPopup}
           style={{ alignSelf: 'flex-start' }}
         />
         {filters.map((label, index) => {
           return (
             <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }}>
-              <Chip
-                key={`${label}-${index}`}
-                label={label}
-                onDelete={() => handleOptionRemove(label)}
-                clicked
-              />
+              <Chip key={`${label}-${index}`} label={label} onDelete={() => handleOptionRemove(label)} clicked />
             </div>
           );
         })}
@@ -107,7 +102,7 @@ function Home() {
   );
 }
 
-Home.getLayout = function getLayout(page: React.ReactElement, ctx: NextPageContext) {
+Home.getLayout = function getLayout(page: React.ReactElement) {
   return <RoomListLayout>{page}</RoomListLayout>;
 };
 

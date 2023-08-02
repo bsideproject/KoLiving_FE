@@ -8,5 +8,6 @@
   "validPassword": "Invalid email or password",
   "samePassword": "Please check again",
   "next": "Next",
-  "complete": "Complete"
+  "complete": "Complete",
+  "filters" : "Filters"
 }
