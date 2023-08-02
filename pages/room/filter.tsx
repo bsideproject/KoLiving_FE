@@ -5,10 +5,9 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
-import { FieldValues, FieldError, SubmitHandler, useForm } from 'react-hook-form';
-import { isValidDate, isRequired } from '@/utils/validCheck.ts';
-import { GuList, DongList } from '../../public/js/guDongList.ts';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { FilterType } from '@/public/types/filter.ts';
+import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -132,7 +131,7 @@ export default function Filter() {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
       setDongValue({ value: selectedValue, label: selectedLabel, gu: watch('gu') });
     },
-    [setValue]
+    [watch]
   );
   return (
     <>

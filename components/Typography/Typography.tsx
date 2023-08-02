@@ -21,7 +21,7 @@ function Typography({ variant, children, font, fontStyle, color, customClassName
       className = `${styles.title} ${styles[`${fontStyle}`]}`;
       break;
     case 'body':
-      className = `${styles.body} ${styles[`${fontStyle}`]}`;
+      className = `${styles.body} ${styles[`${fontStyle}`]} ${customClassName}`;
       break;
     case 'label':
       className = `${styles.label} ${styles[`${fontStyle}`]} text-${color} ${customClassName} `;
