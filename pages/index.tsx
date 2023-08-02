@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import type { GetStaticPropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import 'tailwindcss/tailwind.css';
@@ -14,6 +14,8 @@ import { Chip, Typography } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
 import Filter from '@/pages/room/filter.tsx';
 import useModal from '@/hooks/useModal.ts';
+import { ModalSetterContext } from '@/context/ModalProvider';
+import { FieldValues } from 'react-hook-form';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -29,18 +31,7 @@ function Home() {
   const [rooms, setRooms] = React.useState<Room[]>([]);
   const [filters, setFilters] = React.useState<string[]>([]);
   const router = useRouter();
-  const { openModal } = useModal();
-  const openFilterPopup = () => {
-    openModal({
-      props: {
-        title: 'Filters',
-        size: 'full',
-        custom: true,
-      },
-      children: <Filter />,
-    });
-  };
-
+  const { openModal, closeModal } = useModal();
   const selectRooms = async () => {
     try {
       const data = await fetchRooms();
@@ -57,6 +48,81 @@ function Home() {
       filterParams[`${key}`] === 'true' && resultFilter.push(key);
     });
     setFilters(() => [...resultFilter]);
+  };
+
+  const makeSubmitParam = (data: FieldValues) => {
+    const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
+    const furnishings = [
+      'bedChecked',
+      'inductionChecked',
+      'airconditionerChecked',
+      'gasStoveChecked',
+      'refrigeratorChecked',
+      'wardrobeChecked',
+      'washingMachineChecked',
+      'doorLockChecked',
+      'tvChecked',
+      'kitchenetteChecked',
+    ];
+
+    let typeOfHousing = 'false';
+    let furnishing = 'false';
+    let monthRent = 'false';
+    let deposit = 'false';
+    let location = 'false';
+    let dateAvailable = 'false';
+
+    // typeofhousing 중 하나라도 체크되면 true
+    typeOfHousings.forEach((key) => {
+      if (data[`${key}`] === 'true') {
+        typeOfHousing = 'true';
+      }
+    });
+
+    // furnishing 중 하나라도 체크되면 true
+    furnishings.forEach((key) => {
+      if (data[`${key}`] === 'true') {
+        furnishing = 'true';
+      }
+    });
+
+    // monthRent 비용 체크
+    if ((data[`${'monthMax'}`] || '') !== '' || (data[`${'monthMin'}`] || '') !== '') {
+      monthRent = 'true';
+    }
+
+    // deposit 비용 체크
+    if ((data[`${'depositMax'}`] || '') !== '' || (data[`${'depositMin'}`] || '') !== '') {
+      deposit = 'true';
+    }
+
+    if ((data.gu || '') !== '') {
+      location = 'true';
+    }
+
+    if ((data.dateAvailable || '') !== '') {
+      dateAvailable = 'true';
+    }
+
+    return { typeOfHousing, furnishing, monthRent, deposit, location, dateAvailable };
+  };
+
+  const getChildData = async (childData: any) => {
+    console.log('childData', childData);
+    const filteredChips = makeSubmitParam(childData) as FilterType;
+    makeFilters(filteredChips);
+    await selectRooms();
+  };
+
+  const openFilterPopup = () => {
+    openModal({
+      props: {
+        title: 'Filters',
+        size: 'full',
+        custom: true,
+      },
+      children: <Filter closeModal={closeModal} getChildData={getChildData} roomsLength={(rooms || []).length} />,
+    });
   };
 
   // 최초 접근 시 Room 정보 조회
