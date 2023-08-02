@@ -103,7 +103,7 @@ function Modal({
   ) : (
     <div className={styles.full}>
       <Header type="title" title={title} right="close" logoColor="black" handleButtonClick={goBack} />
-      <div className="mt-[62px] px-[20px] text-g6 text-[16px] font-light">{content}</div>
+      <div className="mt-[62px] px-[20px] text-g6 text-[16px] font-light">{custom ? children : content}</div>
     </div>
   );
 }

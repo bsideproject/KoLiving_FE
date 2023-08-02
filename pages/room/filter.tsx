@@ -17,13 +17,7 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function Filter() {
   const filterTranslation = useTranslation('common');
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-    watch,
-    setValue,
-  } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [guValue, setGuValue] = useState('');
   const [dongValue, setDongValue] = useState<{ gu: string; value: string; label: string }>({
     gu: '',
@@ -134,7 +128,7 @@ export default function Filter() {
     [watch]
   );
   return (
-    <>
+    <div className="h-screen overflow-y-scroll">
       <div className="mt-[9px] mb-[20px]" key="filter">
         <Typography variant="header" fontStyle="semiBold">
           {filterTranslation.t('location')}
@@ -383,11 +377,12 @@ export default function Filter() {
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
-/** RoomList 주석 추가 */
+/** RoomList 주석 추가 
 Filter.getLayout = function getLayout(page: React.ReactElement) {
   return <FilterLayout>{page}</FilterLayout>;
 };
+*/
