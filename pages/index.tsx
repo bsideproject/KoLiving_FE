@@ -41,10 +41,11 @@ function Home() {
 
   const makeFilters = (filterParams: FilterType) => {
     const resultFilter: string[] = [];
-    for (const key in filterParams) {
+    Object.keys(filterParams).forEach((key) => {
+      // eslint-disable-next-line no-unused-expressions
       filterParams[`${key}`] === 'true' && resultFilter.push(key);
-    }
-    setFilters((prevSelectedOptions) => [...resultFilter]);
+    });
+    setFilters(() => [...resultFilter]);
   };
 
   // 최초 접근 시 Room 정보 조회
@@ -86,13 +87,18 @@ function Home() {
         {filters.map((label, index) => {
           return (
             <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }}>
-              <Chip key={`${label}-${index}`} label={label} onDelete={() => handleOptionRemove(label)} clicked />
+              <Chip
+                key={`${label}-${index}`}
+                label={label}
+                onDelete={() => handleOptionRemove(label)}
+                clicked
+              />
             </div>
           );
         })}
       </div>
-      <Typography variant="title" customClassName="text-left text-g0 ">
-        {`There are ${rooms.length} rooms in total!`}
+      <Typography variant="body" customClassName="text-left font-bold text-[16px] ">
+        There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
         <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
