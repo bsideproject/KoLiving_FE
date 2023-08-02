@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Router from 'next/router';
-import FilterLayout from '@/components/layouts/FilterLayout.tsx';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { FilterType } from '@/public/types/filter.ts';
+import { ModalSetterContext } from '@/context/ModalProvider.tsx';
 import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
@@ -15,10 +13,19 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   },
 });
 
-export default function Filter() {
+export default function Filter({
+  getChildData,
+  closeModal,
+  roomsLength,
+}: {
+  getChildData: (data: any) => void;
+  closeModal: () => void;
+  roomsLength: number;
+}) {
   const filterTranslation = useTranslation('common');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [guValue, setGuValue] = useState('');
+  const modalSetter = React.useContext(ModalSetterContext);
   const [dongValue, setDongValue] = useState<{ gu: string; value: string; label: string }>({
     gu: '',
     value: '',
@@ -26,73 +33,9 @@ export default function Filter() {
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
-  const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
-  const furnishings = [
-    'bedChecked',
-    'inductionChecked',
-    'airconditionerChecked',
-    'gasStoveChecked',
-    'refrigeratorChecked',
-    'wardrobeChecked',
-    'washingMachineChecked',
-    'doorLockChecked',
-    'tvChecked',
-    'kitchenetteChecked',
-  ];
-
-  const makeSubmitParam = (data: FieldValues) => {
-    let typeOfHousing = 'false';
-    let furnishing = 'false';
-    let monthRent = 'false';
-    let deposit = 'false';
-    let location = 'false';
-    let dateAvailable = 'false';
-
-    // typeofhousing 중 하나라도 체크되면 true
-    typeOfHousings.forEach((key) => {
-      if (data[`${key}`] === 'true') {
-        typeOfHousing = 'true';
-      }
-    });
-
-    // furnishing 중 하나라도 체크되면 true
-    furnishings.forEach((key) => {
-      if (data[`${key}`] === 'true') {
-        furnishing = 'true';
-      }
-    });
-
-    // monthRent 비용 체크
-    if ((data[`${'monthMax'}`] || '') !== '' || (data[`${'monthMin'}`] || '') !== '') {
-      monthRent = 'true';
-    }
-
-    // deposit 비용 체크
-    if ((data[`${'depositMax'}`] || '') !== '' || (data[`${'depositMin'}`] || '') !== '') {
-      deposit = 'true';
-    }
-
-    if ((data.gu || '') !== '') {
-      location = 'true';
-    }
-
-    if ((data.dateAvailable || '') !== '') {
-      dateAvailable = 'true';
-    }
-
-    return { typeOfHousing, furnishing, monthRent, deposit, location, dateAvailable };
-  };
-
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const roomFilter = makeSubmitParam(data);
-
-    Router.push(
-      {
-        pathname: '/',
-        query: roomFilter as FilterType,
-      },
-      '/'
-    );
+    getChildData(data);
+    closeModal();
   };
 
   // 옵션 선택 시 실행될 함수
@@ -138,7 +81,7 @@ export default function Filter() {
         <Select
           options={GuList}
           register={register('gu', {
-            validate: (value) => {
+            validate: () => {
               setGuValue(watch('gu'));
               return true;
             },
@@ -148,7 +91,7 @@ export default function Filter() {
         <Select
           options={filteredDongList}
           register={register('dong', {
-            validate: (value) => {
+            validate: () => {
               return true;
             },
           })}
@@ -184,7 +127,7 @@ export default function Filter() {
               placeholder={filterTranslation.t('min') as string}
               type="number"
               register={register('depositMin', {
-                validate: (value) => {
+                validate: () => {
                   return true;
                   // return !!watch('depositToggle') && isRequired(value, '필수 항목');
                 },
@@ -196,7 +139,7 @@ export default function Filter() {
             placeholder={filterTranslation.t('max') as string}
             type="number"
             register={register('depositMax', {
-              validate: (value) => {
+              validate: () => {
                 return true;
                 // return !!watch('depositToggle') && isRequired(value, '필수 항목');
               },
@@ -224,7 +167,7 @@ export default function Filter() {
               placeholder={filterTranslation.t('monthMin') as string}
               type="number"
               register={register('monthMin', {
-                validate: (value) => {
+                validate: () => {
                   return true;
                   // return !!watch('monthToggle') && isRequired(value, '필수 항목');
                 },
@@ -236,7 +179,7 @@ export default function Filter() {
             placeholder={filterTranslation.t('monthMax') as string}
             type="number"
             register={register('monthMax', {
-              validate: (value) => {
+              validate: () => {
                 return true;
                 // return !!watch('monthToggle') && isRequired(value, '필수 항목');
               },
@@ -260,7 +203,7 @@ export default function Filter() {
             placeholder={filterTranslation.t('mmddyyyy') as string}
             type="text"
             register={register('mmddyyyy', {
-              validate: (value: any) => {
+              validate: () => {
                 return true;
                 // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
               },
@@ -371,7 +314,7 @@ export default function Filter() {
               </Button>
               <Button type="submit" size="apply">
                 {/* TODO : 조회된 Room 개수로 변경 필요  */}
-                {`${filterTranslation.t('apply')} (230 Rooms)`}
+                {`${filterTranslation.t('apply')} (${roomsLength} Rooms)`}
               </Button>
             </div>
           </div>
@@ -380,9 +323,3 @@ export default function Filter() {
     </div>
   );
 }
-
-/** RoomList 주석 추가 
-Filter.getLayout = function getLayout(page: React.ReactElement) {
-  return <FilterLayout>{page}</FilterLayout>;
-};
-*/
