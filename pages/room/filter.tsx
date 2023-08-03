@@ -25,13 +25,14 @@ export default function Filter({
   const filterTranslation = useTranslation('common');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [guValue, setGuValue] = useState('');
-  const modalSetter = React.useContext(ModalSetterContext);
+  // const modalSetter = React.useContext(ModalSetterContext);
   const [dongValue, setDongValue] = useState<{ gu: string; value: string; label: string }>({
     gu: '',
     value: '',
     label: '',
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [clickedChip, setClickedChip] = useState('');
   const filteredDongList = DongList.filter((v) => v.gu === guValue);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
@@ -51,11 +52,6 @@ export default function Filter({
     });
   };
 
-  // 옵션 제거 시 실행될 함수
-  const handleOptionRemove = (option: string) => {
-    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
-  };
-
   useEffect(() => {
     if (dongValue.value !== '') {
       handleOptionSelect(dongValue.label);
@@ -70,6 +66,27 @@ export default function Filter({
     },
     [watch]
   );
+  const handleChipClick = (label: React.SetStateAction<string>) => {
+    setClickedChip(label);
+  };
+  const handlePropsClick = (option: string, index: number) => {
+    let result = false;
+    if ((clickedChip || '') !== '') {
+      result = clickedChip === option || selectedOptions.length === 1;
+    } else {
+      result = index === 0;
+    }
+    return result;
+  };
+  // 옵션 제거 시 실행될 함수
+  const handleOptionRemove = (option: string, index: number) => {
+    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+    const removedOptions = selectedOptions.filter((item) => item === option);
+    // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
+    if (selectedOptions.length === 0 || removedOptions.length > 0) {
+      setClickedChip(selectedOptions[0] || '');
+    }
+  };
   return (
     <div className="h-screen overflow-y-scroll">
       <div className="mt-[9px] mb-[20px]" key="filter">
@@ -78,16 +95,18 @@ export default function Filter({
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Select
-          options={GuList}
-          register={register('gu', {
-            validate: () => {
-              setGuValue(watch('gu'));
-              return true;
-            },
-          })}
-          placeholder={filterTranslation.t('gu') as string}
-        />
+        <section>
+          <Select
+            options={GuList}
+            register={register('gu', {
+              validate: () => {
+                setGuValue(watch('gu'));
+                return true;
+              },
+            })}
+            placeholder={filterTranslation.t('gu') as string}
+          />
+        </section>
         <Select
           options={filteredDongList}
           register={register('dong', {
@@ -101,8 +120,16 @@ export default function Filter({
         />
         <div>
           {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
-          {selectedOptions.map((option) => {
-            return <Chip key={option} label={option} onDelete={() => handleOptionRemove(option)} clicked />;
+          {selectedOptions.map((option, index) => {
+            return (
+              <Chip
+                key={option}
+                label={option}
+                onDelete={() => handleOptionRemove?.(option, index)}
+                onChipClick={() => handleChipClick?.(option)}
+                clicked={handlePropsClick?.(option, index)}
+              />
+            );
           })}
         </div>
         <div className="py-[64px]">
