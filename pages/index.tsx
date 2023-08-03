@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import type { GetStaticPropsContext } from 'next';
 import { useTranslation } from 'next-i18next';
 import 'tailwindcss/tailwind.css';
@@ -28,8 +28,10 @@ type HomeProps = NextPage & {
 };
 
 function Home() {
-  const [rooms, setRooms] = React.useState<Room[]>([]);
-  const [filters, setFilters] = React.useState<string[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [filters, setFilters] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [clickedChip, setClickedChip] = useState('');
   const router = useRouter();
   const { openModal, closeModal } = useModal();
   const selectRooms = async () => {
@@ -138,8 +140,26 @@ function Home() {
     router.push(`/room/${id}`);
   };
 
-  const handleOptionRemove = (option: string) => {
-    setFilters((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+  const handleChipClick = (label: React.SetStateAction<string>) => {
+    setClickedChip(label);
+  };
+  const handlePropsClick = (option: string, index: number) => {
+    let result = false;
+    if ((clickedChip || '') !== '') {
+      result = clickedChip === option || selectedOptions.length === 1;
+    } else {
+      result = index === 0;
+    }
+    return result;
+  };
+  // 옵션 제거 시 실행될 함수
+  const handleOptionRemove = (option: string, index: number) => {
+    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+    const removedOptions = selectedOptions.filter((item) => item === option);
+    // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
+    if (selectedOptions.length === 0 || removedOptions.length > 0) {
+      setClickedChip(selectedOptions[0] || '');
+    }
   };
 
   return (
@@ -153,7 +173,13 @@ function Home() {
         {filters.map((label, index) => {
           return (
             <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }}>
-              <Chip key={`${label}-${index}`} label={label} onDelete={() => handleOptionRemove(label)} clicked />
+              <Chip
+                key={`${label}-${index}`}
+                label={label}
+                onDelete={() => handleOptionRemove?.(label, index)}
+                onChipClick={() => handleChipClick?.(label)}
+                clicked={handlePropsClick?.(label, index)}
+              />
             </div>
           );
         })}
