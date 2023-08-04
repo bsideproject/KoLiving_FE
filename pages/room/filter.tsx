@@ -4,7 +4,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { ModalSetterContext } from '@/context/ModalProvider.tsx';
 import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
@@ -24,68 +23,60 @@ export default function Filter({
 }) {
   const filterTranslation = useTranslation('common');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [guValue, setGuValue] = useState('');
+  const [guValue, setGuValue] = useState<{ value: string; label: string }>({
+    value: '',
+    label: '',
+  });
   // const modalSetter = React.useContext(ModalSetterContext);
-  const [dongValue, setDongValue] = useState<{ gu: string; value: string; label: string }>({
+  const [dongValue, setDongValue] = useState<{ gu: string; guLabel: string; value: string; label: string }>({
     gu: '',
+    guLabel: '',
     value: '',
     label: '',
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [clickedChip, setClickedChip] = useState('');
-  const filteredDongList = DongList.filter((v) => v.gu === guValue);
+  const filteredDongList = DongList.filter((v) => v.gu === guValue.value);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
     closeModal();
   };
 
-  // 옵션 선택 시 실행될 함수
-  const handleOptionSelect = (option: string) => {
+  // 옵션 선택 시 실행될 함수, 유효성 검증
+  const handleOptionSelect = useCallback(() => {
+    if (!dongValue.label) return;
+
     let resultOptions: string[];
+    const option = dongValue.label;
     setSelectedOptions((prevSelectedOptions) => {
-      if (prevSelectedOptions.indexOf(option) <= -1) {
-        resultOptions = [...prevSelectedOptions, option];
+      const isExist = prevSelectedOptions.some((item) => item.includes(option));
+      if (!isExist) {
+        resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
       } else {
         resultOptions = prevSelectedOptions;
       }
       return [...resultOptions];
     });
-  };
+  }, [dongValue.label, guValue?.label]);
 
   useEffect(() => {
-    if (dongValue.value !== '') {
-      handleOptionSelect(dongValue.label);
-    }
-  }, [dongValue]);
-
+    handleOptionSelect();
+  }, [dongValue.label, handleOptionSelect]);
   /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
   const handleDongChange = useCallback(
     (selectedValue: string, selectedLabel: string) => {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
-      setDongValue({ value: selectedValue, label: selectedLabel, gu: watch('gu') });
+      setDongValue({ value: selectedValue, label: selectedLabel, gu: guValue.value, guLabel: guValue.label });
     },
-    [watch]
+    [guValue.label, guValue.value]
   );
-  const handleChipClick = (label: React.SetStateAction<string>) => {
-    setClickedChip(label);
-  };
-  const handlePropsClick = (option: string, index: number) => {
-    let result = false;
-    if ((clickedChip || '') !== '') {
-      result = clickedChip === option || selectedOptions.length === 1;
-    } else {
-      result = index === 0;
-    }
-    return result;
-  };
+  /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
+  const handleGuChange = useCallback((selectedValue: string, selectedLabel: string) => {
+    // 선택된 value와 label 값을 이용하여 원하는 작업 수행
+    setGuValue({ value: selectedValue, label: selectedLabel });
+  }, []);
   // 옵션 제거 시 실행될 함수
-  const handleOptionRemove = (option: string, index: number) => {
+  const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
-    const removedOptions = selectedOptions.filter((item) => item === option);
-    // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
-    if (selectedOptions.length === 0 || removedOptions.length > 0) {
-      setClickedChip(selectedOptions[0] || '');
-    }
   };
   return (
     <div className="h-screen overflow-y-scroll">
@@ -105,6 +96,7 @@ export default function Filter({
               },
             })}
             placeholder={filterTranslation.t('gu') as string}
+            onChange={handleGuChange}
           />
         </section>
         <Select
@@ -120,16 +112,8 @@ export default function Filter({
         />
         <div>
           {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
-          {selectedOptions.map((option, index) => {
-            return (
-              <Chip
-                key={option}
-                label={option}
-                onDelete={() => handleOptionRemove?.(option, index)}
-                onChipClick={() => handleChipClick?.(option)}
-                clicked={handlePropsClick?.(option, index)}
-              />
-            );
+          {selectedOptions.map((option) => {
+            return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
           })}
         </div>
         <div className="py-[64px]">
