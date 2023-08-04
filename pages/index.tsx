@@ -14,7 +14,6 @@ import { Chip, Typography } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
 import Filter from '@/pages/room/filter.tsx';
 import useModal from '@/hooks/useModal.ts';
-import { ModalSetterContext } from '@/context/ModalProvider';
 import { FieldValues } from 'react-hook-form';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
