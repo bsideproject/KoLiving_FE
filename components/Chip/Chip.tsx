@@ -5,7 +5,7 @@ import Typography from '@/components/Typography/Typography.tsx';
 interface ChipProps {
   label: string;
   onDelete?: () => void;
-  clicked: boolean;
+  clicked?: boolean;
   onChipClick?: (label: string) => void;
 }
 
