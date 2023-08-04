@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
-import { Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
+import { Toast, Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '../../public/js/guDongList.ts';
 
@@ -35,10 +35,16 @@ export default function Filter({
     label: '',
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [showToast, setShowToast] = useState(false);
+  const [showMessage, setMessage] = useState<string>('');
   const filteredDongList = DongList.filter((v) => v.gu === guValue.value);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
     closeModal();
+  };
+
+  const handleToastVisibleChange = (visible: boolean) => {
+    setShowToast(visible);
   };
 
   // 옵션 선택 시 실행될 함수, 유효성 검증
@@ -49,18 +55,25 @@ export default function Filter({
     const option = dongValue.label;
     setSelectedOptions((prevSelectedOptions) => {
       const isExist = prevSelectedOptions.some((item) => item.includes(option));
+      // Location이 5개 이상 선택 될 경우 Toast 노출
+      if (prevSelectedOptions.length >= 5) {
+        setShowToast(true);
+        // TODO translation 사용해서 여기 나중에 바꿔줘야함
+        setMessage('You can select up to five');
+        return [...prevSelectedOptions];
+      }
+
       if (!isExist) {
         resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
       } else {
+        setShowToast(true);
+        // TODO translation 사용해서 여기 나중에 바꿔줘야함
+        setMessage('Already selected');
         resultOptions = prevSelectedOptions;
       }
       return [...resultOptions];
     });
   }, [dongValue.label, guValue?.label]);
-
-  useEffect(() => {
-    handleOptionSelect();
-  }, [dongValue.label, handleOptionSelect]);
   /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
   const handleDongChange = useCallback(
     (selectedValue: string, selectedLabel: string) => {
@@ -78,6 +91,9 @@ export default function Filter({
   const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
   };
+  useEffect(() => {
+    handleOptionSelect();
+  }, [dongValue.label, handleOptionSelect]);
   return (
     <div className="h-screen overflow-y-scroll">
       <div className="mt-[9px] mb-[20px]" key="filter">
@@ -330,6 +346,7 @@ export default function Filter({
             </div>
           </div>
         </div>
+        {showToast && <Toast message={showMessage} duration={3000} onVisibleChange={handleToastVisibleChange} />}
       </form>
     </div>
   );
