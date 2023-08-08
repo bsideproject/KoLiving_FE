@@ -5,7 +5,7 @@
 ### 패키지 설치
 
 - Package manager: yarn
-- node version: 18.13.0
+- node version: 18.16.0
 - Node version manager: nvm
 
 ```bash
