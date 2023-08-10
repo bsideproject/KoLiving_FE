@@ -24,7 +24,13 @@ const MyImageSvg = ({ imageUrl }: ImageSvgProps) => {
         <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
           <use xlinkHref="#image0_1191_4790" transform="matrix(0.00101317 0 0 0.000736852 0 -0.0452703)" />
         </pattern>
-        <image id="image0_1191_4790" width="987" height="1480" xlinkHref={imageUrl} />
+        <image
+          id="image0_1191_4790"
+          width="987"
+          height="1480"
+          preserveAspectRatio="xMidYMid slice"
+          xlinkHref={imageUrl}
+        />
       </defs>
     </svg>
   );
