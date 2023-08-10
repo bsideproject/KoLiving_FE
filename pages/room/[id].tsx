@@ -14,6 +14,7 @@ import Dot from '@/public/icons/dot.svg';
 import ReceiptBadge from '@/public/icons/receipt-badge.svg';
 import Badge from '@/components/Badge/Badge';
 import Like from '@/public/icons/like.svg';
+import MyImageSvg from '@/components/ImageSvg/ImageSvg';
 import styles from './room.module.scss';
 
 export default function Login() {
@@ -61,7 +62,7 @@ export default function Login() {
               </div>
             </Swiper>
             <div className="flex py-[20px]">
-              <img className="rounded-[40px] w-[40px] h-[40px]" src={room.userInfo.image} alt="user" />
+              <MyImageSvg imageUrl={room.userInfo.image} />
               <div className="ml-[12px]">
                 <div className="text-[16px] text-g7 font-semibold">{room.userInfo.name}</div>
                 <div className="text-a2 text-[12px]">
