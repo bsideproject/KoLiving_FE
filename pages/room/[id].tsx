@@ -142,7 +142,7 @@ export default function Login() {
               </div>
             </div>
           </div>
-          <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max bg-g0 h-[71px] pt-[16px] flex justify-center">
+          <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max bg-g0 h-[71px] flex justify-center border-t-[1px] border-g2">
             <div className="flex items-center">
               <Like className="stroke-g7 stroke-[1.5px] m-[8px]" />
               <span className="text-[20px] font-semibold">&#8361; {formatPrice(room.deposit)}&nbsp;</span>
