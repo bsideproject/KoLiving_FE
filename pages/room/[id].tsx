@@ -24,6 +24,7 @@ export default function Login() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [room, setRoom] = React.useState<Room | undefined>();
   const age = room ? formatAge(room.userInfo.year) : 0;
+  const [isShowDetail, setIsShowDetail] = React.useState(false);
 
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
@@ -39,6 +40,10 @@ export default function Login() {
       }
     })();
   }, [id]);
+
+  const toggleShowDetail = () => {
+    setIsShowDetail((value) => !value);
+  };
 
   return (
     <div>
@@ -61,7 +66,7 @@ export default function Login() {
                 {currentSlide + 1}/{room.images.length}
               </div>
             </Swiper>
-            <div className="flex py-[20px]">
+            <div className="flex py-[20px]" onClick={toggleShowDetail}>
               <MyImageSvg imageUrl={room.userInfo.image} />
               <div className="ml-[12px]">
                 <div className="text-[16px] text-g7 font-semibold">{room.userInfo.name}</div>
@@ -76,6 +81,7 @@ export default function Login() {
                 <ArrowDown />
               </div>
             </div>
+            {isShowDetail && <div className="pb-[20px] text-g6">{room.userInfo.description}</div>}
             <hr />
             <div className="font-pretendard text-[14px] text-g6 py-[20px]">
               <div className="flex items-center">
