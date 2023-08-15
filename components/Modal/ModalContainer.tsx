@@ -12,6 +12,7 @@ export interface ModalProps {
   title?: string;
   content?: string;
   custom?: boolean;
+  customHeader?: boolean;
   buttonType?: 'none' | 'both' | 'outline' | 'default';
   handleClose?: () => void;
   buttonName?: string;
