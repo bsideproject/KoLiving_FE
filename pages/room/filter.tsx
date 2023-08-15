@@ -21,7 +21,7 @@ export default function Filter({
   closeModal: () => void;
   roomsLength: number;
 }) {
-  const filterTranslation = useTranslation('common');
+  const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [guValue, setGuValue] = useState<{ value: string; label: string }>({
     value: '',
@@ -101,7 +101,7 @@ export default function Filter({
           {filterTranslation.t('location')}
         </Typography>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
         <section>
           <Select
             options={GuList}
@@ -115,17 +115,19 @@ export default function Filter({
             onChange={handleGuChange}
           />
         </section>
-        <Select
-          options={filteredDongList}
-          register={register('dong', {
-            validate: () => {
-              return true;
-            },
-          })}
-          placeholder={filterTranslation.t('dong') as string}
-          disabled={!watch('gu')}
-          onChange={handleDongChange}
-        />
+        <section>
+          <Select
+            options={filteredDongList}
+            register={register('dong', {
+              validate: () => {
+                return true;
+              },
+            })}
+            placeholder={filterTranslation.t('dong') as string}
+            disabled={!watch('gu')}
+            onChange={handleDongChange}
+          />
+        </section>
         <div>
           {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
           {selectedOptions.map((option) => {
@@ -140,7 +142,7 @@ export default function Filter({
           </div>
           <div className="flex justify-between items-center mb-[20px]">
             <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              {filterTranslation.t('viewRoomsWithoutDeposit')}
+              {filterTranslation.t('viewRooms')}
             </Typography>
             <Toggle className="ml-2" register={register('depositToggle')} />
           </div>
