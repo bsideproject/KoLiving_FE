@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { GetStaticPropsContext } from 'next';
-import { useTranslation } from 'next-i18next';
 import 'tailwindcss/tailwind.css';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import RoomCard from '@/components/RoomCard/RoomCard';

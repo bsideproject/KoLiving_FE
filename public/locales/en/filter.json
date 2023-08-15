@@ -4,14 +4,13 @@
   "koo": "Gu",
   "dong": "Dong",
   "deposit": "Deposit",
-  "viewRoomsWithoutDeposit": "View rooms without deposit",
   "minMax": "Min 0 ￦ - Max 500,000,000 ￦ ",
   "min": "Min",
   "max": "Max",
   "monthRent": "Monthly rent",
   "includeMainFee": "Include maintenance fee",
   "dateAvailable": "Date available",
-  "viewRoomsAvailable": "View rooms available now",
+  "viewRooms": "View rooms available now",
   "typeOfHousing": "Type of housing",
   "studio": "Studio",
   "bedFlats ": "1bed flats",
@@ -32,5 +31,6 @@
   "reset": "Reset",
   "apply": "Apply",
   "mmddyyyy": "MM-DD-YYYY",
-  "uptofive" : "You can select up to five"
+  "uptofive" : "You can select up to five",
+  "viewRoomsWithoutDeposit": "View rooms without deposit"
 }
