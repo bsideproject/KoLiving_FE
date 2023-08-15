@@ -6,7 +6,6 @@ import useModal from '../../hooks/useModal.ts';
 import useOutSideClick from '../../hooks/useOutSideClick.ts';
 import Button from '../Button/Button.tsx';
 import Header from '../Header/Header.tsx';
-import DefaultLayout from '../layouts/DefaultLayout.tsx';
 
 function Modal({
   children,
@@ -15,6 +14,7 @@ function Modal({
   title = '',
   content = '',
   custom = false,
+  customHeader = false,
   buttonType = 'none',
   handleClose,
   buttonName = '',
@@ -78,6 +78,14 @@ function Modal({
   const goBack = () => {
     closeModal();
   };
+  const defaultHeader = () => {
+    let result = <Header type="title" title={title} right="close" logoColor="black" handleButtonClick={goBack} />;
+    // TODO 나중에 여기 layoutHeader쪽 Component를 받는 거로 변경
+    if (customHeader) {
+      result = <Header type="back" logoColor="black" bgColor="white" title="Add rooms" handleButtonClick={goBack} />;
+    }
+    return result;
+  };
 
   return size === 'md' ? (
     <div className={styles.overlay}>
@@ -102,7 +110,7 @@ function Modal({
     </div>
   ) : (
     <div className={styles.full}>
-      <Header type="title" title={title} right="close" logoColor="black" handleButtonClick={goBack} />
+      {defaultHeader()}
       <div className="mt-[62px] px-[20px] text-g6 text-[16px] font-light">{custom ? children : content}</div>
     </div>
   );

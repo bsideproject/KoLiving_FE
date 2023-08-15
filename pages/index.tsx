@@ -108,7 +108,6 @@ function Home() {
   };
 
   const getChildData = async (childData: any) => {
-    console.log('childData', childData);
     const filteredChips = makeSubmitParam(childData) as FilterType;
     makeFilters(filteredChips);
     await selectRooms();
@@ -120,6 +119,7 @@ function Home() {
         title: 'Filters',
         size: 'full',
         custom: true,
+        customHeader: false,
       },
       children: <Filter closeModal={closeModal} getChildData={getChildData} roomsLength={(rooms || []).length} />,
     });
