@@ -95,7 +95,7 @@ export default function Step1() {
         </Typography>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
-      <div className="mb-[4px]">
+        <div className="mb-[4px]">
           <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
             Location
           </Typography>
@@ -132,9 +132,9 @@ export default function Step1() {
             return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
           })}
         </div>
-        <div className="py-[64px]">
-          <div className="mb-[4px]">
-            <Typography variant="header" fontStyle="semiBold">
+        <div className="py-[28px]">
+          <div className="mb-[4px] mt-[36px]">
+            <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
               {filterTranslation.t('monthlyRent')}
             </Typography>
           </div>
@@ -156,22 +156,21 @@ export default function Step1() {
             />
           </div>
         </div>
-        <div className="mt-[28px] mb-[4px]">
-          <Typography variant="header" fontStyle="semiBold">
-            {filterTranslation.t('dateAvailable')}
+        <div className="mb-[4px]">
+          <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
+            Deposit
           </Typography>
         </div>
         <div className="flex justify-between items-center mb-[20px]">
-          <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-            {filterTranslation.t('viewRoomsAvailable')}
-          </Typography>
-          <Toggle className="ml-2" register={register('dateAvailable')} />
+            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
+              Min 0 ￦ - Max 50,000,000 ￦ 
+            </Typography>
         </div>
         <div className="mb-[16px]">
           <Input
-            placeholder={filterTranslation.t('mmddyyyy') as string}
+            placeholder={filterTranslation.t('Price') as string}
             type="text"
-            register={register('mmddyyyy', {
+            register={register('price', {
               validate: () => {
                 return true;
                 // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
@@ -181,113 +180,55 @@ export default function Step1() {
             // error={errors.mmddyyyy as FieldError}
           />
         </div>
-        <hr className="mt-[40px] border-x-0" />
-        <div className="mt-[32px] mb-[4px]">
-          <Typography variant="header" fontStyle="semiBold">
-            {filterTranslation.t('typeOfHousing')}
-          </Typography>
-        </div>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
           <Checkbox
             type="outlined"
-            label={filterTranslation.t('studio') as string}
+            label={filterTranslation.t('No Deposit') as string}
             register={register('studioChecked')}
             checked={watch('studioChecked')}
           />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('bedFlats') as string}
-            register={register('bedFlatsChecked')}
-            checked={watch('bedFlatsChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('shareHouse') as string}
-            register={register('shareHouseChecked')}
-            checked={watch('shareHouseChecked')}
-          />
         </div>
-        <hr className="mt-[32px] border-x-0" />
-        <div className="mt-[32px] mb-[4px]">
-          <Typography variant="header" fontStyle="semiBold">
-            {filterTranslation.t('furnishing')}
+        <div className="mb-[4px] mt-[28px]">
+          <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
+            Maintanance fee
           </Typography>
         </div>
-        <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px] ">
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('bed') as string}
-            register={register('bedChecked')}
-            checked={watch('bedChecked')}
+        {"여기에 YES/NO 들어가야함"}
+        <div className="mb-[4px] mt-[28px]">
+          <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
+            Date available
+          </Typography>
+        </div>
+        <section>
+          <Select
+            options={GuList}
+            register={register('gu', {
+              validate: () => {
+                setGuValue(watch('gu'));
+                return true;
+              },
+            })}
+            placeholder={filterTranslation.t('MM-DD-YYYY') as string}
+            onChange={handleGuChange}
           />
+        </section>
+        <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
           <Checkbox
             type="outlined"
-            label={filterTranslation.t('induction') as string}
-            register={register('inductionChecked')}
-            checked={watch('inductionChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('airconditioner') as string}
-            register={register('airconditionerChecked')}
-            checked={watch('airconditionerChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('gasStove') as string}
-            register={register('gasStoveChecked')}
-            checked={watch('gasStoveChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('refrigerator') as string}
-            register={register('refrigeratorChecked')}
-            checked={watch('refrigeratorChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('wardrobe') as string}
-            register={register('wardrobeChecked')}
-            checked={watch('wardrobeChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('washingMachine') as string}
-            register={register('washingMachineChecked')}
-            checked={watch('washingMachineChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('doorLock') as string}
-            register={register('doorLockChecked')}
-            checked={watch('doorLockChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('tv') as string}
-            register={register('tvChecked')}
-            checked={watch('tvChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('kitchenette') as string}
-            register={register('kitchenetteChecked')}
-            checked={watch('kitchenetteChecked')}
+            label={filterTranslation.t('Available now') as string}
+            register={register('studioChecked')}
+          checked={watch('studioChecked')}
           />
         </div>
-        <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+        <div className="mt-[111px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
-            <div className="mb-[13px] space-x-[8px] max-w-max">
-              <Button type="reset" size="reset" color="noBg">
-                {filterTranslation.t('reset')}
-              </Button>
-              <Button type="submit" size="apply">
-                {/* TODO : 조회된 Room 개수로 변경 필요  */}
+            <div className="mb-[13px]">
+              <Button size="lg" type="submit" disabled={false}>
+                {filterTranslation.t('Next')}
               </Button>
             </div>
           </div>
         </div>
-        {showToast && <Toast message={showMessage} duration={3000} onVisibleChange={handleToastVisibleChange} />}
       </form>
     </div>
     </>
