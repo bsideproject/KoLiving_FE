@@ -193,7 +193,7 @@ export default function Step1() {
             Maintanance fee
           </Typography>
         </div>
-        {"여기에 YES/NO 들어가야함"}
+        {"여기에 YES/NO 들어가야함!!"}
         <div className="mb-[4px] mt-[28px]">
           <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
             Date available
