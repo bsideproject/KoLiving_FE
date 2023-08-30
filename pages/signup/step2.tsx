@@ -11,6 +11,7 @@ import { isValidPassword } from '@/utils/validCheck.ts';
 import Button from '@/components/Button/Button.tsx';
 import Router from 'next/router';
 import useSignUp from '@/hooks/useSignUp.ts';
+import { postPassword } from '@/api/signup';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -31,12 +32,20 @@ export default function SignUp() {
   const { setSignUpData, signUpState } = useSignUp();
   const watchPassword1 = watch('password1', '');
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setSignUpData({
       password: data.password1,
     });
 
-    Router.push('/signup/step3');
+    try {
+      await postPassword({
+        email: signUpState?.email,
+        password: data.password1,
+      });
+      Router.push('/signup/step3');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {

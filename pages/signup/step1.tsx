@@ -14,6 +14,7 @@ import Button from '@/components/Button/Button.tsx';
 import Router from 'next/router';
 import useSignUp from '@/hooks/useSignUp.ts';
 import useModal from '@/hooks/useModal.ts';
+import { postSignup } from '@/api/signup';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -89,7 +90,7 @@ export default function SignUp() {
     return true;
   }, [privacyChecked, termChecked, yearChecked, email, errors.email]);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setSignUpData({
       email: data.email,
       yearChecked: data.yearChecked,
@@ -97,7 +98,12 @@ export default function SignUp() {
       privacyChecked: data.privacyChecked,
     });
 
-    Router.push('/signup/step2');
+    try {
+      await postSignup(data.email);
+      Router.push('/signup/step2');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const getTitle = (type: string) => {

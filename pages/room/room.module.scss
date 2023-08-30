@@ -13,3 +13,25 @@
 
   background: rgba(33, 33, 33, 0.5);
 }
+
+.user-description-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.user-description-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.user-description-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.user-description-exit-active {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}

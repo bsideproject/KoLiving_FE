@@ -1,5 +1,5 @@
 import { Room } from '@/public/types/room';
-import { fetchData } from '.';
+import { fetchData } from './index-dev';
 
 export const fetchRooms = async () => {
   return fetchData<Room[]>('/api/room');
