@@ -51,17 +51,17 @@ function Modal({
         return (
           <>
             <Button onClick={() => handleClose?.()} disabled size="lg">
-              test
+              {buttonName}
             </Button>
             <Button onClick={() => handleClose?.()} color="r1" size="lg">
-              test
+              {buttonName}
             </Button>
           </>
         );
       case 'outline':
         return (
           <Button onClick={() => handleClose?.()} color="noBg" size="lg">
-            test
+            {buttonName}
           </Button>
         );
       case 'default':
@@ -102,7 +102,7 @@ function Modal({
         ) : (
           <div>
             <h2>{title}</h2>
-            <p>{content}</p>
+            <p dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         )}
         {buttonType && buttonType !== 'none' && <div className="mt-[20px] flex gap-x-2">{renderButton()}</div>}
