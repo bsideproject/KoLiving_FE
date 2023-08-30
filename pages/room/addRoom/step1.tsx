@@ -193,7 +193,65 @@ export default function Step1() {
             Maintanance fee
           </Typography>
         </div>
-        {"여기에 YES/NO 들어가야함!!"}
+        <div className="mb-[13px]">
+          <div className="mb-3 grid grid-cols-2 gap-0">
+            <div className="col-span-1">
+              <Button size="lg" type="submit" disabled={false}>
+                {filterTranslation.t('YES')}
+              </Button>
+            </div>
+            <div className="col-span-1">
+            <Button size="lg" type="submit" color="noBg" disabled={false}>
+              {filterTranslation.t('NO')}
+            </Button>
+            </div>
+          </div>
+        </div>
+        <div className="mt-[16px] mb-[16px]">
+          <Input
+            placeholder={filterTranslation.t('Price') as string}
+            type="text"
+            register={register('price', {
+              validate: () => {
+                return true;
+                // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
+              },
+            })}
+            disabled={!watch('dateAvailable')}
+          />
+        </div>
+        <div className="flex justify-between items-center mb-[20px]">
+            <Typography variant="body" fontStyle="semiBold" customClassName="text-[16px]">
+              {`Included (optional)`}
+            </Typography>
+        </div>
+        <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Gas') as string}
+            register={register('gasChecked')}
+            checked={watch('gasChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Water') as string}
+            register={register('waterChecked')}
+            checked={watch('waterChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Electricity') as string}
+            register={register('electricityChecked')}
+            checked={watch('electricityChecked')}
+          />
+          <Checkbox
+            type="outlined"
+            label={filterTranslation.t('Cleaning') as string}
+            register={register('cleaningChecked')}
+            checked={watch('cleaningChecked')}
+          />
+        </div>
+
         <div className="mb-[4px] mt-[28px]">
           <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
             Date available
@@ -201,15 +259,15 @@ export default function Step1() {
         </div>
         <section>
           <Select
-            options={GuList}
-            register={register('gu', {
-              validate: () => {
-                setGuValue(watch('gu'));
-                return true;
-              },
+            options={[]}
+            register={register('dateAvailable', {
+              // validate: () => {
+              //   setGuValue(watch('dateAvailable'));
+              //   return true;
+              // },
             })}
             placeholder={filterTranslation.t('MM-DD-YYYY') as string}
-            onChange={handleGuChange}
+            onChange={() => {}}
           />
         </section>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
