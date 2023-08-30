@@ -9,7 +9,7 @@ import { NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
 import FilterImg from '@/public/icons/filter.svg';
 import { useRouter } from 'next/router';
-import { Chip, Typography } from '@/components/index.tsx';
+import { Chip, Typography, Nav } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
 import Filter from '@/pages/room/filter.tsx';
 import useModal from '@/hooks/useModal.ts';
@@ -162,7 +162,7 @@ function Home() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }} className="mb-[8px]">
         <FilterImg
           className="stroke-g7 stroke-[2] cursor-pointer "
           onClick={openFilterPopup}
@@ -182,12 +182,21 @@ function Home() {
           );
         })}
       </div>
-      <Typography variant="body" customClassName="text-left font-bold text-[16px] ">
+      <Typography variant="body" customClassName="text-left font-bold text-[16px]">
         There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
-        <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
+        <div className="mt-[20px]">
+          <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
+        </div>
       ))}
+      <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+        <div className="w-full">
+          <div className="mb-[13px] space-x-[8px] max-w-max">
+            <Nav />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
