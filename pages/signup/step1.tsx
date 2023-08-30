@@ -100,7 +100,14 @@ export default function SignUp() {
 
     try {
       await postSignup(data.email);
-      Router.push('/signup/step2');
+      openModal({
+        props: {
+          title: 'Check Your Mail Box',
+          content: `A verification has just been sent to<br/> <b>user@koliving.com<b>`,
+          buttonType: 'outline',
+          buttonName: 'Resend link',
+        },
+      });
     } catch (e) {
       console.error(e);
     }
