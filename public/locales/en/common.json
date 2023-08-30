@@ -10,5 +10,6 @@
   "next": "Next",
   "complete": "Complete",
   "filters" : "Filters",
-  "uptofive" : "You can select up to five"
+  "uptofive" : "You can select up to five",
+  "viewRooms": "View rooms without deposit"
 }

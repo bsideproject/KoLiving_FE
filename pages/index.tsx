@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { GetStaticPropsContext } from 'next';
-import { useTranslation } from 'next-i18next';
 import 'tailwindcss/tailwind.css';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import RoomCard from '@/components/RoomCard/RoomCard';
@@ -109,7 +108,6 @@ function Home() {
   };
 
   const getChildData = async (childData: any) => {
-    console.log('childData', childData);
     const filteredChips = makeSubmitParam(childData) as FilterType;
     makeFilters(filteredChips);
     await selectRooms();
@@ -121,6 +119,7 @@ function Home() {
         title: 'Filters',
         size: 'full',
         custom: true,
+        customHeader: false,
       },
       children: <Filter closeModal={closeModal} getChildData={getChildData} roomsLength={(rooms || []).length} />,
     });
