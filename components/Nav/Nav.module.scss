@@ -1,6 +1,9 @@
 .nav-text {
   @apply font-pretendard font-normal text-g4;
 }
+.nav-activeText {
+  @apply font-pretendard font-normal text-r1;
+}
 
 .container {
   max-width: inherit;
