@@ -31,15 +31,15 @@ export default function Chip({ label, onDelete, clicked, onChipClick }: ChipProp
 
   return (
     <div
-      className={`inline-flex items-center mr-2 mb-2 bg-opacity-10 px-3 py-1 text-base font-semibold ${fillText}`}
+      className={`pl-[12px] pr-[3.75px] inline-flex items-center mr-2 mb-2 bg-opacity-10 py-1 font-semibold ${fillText}`}
       onClick={onDivClick}
     >
       <Typography variant="label" fontStyle="semiBold" font="pretendard" color={clicked ? 'r1' : 'g5'}>
         {label}
       </Typography>
       {onDelete && (
-        <button className={`"ml-2 focus:outline-none ${fillStroke}`} onClick={handleDelete} aria-label="Delete">
-          <Close />
+        <button className="focus:outline-none" onClick={handleDelete} aria-label="Delete">
+          <Close width={10.5} height={10.5} className="m-[7px] stroke-r1 stroke-[2]" />
         </button>
       )}
     </div>

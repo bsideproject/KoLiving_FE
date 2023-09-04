@@ -149,46 +149,56 @@ export default function Filter({
   useEffect(() => {
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
+
+  const toggleMonthRent = watch('monthToggle');
+  const toggleDeposit = watch('depositToggle');
+  const dateAvailableToggle = watch('dateAvailableToggle');
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
       <div className="h-screen overflow-y-scroll font-pretendard">
         {/* Location */}
-        <div className="mt-[20px] mb-[64px]">
+        <div className="mt-[20px] mb-[32px]">
           <div className="mb-[12px]">
             <div className={styles['sub-header']}>Location</div>
           </div>
-          <Select
-            options={GuList}
-            register={register('gu', {
-              validate: () => {
-                setGuValue(watch('gu'));
-                return true;
-              },
-            })}
-            placeholder="Gu"
-            onChange={handleGuChange}
-          />
-          <Select
-            options={filteredDongList}
-            register={register('dong', {
-              validate: () => {
-                return true;
-              },
-            })}
-            placeholder="Dong"
-            disabled={!watch('gu')}
-            onChange={handleDongChange}
-          />
-          <div>
-            {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
+          <div className="grid grid-flow-row gap-[8px]">
+            <Select
+              options={GuList}
+              register={register('gu', {
+                validate: () => {
+                  setGuValue(watch('gu'));
+                  return true;
+                },
+              })}
+              placeholder="Gu"
+              onChange={handleGuChange}
+            />
+            <Select
+              options={filteredDongList}
+              register={register('dong', {
+                validate: () => {
+                  return true;
+                },
+              })}
+              placeholder="Dong"
+              disabled={!watch('gu')}
+              onChange={handleDongChange}
+            />
+          </div>
+
+          {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
+          <div className="mt-[16px] overflow-x-auto whitespace-nowrap">
             {selectedOptions.map((option) => {
               return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
             })}
           </div>
         </div>
 
+        <hr />
+
         {/* Deposit */}
-        <div className="mb-[28px]">
+        <div className="mt-[32px] mb-[28px]">
           <div className="mb-[4px]">
             <div className={styles['sub-header']}>Deposit</div>
           </div>
@@ -196,33 +206,17 @@ export default function Filter({
             <div className="text-g5 font-normal">View rooms without deposit</div>
             <Toggle className="ml-2" register={register('depositToggle')} />
           </div>
-          <div className="mb-[8px]">
-            <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
-          </div>
-          <div className="mb-[8px]">
-            <Input
-              placeholder="Min"
-              type="number"
-              register={register('depositMin', {
-                validate: () => {
-                  return true;
-                  // return !!watch('depositToggle') && isRequired(value, '필수 항목');
-                },
-              })}
-              disabled={!watch('depositToggle')}
-            />
-          </div>
-          <Input
-            placeholder="Max"
-            type="number"
-            register={register('depositMax', {
-              validate: () => {
-                return true;
-                // return !!watch('depositToggle') && isRequired(value, '필수 항목');
-              },
-            })}
-            disabled={!watch('depositToggle')}
-          />
+          {!toggleDeposit && (
+            <>
+              <div className="mb-[8px]">
+                <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
+              </div>
+              <div className="grid grid-flow-row gap-[8px]">
+                <Input placeholder="Min" type="number" register={register('depositMin')} />
+                <Input placeholder="Max" type="number" register={register('depositMax')} />
+              </div>
+            </>
+          )}
         </div>
 
         {/* Month rent */}
@@ -234,33 +228,17 @@ export default function Filter({
             <div className="text-g5 font-normal">Include maintenance fee</div>
             <Toggle className="ml-2" register={register('monthToggle')} />
           </div>
-          <div className="mb-[8px]">
-            <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 20,000,000 ￦ </div>
-          </div>
-          <div className="mb-[8px]">
-            <Input
-              placeholder="Min"
-              type="number"
-              register={register('monthMin', {
-                validate: () => {
-                  return true;
-                  // return !!watch('monthToggle') && isRequired(value, '필수 항목');
-                },
-              })}
-              disabled={!watch('monthToggle')}
-            />
-          </div>
-          <Input
-            placeholder="Max"
-            type="number"
-            register={register('monthMax', {
-              validate: () => {
-                return true;
-                // return !!watch('monthToggle') && isRequired(value, '필수 항목');
-              },
-            })}
-            disabled={!watch('monthToggle')}
-          />
+          {!toggleMonthRent && (
+            <>
+              <div className="mb-[8px]">
+                <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 20,000,000 ￦ </div>
+              </div>
+              <div className="grid grid-flow-row gap-[8px]">
+                <Input placeholder="Min" type="number" register={register('monthMin')} />
+                <Input placeholder="Max" type="number" register={register('monthMax')} />
+              </div>
+            </>
+          )}
         </div>
 
         <hr />
@@ -272,22 +250,13 @@ export default function Filter({
           </div>
           <div className="flex justify-between items-center mb-[20px]">
             <div className="text-g5 font-normal">View rooms available now</div>
-            <Toggle className="ml-2" register={register('dateAvailable')} />
+            <Toggle className="ml-2" register={register('dateAvailableToggle')} />
           </div>
-          <div className="mb-[16px]">
-            <Input
-              placeholder="MM-DD-YYYY"
-              type="text"
-              register={register('mmddyyyy', {
-                validate: () => {
-                  return true;
-                  // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
-                },
-              })}
-              disabled={!watch('dateAvailable')}
-              // error={errors.mmddyyyy as FieldError}
-            />
-          </div>
+          {!dateAvailableToggle && (
+            <div className="mb-[16px]">
+              <Input placeholder="MM-DD-YYYY" type="text" register={register('mmddyyyy')} />
+            </div>
+          )}
         </div>
 
         <hr />

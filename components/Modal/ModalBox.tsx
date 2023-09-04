@@ -93,7 +93,7 @@ function Modal({
         {hasCloseButton && (
           <div className={styles.close}>
             <button type="button" onClick={onClose}>
-              <Close />
+              <Close width={24} height={24} />
             </button>
           </div>
         )}
