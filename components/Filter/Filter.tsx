@@ -13,6 +13,60 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   },
 });
 
+const TYPE_OF_HOUSING = [
+  {
+    value: 'studioChecked',
+    label: 'Studio',
+  },
+  {
+    value: 'bedFlatsChecked',
+    label: '1bed Flats',
+  },
+  {
+    value: 'shareHouseChecked',
+    label: 'Share House',
+  },
+];
+
+const FURNISHING = [
+  {
+    value: 'bedChecked',
+    label: 'Bed',
+  },
+  {
+    value: 'wardrobeChecked',
+    label: 'Wardrobe',
+  },
+  {
+    value: 'tvChecked',
+    label: 'TV',
+  },
+  {
+    value: 'airconditionerChecked',
+    label: 'Airconditioner',
+  },
+  {
+    value: 'heaterChecked',
+    label: 'Heater',
+  },
+  {
+    value: 'washingMachineChecked',
+    label: 'Washing Machine',
+  },
+  {
+    value: 'stoveChecked',
+    label: 'Stove',
+  },
+  {
+    value: 'refregeratorChecked',
+    label: 'Refregerator',
+  },
+  {
+    value: 'doorLockChecked',
+    label: 'Door Lock',
+  },
+];
+
 export default function Filter({
   getChildData,
   closeModal,
@@ -244,24 +298,17 @@ export default function Filter({
             <div className={styles['sub-header']}>Type of housing</div>
           </div>
           <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
-            <Checkbox
-              type="outlined"
-              label={filterTranslation.t('studio') as string}
-              register={register('studioChecked')}
-              checked={watch('studioChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label={filterTranslation.t('bedFlats') as string}
-              register={register('bedFlatsChecked')}
-              checked={watch('bedFlatsChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label={filterTranslation.t('shareHouse') as string}
-              register={register('shareHouseChecked')}
-              checked={watch('shareHouseChecked')}
-            />
+            {TYPE_OF_HOUSING.map((item) => {
+              return (
+                <Checkbox
+                  type="outlined"
+                  label={item.label}
+                  register={register(item.value)}
+                  checked={watch(item.value)}
+                  key={item.value}
+                />
+              );
+            })}
           </div>
         </div>
 
@@ -271,66 +318,17 @@ export default function Filter({
           <div className={styles['sub-header']}>Furnishing</div>
         </div>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px] ">
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('bed') as string}
-            register={register('bedChecked')}
-            checked={watch('bedChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('induction') as string}
-            register={register('inductionChecked')}
-            checked={watch('inductionChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('airconditioner') as string}
-            register={register('airconditionerChecked')}
-            checked={watch('airconditionerChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('gasStove') as string}
-            register={register('gasStoveChecked')}
-            checked={watch('gasStoveChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('refrigerator') as string}
-            register={register('refrigeratorChecked')}
-            checked={watch('refrigeratorChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('wardrobe') as string}
-            register={register('wardrobeChecked')}
-            checked={watch('wardrobeChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('washingMachine') as string}
-            register={register('washingMachineChecked')}
-            checked={watch('washingMachineChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('doorLock') as string}
-            register={register('doorLockChecked')}
-            checked={watch('doorLockChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('tv') as string}
-            register={register('tvChecked')}
-            checked={watch('tvChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('kitchenette') as string}
-            register={register('kitchenetteChecked')}
-            checked={watch('kitchenetteChecked')}
-          />
+          {FURNISHING.map((item) => {
+            return (
+              <Checkbox
+                type="outlined"
+                label={item.label}
+                register={register(item.value)}
+                checked={watch(item.value)}
+                key={item.value}
+              />
+            );
+          })}
         </div>
         <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
