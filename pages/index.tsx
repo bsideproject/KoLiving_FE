@@ -11,9 +11,9 @@ import FilterImg from '@/public/icons/filter.svg';
 import { useRouter } from 'next/router';
 import { Chip, Typography, Nav } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
-import Filter from '@/pages/room/filter.tsx';
 import useModal from '@/hooks/useModal.ts';
 import { FieldValues } from 'react-hook-form';
+import Filter from '@/components/Filter/Filter.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {

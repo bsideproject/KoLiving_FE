@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
-import { Toast, Chip, Select, Typography, Toggle, Checkbox, Button, Input } from '@/components/index.tsx';
+import { Toast, Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { GuList, DongList } from '../../public/js/guDongList.ts';
+import { GuList, DongList } from '@/public/js/guDongList.ts';
+import styles from './Filter.module.scss';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -95,14 +96,13 @@ export default function Filter({
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
   return (
-    <div className="h-screen overflow-y-scroll">
-      <div className="mt-[9px] mb-[20px]" key="filter">
-        <Typography variant="header" fontStyle="semiBold">
-          {filterTranslation.t('location')}
-        </Typography>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
-        <section>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
+      <div className="h-screen overflow-y-scroll font-pretendard">
+        {/* Location */}
+        <div className="mt-[20px] mb-[64px]">
+          <div className="mb-[12px]">
+            <div className={styles['sub-header']}>Location</div>
+          </div>
           <Select
             options={GuList}
             register={register('gu', {
@@ -111,11 +111,9 @@ export default function Filter({
                 return true;
               },
             })}
-            placeholder={filterTranslation.t('gu') as string}
+            placeholder="Gu"
             onChange={handleGuChange}
           />
-        </section>
-        <section>
           <Select
             options={filteredDongList}
             register={register('dong', {
@@ -123,37 +121,33 @@ export default function Filter({
                 return true;
               },
             })}
-            placeholder={filterTranslation.t('dong') as string}
+            placeholder="Dong"
             disabled={!watch('gu')}
             onChange={handleDongChange}
           />
-        </section>
-        <div>
-          {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
-          {selectedOptions.map((option) => {
-            return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
-          })}
+          <div>
+            {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
+            {selectedOptions.map((option) => {
+              return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
+            })}
+          </div>
         </div>
-        <div className="py-[64px]">
-          <div className="mt-[9px] mb-[4px]">
-            <Typography variant="header" fontStyle="semiBold">
-              {filterTranslation.t('deposit')}
-            </Typography>
+
+        {/* Deposit */}
+        <div className="mb-[28px]">
+          <div className="mb-[4px]">
+            <div className={styles['sub-header']}>Deposit</div>
           </div>
           <div className="flex justify-between items-center mb-[20px]">
-            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              {filterTranslation.t('viewRooms')}
-            </Typography>
+            <div className="text-g5 font-normal">View rooms without deposit</div>
             <Toggle className="ml-2" register={register('depositToggle')} />
           </div>
           <div className="mb-[8px]">
-            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              {filterTranslation.t('minMax')}
-            </Typography>
+            <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
           </div>
           <div className="mb-[8px]">
             <Input
-              placeholder={filterTranslation.t('min') as string}
+              placeholder="Min"
               type="number"
               register={register('depositMin', {
                 validate: () => {
@@ -165,7 +159,7 @@ export default function Filter({
             />
           </div>
           <Input
-            placeholder={filterTranslation.t('max') as string}
+            placeholder="Max"
             type="number"
             register={register('depositMax', {
               validate: () => {
@@ -175,25 +169,23 @@ export default function Filter({
             })}
             disabled={!watch('depositToggle')}
           />
-          <div className="mt-[28px] mb-[4px]">
-            <Typography variant="header" fontStyle="semiBold">
-              {filterTranslation.t('monthRent')}
-            </Typography>
+        </div>
+
+        {/* Month rent */}
+        <div className="mb-[32px]">
+          <div className="mb-[4px]">
+            <div className={styles['sub-header']}>Month rent</div>
           </div>
           <div className="flex justify-between items-center mb-[20px]">
-            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              {filterTranslation.t('includeMainFee')}
-            </Typography>
+            <div className="text-g5 font-normal">Include maintenance fee</div>
             <Toggle className="ml-2" register={register('monthToggle')} />
           </div>
           <div className="mb-[8px]">
-            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              {filterTranslation.t('minMax')}
-            </Typography>
+            <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 20,000,000 ￦ </div>
           </div>
           <div className="mb-[8px]">
             <Input
-              placeholder={filterTranslation.t('monthMin') as string}
+              placeholder="Min"
               type="number"
               register={register('monthMin', {
                 validate: () => {
@@ -205,7 +197,7 @@ export default function Filter({
             />
           </div>
           <Input
-            placeholder={filterTranslation.t('monthMax') as string}
+            placeholder="Max"
             type="number"
             register={register('monthMax', {
               validate: () => {
@@ -216,62 +208,67 @@ export default function Filter({
             disabled={!watch('monthToggle')}
           />
         </div>
-        <div className="mt-[72px] mb-[4px]">
-          <Typography variant="header" fontStyle="semiBold">
-            {filterTranslation.t('dateAvailable')}
-          </Typography>
+
+        <hr />
+
+        {/* Date available */}
+        <div className="my-[40px]">
+          <div className="mb-[4px]">
+            <div className={styles['sub-header']}>Date available</div>
+          </div>
+          <div className="flex justify-between items-center mb-[20px]">
+            <div className="text-g5 font-normal">View rooms available now</div>
+            <Toggle className="ml-2" register={register('dateAvailable')} />
+          </div>
+          <div className="mb-[16px]">
+            <Input
+              placeholder="MM-DD-YYYY"
+              type="text"
+              register={register('mmddyyyy', {
+                validate: () => {
+                  return true;
+                  // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
+                },
+              })}
+              disabled={!watch('dateAvailable')}
+              // error={errors.mmddyyyy as FieldError}
+            />
+          </div>
         </div>
-        <div className="flex justify-between items-center mb-[20px]">
-          <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-            {filterTranslation.t('viewRoomsAvailable')}
-          </Typography>
-          <Toggle className="ml-2" register={register('dateAvailable')} />
+
+        <hr />
+
+        {/* Type of housing */}
+        <div className="my-[32px]">
+          <div className="mb-[4px]">
+            <div className={styles['sub-header']}>Type of housing</div>
+          </div>
+          <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
+            <Checkbox
+              type="outlined"
+              label={filterTranslation.t('studio') as string}
+              register={register('studioChecked')}
+              checked={watch('studioChecked')}
+            />
+            <Checkbox
+              type="outlined"
+              label={filterTranslation.t('bedFlats') as string}
+              register={register('bedFlatsChecked')}
+              checked={watch('bedFlatsChecked')}
+            />
+            <Checkbox
+              type="outlined"
+              label={filterTranslation.t('shareHouse') as string}
+              register={register('shareHouseChecked')}
+              checked={watch('shareHouseChecked')}
+            />
+          </div>
         </div>
-        <div className="mb-[16px]">
-          <Input
-            placeholder={filterTranslation.t('mmddyyyy') as string}
-            type="text"
-            register={register('mmddyyyy', {
-              validate: () => {
-                return true;
-                // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
-              },
-            })}
-            disabled={!watch('dateAvailable')}
-            // error={errors.mmddyyyy as FieldError}
-          />
-        </div>
-        <hr className="mt-[40px] border-x-0" />
+
+        <hr />
+
         <div className="mt-[32px] mb-[4px]">
-          <Typography variant="header" fontStyle="semiBold">
-            {filterTranslation.t('typeOfHousing')}
-          </Typography>
-        </div>
-        <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('studio') as string}
-            register={register('studioChecked')}
-            checked={watch('studioChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('bedFlats') as string}
-            register={register('bedFlatsChecked')}
-            checked={watch('bedFlatsChecked')}
-          />
-          <Checkbox
-            type="outlined"
-            label={filterTranslation.t('shareHouse') as string}
-            register={register('shareHouseChecked')}
-            checked={watch('shareHouseChecked')}
-          />
-        </div>
-        <hr className="mt-[32px] border-x-0" />
-        <div className="mt-[32px] mb-[4px]">
-          <Typography variant="header" fontStyle="semiBold">
-            {filterTranslation.t('furnishing')}
-          </Typography>
+          <div className={styles['sub-header']}>Furnishing</div>
         </div>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px] ">
           <Checkbox
@@ -349,7 +346,7 @@ export default function Filter({
           </div>
         </div>
         {showToast && <Toast message={showMessage} duration={3000} onVisibleChange={handleToastVisibleChange} />}
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
