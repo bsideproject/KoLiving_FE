@@ -6,8 +6,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Toast, Chip, Select, Typography, Toggle, Checkbox, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { GuList, DongList } from '../../public/js/guDongList.ts';
 import Step1 from '@/pages/room/addRoom/step1.tsx';
+import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 interface AppLayoutProps {
   children: ReactNode;

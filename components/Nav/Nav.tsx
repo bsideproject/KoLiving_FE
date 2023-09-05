@@ -35,17 +35,21 @@ export default function Nav() {
     <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center`}>
       {menus.map((menu, index) => {
         const IconComponent = menu.icon;
-        
+
         return (
           <div
-            className={`my-[9px] align-middle items-center cursor-pointer`}
+            className="my-[9px] align-middle items-center cursor-pointer"
             key={menu.name}
-            onClick={() => setActiveMenu(index) }
+            onClick={() => setActiveMenu(index)}
             onMouseEnter={() => setHoverMenu(index)}
             onMouseLeave={() => setHoverMenu(-1)}
           >
             <div className="grid justify-center">
-              <IconComponent className={`${index === activeMenu ? activeStrokeColor : defaultStrokeColor} ${hoverMenu === index ? 'cursor-pointer' : ''}`} />
+              <IconComponent
+                className={`${index === activeMenu ? activeStrokeColor : defaultStrokeColor} ${
+                  hoverMenu === index ? 'cursor-pointer' : ''
+                }`}
+              />
             </div>
             <div className={styles[`${index === activeMenu ? 'nav-activeText' : 'nav-text'}`]}>{menu.name}</div>
           </div>

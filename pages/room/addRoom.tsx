@@ -4,6 +4,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Toast, Chip, Select, Typography, Toggle, Checkbox, Space, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { Option } from '@/components/Select/Select.tsx';
 import { GuList, DongList } from '../../public/js/guDongList.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
@@ -11,6 +12,11 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
     ...(await serverSideTranslations(locale as string, ['filter', 'common'])),
   },
 });
+
+export interface GuDong extends Option {
+  gu: string | number;
+  guLabel: string;
+}
 
 export default function Filter({
   getChildData,
@@ -23,12 +29,12 @@ export default function Filter({
 }) {
   const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [guValue, setGuValue] = useState<{ value: string; label: string }>({
+  const [guValue, setGuValue] = useState<Option>({
     value: '',
     label: '',
   });
   // const modalSetter = React.useContext(ModalSetterContext);
-  const [dongValue, setDongValue] = useState<{ gu: string; guLabel: string; value: string; label: string }>({
+  const [dongValue, setDongValue] = useState<GuDong>({
     gu: '',
     guLabel: '',
     value: '',
@@ -76,16 +82,16 @@ export default function Filter({
   }, [dongValue.label, guValue?.label]);
   /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
   const handleDongChange = useCallback(
-    (selectedValue: string, selectedLabel: string) => {
+    (option: Option) => {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
-      setDongValue({ value: selectedValue, label: selectedLabel, gu: guValue.value, guLabel: guValue.label });
+      setDongValue({ ...option, gu: guValue.value, guLabel: guValue.label });
     },
     [guValue.label, guValue.value]
   );
   /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
-  const handleGuChange = useCallback((selectedValue: string, selectedLabel: string) => {
+  const handleGuChange = useCallback((option: Option) => {
     // 선택된 value와 label 값을 이용하여 원하는 작업 수행
-    setGuValue({ value: selectedValue, label: selectedLabel });
+    setGuValue(option);
   }, []);
   // 옵션 제거 시 실행될 함수
   const handleOptionRemove = (option: string) => {
