@@ -1,5 +1,5 @@
 import { ROOM_TYPE, Room } from '@/public/types/room';
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from '@/public/types/user';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import Dot from '@/public/icons/dot.svg';
@@ -43,10 +43,20 @@ const Photo = ({ photos }: PhotoProps) => {
 
 const Footer = ({ room, onClick }: CardProps) => {
   const roomType = room.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
+  };
 
   return (
     <div className="py-[12px] relative">
-      <Like className="stroke-g7 stroke-[1.5px] absolute right-[-6px] cursor-pointer" />
+      <Like
+        className={` ${
+          isLiked ? 'stroke-r2 fill-r2' : 'stroke-g7'
+        }  stroke-[1.5px] absolute right-[-6px] cursor-pointer`}
+        onClick={handleLikeClick}
+      />
       <div className="text-g6 text-[12px]">
         {room.dong}, {room.gu}
       </div>
