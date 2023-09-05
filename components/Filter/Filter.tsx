@@ -301,14 +301,18 @@ export default function Filter({
         </div>
         <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
-            <div className="mb-[13px] space-x-[8px] max-w-max">
-              <Button type="reset" size="reset" color="noBg">
-                {filterTranslation.t('reset')}
-              </Button>
-              <Button type="submit" size="apply">
-                {/* TODO : 조회된 Room 개수로 변경 필요  */}
-                {`${filterTranslation.t('apply')} (${roomsLength} Rooms)`}
-              </Button>
+            <div className="mb-[13px] space-x-[8px] max-w-max flex">
+              <div className="w-[30%]">
+                <Button type="reset" size="lg" color="noBg">
+                  Reset
+                </Button>
+              </div>
+              <div className="w-[70%]">
+                <Button type="submit" size="lg">
+                  {/* TODO : 조회된 Room 개수로 변경 필요  */}
+                  Apply {`(${roomsLength} Rooms)`}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
