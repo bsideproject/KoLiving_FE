@@ -60,8 +60,12 @@ const Footer = ({ room, onClick }: CardProps) => {
       <div className="text-g6 text-[12px]">
         {room.dong}, {room.gu}
       </div>
-      <div className="font-poppins text-[20px] font-semibold text-g7">
-        &#8361;{formatPrice(room.deposit)} <span className="font-pretendard text-[14px] font-medium">/ month</span>
+      <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex gap-4">
+        &#8361;{formatPrice(room.deposit)}
+        <span className="font-pretendard text-[14px] font-medium">/ month </span>
+        <span className="font-pretendard text-[14px] text-r1 font-bold bg-g1">
+          {room.deposit ? 'Deposit required' : ''}
+        </span>
       </div>
       <div className="text-[14px] font-medium">{roomType}</div>
       <div className="text-g5 text-[12px] pb-[12px] flex items-center gap-[6px]">
@@ -78,6 +82,7 @@ const Footer = ({ room, onClick }: CardProps) => {
 };
 
 export default function RoomCard({ room, onClick }: CardProps) {
+  console.log('room>>>>>', room);
   return (
     <Card
       title={<UserInfo userInfo={room?.userInfo} />}
