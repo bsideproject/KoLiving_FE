@@ -33,7 +33,7 @@
   }
 
   &.noBg {
-    @apply bg-transparent border border-solid border-r1 rounded-[2px] text-r1 font-bold;
+    @apply bg-g0 border border-solid border-r1 rounded-[2px] text-r1 font-bold;
   }
 
   &.none {

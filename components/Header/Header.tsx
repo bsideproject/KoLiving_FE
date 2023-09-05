@@ -29,7 +29,7 @@ const renderHandler = (type: string | undefined, color: string) => {
     case 'plus':
       return <Plus className="stroke-r1" />;
     case 'close':
-      return <Close className={`${color} stroke-[2]`} />;
+      return <Close width={24} height={24} className={`${color} stroke-[2]`} />;
     case 'pencil':
       return <Pencil className={`${color} stroke-[2]`} />;
     default:

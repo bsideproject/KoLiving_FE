@@ -11,9 +11,9 @@ import FilterImg from '@/public/icons/filter.svg';
 import { useRouter } from 'next/router';
 import { Chip, Typography, Nav } from '@/components/index.tsx';
 import { FilterType } from '@/public/types/filter';
-import Filter from '@/pages/room/filter.tsx';
 import useModal from '@/hooks/useModal.ts';
 import { FieldValues } from 'react-hook-form';
+import Filter from '@/components/Filter/Filter.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -186,8 +186,8 @@ function Home() {
         There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
-        <div className="mt-[20px]">
-          <RoomCard room={room} key={`room-${idx}`} onClick={() => handleCardClick(idx)} />
+        <div className="mt-[20px]" key={`room-${idx}`}>
+          <RoomCard room={room} onClick={() => handleCardClick(idx)} />
         </div>
       ))}
       <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
