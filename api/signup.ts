@@ -23,3 +23,21 @@ export const postPassword = async (payload: ProfilePayload) => {
     },
   });
 };
+
+export const postProfile = async (payload: ProfilePayload) => {
+  const { firstName, lastName, genderCode, birthDate, description, email } = payload;
+
+  return fetchData(`/api/v1/auth/profile?email=${email ? encodeURIComponent(email) : ''}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      genderCode,
+      birthDate,
+      description,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
