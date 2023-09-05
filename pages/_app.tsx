@@ -42,14 +42,20 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
         toastOptions={{
           duration: 3000,
           style: {
-            background: '#F44225',
             borderRadius: '4px',
             boxShadow: '0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15)',
-            color: '#FAFAFA',
             width: '100%',
             textAlign: 'left',
             bottom: '115px',
+            justifyContent: 'left',
           },
+          error: {
+            style: {
+              background: '#F44225',
+              color: '#FAFAFA',
+            },
+          },
+          icon: null,
         }}
         position="bottom-center"
         containerStyle={{

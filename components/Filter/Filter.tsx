@@ -120,14 +120,14 @@ export default function Filter({
     if (!dong) return;
 
     if (selectedLocations.length === 5) {
-      toast('You can select up to five');
+      toast.error('You can select up to five');
       return;
     }
 
     const isExist = selectedLocations.some((item) => item.dong.value === dong.value);
 
     if (isExist) {
-      toast('Already selected');
+      toast.error('Already selected');
       return;
     }
 
