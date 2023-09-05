@@ -46,7 +46,7 @@ const Footer = ({ room, onClick }: CardProps) => {
 
   return (
     <div className="py-[12px] relative">
-      <Like className="stroke-g7 stroke-[1.5px] absolute right-[-6px]" />
+      <Like className="stroke-g7 stroke-[1.5px] absolute right-[-6px] cursor-pointer" />
       <div className="text-g6 text-[12px]">
         {room.dong}, {room.gu}
       </div>
