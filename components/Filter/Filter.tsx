@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, use } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
@@ -163,24 +163,10 @@ export default function Filter({
             <div className={styles['sub-header']}>Location</div>
           </div>
           <div className="grid grid-flow-row gap-[8px]">
-            <Select
-              options={GuList}
-              register={register('gu', {
-                validate: () => {
-                  setGuValue(watch('gu'));
-                  return true;
-                },
-              })}
-              placeholder="Gu"
-              onChange={handleGuChange}
-            />
+            <Select options={GuList} register={register('gu')} placeholder="Gu" onChange={handleGuChange} />
             <Select
               options={filteredDongList}
-              register={register('dong', {
-                validate: () => {
-                  return true;
-                },
-              })}
+              register={register('dong')}
               placeholder="Dong"
               disabled={!watch('gu')}
               onChange={handleDongChange}

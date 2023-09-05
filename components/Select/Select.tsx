@@ -1,7 +1,6 @@
 import React from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import ReactSelect, { ActionMeta, GroupBase, OnChangeValue, StylesConfig } from 'react-select';
-import styles from './Select.module.scss';
 
 interface Option {
   value: string | number;
@@ -56,33 +55,21 @@ const customStyles: StylesConfig<Option, boolean, GroupBase<Option>> = {
 };
 
 function Select({ placeholder, register, options, size, disabled, onChange }: SelectProps) {
-  const [placeholderStyle, setPlaceholderStyle] = React.useState(styles.placeholder);
-  const disabledStyle = disabled ? styles.disabled : '';
-  const handleSelectChange = (newValue: OnChangeValue<any, any>) => {
+  const handleSelectChange = (newValue: OnChangeValue<any, any>, actionMeta: ActionMeta<Option>) => {
+    const customEvent = {
+      target: {
+        name: register.name,
+        value: newValue.value,
+      },
+    };
+
+    register.onChange(customEvent);
+
     // 선택된 value와 label을 부모 컴포넌트로 전달
     onChange?.(newValue.value as string, newValue.label);
   };
 
   return (
-    // <select
-    //   className={`${styles.select} ${placeholderStyle} ${size === 'lg' && styles.lg} ${disabledStyle}`}
-    //   {...register}
-    //   onChange={handleSelectChange}
-    //   defaultValue=""
-    //   disabled={disabled}
-    // >
-    //   {placeholder && (
-    //     <option value="" disabled hidden>
-    //       {placeholder}
-    //     </option>
-    //   )}
-    //   {options.map((option) => (
-    //     <option key={option.value} value={option.value}>
-    //       {option.label}
-    //     </option>
-    //   ))}
-    // </select>
-
     <ReactSelect
       {...register}
       onChange={handleSelectChange}
