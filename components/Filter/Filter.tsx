@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback, use } from 'react';
+import React, { useState, useEffect, useCallback, use, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import { Toast, Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
+import toast from 'react-hot-toast';
 import styles from './Filter.module.scss';
+import { Option } from '../Select/Select';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -67,6 +69,11 @@ const FURNISHING = [
   },
 ];
 
+interface GuDong {
+  gu: Option;
+  dong: Option;
+}
+
 export default function Filter({
   getChildData,
   closeModal,
@@ -76,83 +83,68 @@ export default function Filter({
   closeModal: () => void;
   roomsLength: number;
 }) {
-  const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [guValue, setGuValue] = useState<{ value: string; label: string }>({
-    value: '',
-    label: '',
-  });
-  // const modalSetter = React.useContext(ModalSetterContext);
-  const [dongValue, setDongValue] = useState<{ gu: string; guLabel: string; value: string; label: string }>({
-    gu: '',
-    guLabel: '',
-    value: '',
-    label: '',
-  });
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [showToast, setShowToast] = useState(false);
-  const [showMessage, setMessage] = useState<string>('');
-  const filteredDongList = DongList.filter((v) => v.gu === guValue.value);
+  const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
     closeModal();
   };
 
-  const handleToastVisibleChange = (visible: boolean) => {
-    setShowToast(visible);
-  };
-
-  // 옵션 선택 시 실행될 함수, 유효성 검증
-  const handleOptionSelect = useCallback(() => {
-    if (!dongValue.label) return;
-
-    let resultOptions: string[];
-    const option = dongValue.label;
-    setSelectedOptions((prevSelectedOptions) => {
-      const isExist = prevSelectedOptions.some((item) => item.includes(option));
-      // Location이 5개 이상 선택 될 경우 Toast 노출
-      if (prevSelectedOptions.length >= 5) {
-        setShowToast(true);
-        // TODO translation 사용해서 여기 나중에 바꿔줘야함
-        setMessage('You can select up to five');
-        return [...prevSelectedOptions];
-      }
-
-      if (!isExist) {
-        resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
-      } else {
-        setShowToast(true);
-        // TODO translation 사용해서 여기 나중에 바꿔줘야함
-        setMessage('Already selected');
-        resultOptions = prevSelectedOptions;
-      }
-      return [...resultOptions];
-    });
-  }, [dongValue.label, guValue?.label]);
-  /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
-  const handleDongChange = useCallback(
-    (selectedValue: string, selectedLabel: string) => {
-      // 선택된 value와 label 값을 이용하여 원하는 작업 수행
-      setDongValue({ value: selectedValue, label: selectedLabel, gu: guValue.value, guLabel: guValue.label });
-    },
-    [guValue.label, guValue.value]
-  );
-  /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
-  const handleGuChange = useCallback((selectedValue: string, selectedLabel: string) => {
-    // 선택된 value와 label 값을 이용하여 원하는 작업 수행
-    setGuValue({ value: selectedValue, label: selectedLabel });
-  }, []);
   // 옵션 제거 시 실행될 함수
-  const handleOptionRemove = (option: string) => {
-    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+  const removeLocation = (option: string | number) => {
+    setSelectedLocations((prevSelectedLocations) =>
+      prevSelectedLocations.filter((item) => {
+        const value = String(option);
+
+        return item.dong.value !== value;
+      })
+    );
   };
-  useEffect(() => {
-    handleOptionSelect();
-  }, [dongValue.label, handleOptionSelect]);
 
   const toggleMonthRent = watch('monthToggle');
   const toggleDeposit = watch('depositToggle');
   const dateAvailableToggle = watch('dateAvailableToggle');
+  const gu = watch('gu');
+  const dong = watch('dong');
+
+  const filteredDongList = useMemo(() => {
+    if (!gu) {
+      return [];
+    }
+
+    return DongList.filter((v) => v.gu === gu.value);
+  }, [gu]);
+
+  useEffect(() => {
+    if (!dong) return;
+
+    if (selectedLocations.length === 5) {
+      toast('You can select up to five');
+      return;
+    }
+
+    const isExist = selectedLocations.some((item) => item.dong.value === dong.value);
+
+    if (isExist) {
+      toast('Already selected');
+      return;
+    }
+
+    setSelectedLocations((prevSelectedLocations) => {
+      prevSelectedLocations.push({
+        gu: {
+          ...gu,
+        },
+        dong: {
+          ...dong,
+        },
+      });
+
+      return [...prevSelectedLocations];
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dong]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
@@ -163,22 +155,25 @@ export default function Filter({
             <div className={styles['sub-header']}>Location</div>
           </div>
           <div className="grid grid-flow-row gap-[8px]">
-            <Select options={GuList} register={register('gu')} placeholder="Gu" onChange={handleGuChange} />
-            <Select
-              options={filteredDongList}
-              register={register('dong')}
-              placeholder="Dong"
-              disabled={!watch('gu')}
-              onChange={handleDongChange}
-            />
+            <Select options={GuList} register={register('gu')} placeholder="Gu" />
+            <Select options={filteredDongList} register={register('dong')} placeholder="Dong" disabled={!watch('gu')} />
           </div>
 
           {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
-          <div className="mt-[16px] overflow-x-auto whitespace-nowrap">
-            {selectedOptions.map((option) => {
-              return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
-            })}
-          </div>
+          {selectedLocations.length > 0 && (
+            <div className="mt-[16px] overflow-x-auto whitespace-nowrap">
+              {selectedLocations.map((option) => {
+                return (
+                  <Chip
+                    key={option.dong.value}
+                    label={`${option.gu.label}, ${option.dong.label}`}
+                    onDelete={() => removeLocation?.(option.dong.value)}
+                    clicked
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <hr />
@@ -302,7 +297,6 @@ export default function Filter({
             </div>
           </div>
         </div>
-        {showToast && <Toast message={showMessage} duration={3000} onVisibleChange={handleToastVisibleChange} />}
       </div>
     </form>
   );

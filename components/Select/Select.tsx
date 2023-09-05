@@ -2,7 +2,7 @@ import React from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import ReactSelect, { ActionMeta, GroupBase, OnChangeValue, StylesConfig } from 'react-select';
 
-interface Option {
+export interface Option {
   value: string | number;
   label: string;
 }
@@ -13,7 +13,7 @@ interface SelectProps {
   options: Option[];
   size?: 'sm' | 'lg';
   disabled?: boolean;
-  onChange?: (selectedValue: string, selectedLabel: string) => void; // 새로운 onChange prop 추가
+  onChange?: (option: Option) => void; // 새로운 onChange prop 추가
 }
 
 const customStyles: StylesConfig<Option, boolean, GroupBase<Option>> = {
@@ -59,14 +59,14 @@ function Select({ placeholder, register, options, size, disabled, onChange }: Se
     const customEvent = {
       target: {
         name: register.name,
-        value: newValue.value,
+        value: newValue,
       },
     };
 
     register.onChange(customEvent);
 
     // 선택된 value와 label을 부모 컴포넌트로 전달
-    onChange?.(newValue.value as string, newValue.label);
+    onChange?.(newValue);
   };
 
   return (
