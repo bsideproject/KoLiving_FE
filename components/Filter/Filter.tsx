@@ -236,7 +236,7 @@ export default function Filter({
           </div>
           {!dateAvailableToggle && (
             <div className="mb-[16px]">
-              <Calendar placeholder="MM-DD-YYYY" type="text" register={register('mmddyyyy')} />
+              <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} />
             </div>
           )}
         </div>
