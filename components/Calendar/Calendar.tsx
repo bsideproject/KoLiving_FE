@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from 'react';
-import ReactCalendar, { TileContentFunc } from 'react-calendar';
+import React, { useEffect, useRef, useState } from 'react';
+import ReactCalendar from 'react-calendar';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
-import { format } from 'date-fns';
 import styles from './Calendar.module.scss';
 import Button from '../Button/Button';
 
@@ -20,6 +19,21 @@ export default function Calendar({ placeholder, register, error, disabled }: Inp
   const toggleCalendar = () => {
     setIsCalendarShow((state) => !state);
   };
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: TouchEvent) => {
+      if (calendarRef.current && !calendarRef.current.contains(e.target as Node)) {
+        setIsCalendarShow(false);
+      }
+    };
+
+    document.addEventListener('touchend', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('touchend', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="relative w-full">
@@ -32,7 +46,7 @@ export default function Calendar({ placeholder, register, error, disabled }: Inp
         {...register}
       />
       {isCalendarShow && (
-        <div className="border-[#bdbdbd] border-[1px] absolute bg-g0">
+        <div className="border-[#bdbdbd] border-[1px] absolute bg-g0" ref={calendarRef}>
           <ReactCalendar
             prev2Label={null}
             next2Label={null}
