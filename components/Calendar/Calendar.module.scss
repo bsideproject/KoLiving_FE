@@ -1,0 +1,18 @@
+.input {
+  @apply border-g4 border-solid border-[1px] rounded-[2px] bg-g0 w-full h-[48px] focus:border-g6 placeholder-g4 pl-[12px] font-pretendard font-normal;
+
+  &.error {
+    @apply border-a1;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.eye {
+  @apply w-[24px] h-[24px];
+}
+
+.warning {
+  @apply text-a1 font-pretendard text-[14px] h-[14px] mt-[4px];
+}
