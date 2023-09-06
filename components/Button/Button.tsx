@@ -7,7 +7,7 @@ interface ButtonProps {
   disabled?: boolean;
   size?: 'lg' | 'md' | 'sm' | 'reset' | 'apply';
   type?: 'button' | 'reset' | 'submit';
-  color?: 'r1' | 'r4' | 'g2' | 'none' | 'noBg';
+  color?: 'r1' | 'r4' | 'g2' | 'none' | 'noBg' | 'outlined';
   height?: string;
 }
 

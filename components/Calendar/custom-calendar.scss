@@ -1,0 +1,95 @@
+.react-calendar {
+  width: 100%;
+  // border: 1px solid #bdbdbd;
+
+  &__navigation {
+    display: flex;
+    height: 64px;
+    padding: 12px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    &__arrow {
+      border-radius: 4px;
+      border: 1px solid #d8dae5;
+      background: #fff;
+      display: flex;
+      width: 32px;
+      height: 32px;
+      padding: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &__label {
+      color: #051b44;
+      font-feature-settings: 'clig' off, 'liga' off;
+
+      /* Headline/H4 */
+      font-family: Inter;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px; /* 133.333% */
+      letter-spacing: -0.5px;
+    }
+  }
+
+  &__viewContainer {
+    display: inline-flex;
+    padding: 20px 39px;
+    justify-content: center;
+    align-items: center;
+    background: var(--neutral-n-0, #fff);
+  }
+
+  &__month-view {
+    &__weekdays__weekday {
+      color: var(--neutral-n-600, #8f95b2);
+      font-feature-settings: 'clig' off, 'liga' off;
+      height: 32px;
+
+      font-family: Inter;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 16px; /* 160% */
+      letter-spacing: -0.2px;
+      text-decoration: none;
+      text-align: center;
+
+      abbr {
+        text-decoration: none;
+      }
+    }
+
+    &__days__day {
+      display: flex;
+      width: 36px;
+      height: 32px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--neutral-n-900, #051b44);
+      font-feature-settings: 'clig' off, 'liga' off;
+
+      /* Functional/Input/I2 */
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px; /* 171.429% */
+      letter-spacing: -0.5px;
+
+      &--neighboringMonth {
+        color: #8f95b2;
+      }
+    }
+  }
+
+  &__tile--active {
+    color: #ff8e00;
+    font-weight: 700;
+  }
+}
