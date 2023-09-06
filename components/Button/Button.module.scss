@@ -39,6 +39,10 @@
   &.none {
     @apply bg-transparent font-black border-none text-black;
   }
+
+  &.outlined {
+    @apply bg-g0 border border-solid border-g4 rounded-[2px] text-n700 font-semibold;
+  }
 }
 .reset {
   @apply h-[54px] w-[110px] rounded-[2px] font-pretendard bg-transparent border border-solid border-r1 text-r1 font-semibold text-[18px];
