@@ -8,6 +8,7 @@ import { GuList, DongList } from '@/public/js/guDongList.ts';
 import toast from 'react-hot-toast';
 import styles from './Filter.module.scss';
 import { Option } from '../Select/Select';
+import Calendar from '../Calendar/Calendar';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -147,7 +148,7 @@ export default function Filter({
   }, [dong]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="h-screen overflow-y-scroll font-pretendard">
         {/* Location */}
         <div className="mt-[20px] mb-[32px]">
@@ -235,7 +236,7 @@ export default function Filter({
           </div>
           {!dateAvailableToggle && (
             <div className="mb-[16px]">
-              <Input placeholder="MM-DD-YYYY" type="text" register={register('mmddyyyy')} />
+              <Calendar placeholder="MM-DD-YYYY" type="text" register={register('mmddyyyy')} />
             </div>
           )}
         </div>

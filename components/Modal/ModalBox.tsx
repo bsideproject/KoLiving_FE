@@ -111,7 +111,9 @@ function Modal({
   ) : (
     <div className={styles.full}>
       {defaultHeader()}
-      <div className="mt-[62px] px-[20px] text-g6 text-[16px] font-light">{custom ? children : content}</div>
+      <div className="mt-[62px] px-[20px] text-g6 text-[16px] font-light w-full max-w-[440px] min-w-[320px]">
+        {custom ? children : content}
+      </div>
     </div>
   );
 }
