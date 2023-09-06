@@ -182,7 +182,7 @@ function Home() {
           );
         })}
       </div>
-      <Typography variant="body" customClassName="text-left font-bold text-[16px]">
+      <Typography variant="body" customClassName="text-left font-bold text-[16px] text-g7">
         There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
@@ -190,7 +190,7 @@ function Home() {
           <RoomCard room={room} onClick={() => handleCardClick(idx)} />
         </div>
       ))}
-      <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+      <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
         <div className="w-full">
           <div className="mb-[13px] space-x-[8px] max-w-max">
             <Nav />

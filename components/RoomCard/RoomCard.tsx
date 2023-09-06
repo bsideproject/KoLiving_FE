@@ -4,7 +4,9 @@ import { User } from '@/public/types/user';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import Dot from '@/public/icons/dot.svg';
 import Like from '@/public/icons/like.svg';
+import Camera from '@/public/icons/camera.svg';
 import Card from '../Card/Card';
+import styles from '@/pages/room/room.module.scss';
 
 interface CardProps {
   room: Room;
@@ -38,10 +40,20 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 };
 
 const Photo = ({ photos }: PhotoProps) => {
-  return <div className="h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }} />;
+  return (
+      <div className="relative h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }}>
+        <div className={`${styles.tag} flex items-center gap-[4px]`}>
+          <Camera
+            xmlns="http://www.w3.org/2000/svg"
+            width="16px" 
+            height="16px"
+          />{`+${(photos || []).length }`}
+        </div>
+      </div>
+  );
 };
 
-const Footer = ({ room, onClick }: CardProps) => {
+const Footer = ({ room }: CardProps) => {
   const roomType = room.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
   const [isLiked, setIsLiked] = useState(false);
 
