@@ -45,12 +45,12 @@ function Home() {
     const resultFilter: string[] = [];
     Object.keys(filterParams).forEach((key) => {
       // eslint-disable-next-line no-unused-expressions
-      filterParams[`${key}`] === 'true' && resultFilter.push(key);
+      filterParams[`${key}`] && resultFilter.push(key);
     });
     setFilters(() => [...resultFilter]);
   };
 
-  const makeSubmitParam = (data: FieldValues) => {
+  const makeSubmitParam = (data: FieldValues) : FilterType  => {
     const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
     const furnishings = [
       'bedChecked',
@@ -66,50 +66,51 @@ function Home() {
       'heaterChecked'
     ];
 
-    let typeOfHousing = 'false';
-    let furnishing = 'false';
-    let monthRent = 'false';
-    let deposit = 'false';
-    let location = 'false';
-    let dateAvailable = 'false';
+    let typeOfHousing = false;
+    let furnishing = false;
+    let monthRent = false;
+    let deposit = false;
+    let location = false;
+    let dateAvailable = false
 
     // typeofhousing 중 하나라도 체크되면 true
     typeOfHousings.forEach((key) => {
       if (data[`${key}`]) {
-        typeOfHousing = 'true';
+        typeOfHousing = true;
       }
     });
 
     // furnishing 중 하나라도 체크되면 true
     furnishings.forEach((key) => {
       if (data[`${key}`]) {
-        furnishing = 'true';
+        furnishing = true;
       }
     });
 
     // monthRent 비용 체크
     if ((data[`${'monthMax'}`] || '') !== '' || (data[`${'monthMin'}`] || '') !== '') {
-      monthRent = 'true';
+      monthRent = true;
     }
 
     // deposit 비용 체크
     if ((data[`${'depositMax'}`] || '') !== '' || (data[`${'depositMin'}`] || '') !== '') {
-      deposit = 'true';
+      deposit = true;
     }
 
     if ((data.gu || '') !== '') {
-      location = 'true';
+      location = true;
     }
 
     if ((data.dateAvailable || '') !== '') {
-      dateAvailable = 'true';
+      dateAvailable = true;
     }
     return { typeOfHousing, furnishing, monthRent, deposit, location, dateAvailable };
   };
 
   const getChildData = async (childData: any) => {
-    const filteredChips = makeSubmitParam(childData) as FilterType;
+    const filteredChips = makeSubmitParam(childData);
     makeFilters(filteredChips);
+    debugger;
     await selectRooms();
   };
 
@@ -150,7 +151,6 @@ function Home() {
   };
   // 옵션 제거 시 실행될 함수
   const handleOptionRemove = (option: string, index: number) => {
-    console.log('prevSelectedOptions', selectedOptions);
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option ));
     const removedOptions = selectedOptions.filter((item) => item === option);
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
