@@ -56,13 +56,14 @@ function Home() {
       'bedChecked',
       'inductionChecked',
       'airconditionerChecked',
-      'gasStoveChecked',
-      'refrigeratorChecked',
+      'stoveChecked',
+      'refregeratorChecked',
       'wardrobeChecked',
       'washingMachineChecked',
       'doorLockChecked',
       'tvChecked',
       'kitchenetteChecked',
+      'heaterChecked'
     ];
 
     let typeOfHousing = 'false';
