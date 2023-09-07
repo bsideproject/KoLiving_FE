@@ -84,12 +84,11 @@ export default function Filter({
   closeModal: () => void;
   roomsLength: number;
 }) {
-  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch, reset } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
-    debugger;
     closeModal();
   };
 
@@ -117,6 +116,11 @@ export default function Filter({
 
     return DongList.filter((v) => v.gu === gu.value);
   }, [gu]);
+
+  const resetFilter = useCallback(() => {
+    reset();
+    // 다시 api 요청
+  }, [reset]);
 
   useEffect(() => {
     if (!dong) return;
@@ -286,7 +290,7 @@ export default function Filter({
           <div className="w-full">
             <div className="mb-[13px] space-x-[8px] max-w-max flex">
               <div className="w-[30%]">
-                <Button type="reset" size="lg" color="noBg">
+                <Button type="reset" size="lg" color="noBg" onClick={resetFilter}>
                   Reset
                 </Button>
               </div>
