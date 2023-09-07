@@ -89,6 +89,7 @@ export default function Filter({
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
+    debugger;
     closeModal();
   };
 
@@ -268,7 +269,7 @@ export default function Filter({
         <div className="mt-[32px] mb-[4px]">
           <div className={styles['sub-header']}>Furnishing</div>
         </div>
-        <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px] ">
+        <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px]">
           {FURNISHING.map((item) => {
             return (
               <Checkbox
@@ -291,7 +292,6 @@ export default function Filter({
               </div>
               <div className="w-[70%]">
                 <Button type="submit" size="lg">
-                  {/* TODO : 조회된 Room 개수로 변경 필요  */}
                   Apply {`(${roomsLength} Rooms)`}
                 </Button>
               </div>
