@@ -74,14 +74,14 @@ function Home() {
 
     // typeofhousing 중 하나라도 체크되면 true
     typeOfHousings.forEach((key) => {
-      if (data[`${key}`] === 'true') {
+      if (data[`${key}`]) {
         typeOfHousing = 'true';
       }
     });
 
     // furnishing 중 하나라도 체크되면 true
     furnishings.forEach((key) => {
-      if (data[`${key}`] === 'true') {
+      if (data[`${key}`]) {
         furnishing = 'true';
       }
     });
@@ -103,7 +103,6 @@ function Home() {
     if ((data.dateAvailable || '') !== '') {
       dateAvailable = 'true';
     }
-
     return { typeOfHousing, furnishing, monthRent, deposit, location, dateAvailable };
   };
 
@@ -129,8 +128,6 @@ function Home() {
   useEffect(() => {
     (async () => {
       await selectRooms();
-      const filterParams: FilterType = router.query as FilterType;
-      makeFilters(filterParams);
     })();
   }, [router.query]);
 
@@ -152,7 +149,8 @@ function Home() {
   };
   // 옵션 제거 시 실행될 함수
   const handleOptionRemove = (option: string, index: number) => {
-    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
+    console.log('prevSelectedOptions', selectedOptions);
+    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option ));
     const removedOptions = selectedOptions.filter((item) => item === option);
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
     if (selectedOptions.length === 0 || removedOptions.length > 0) {
@@ -186,7 +184,8 @@ function Home() {
         There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
-        <div className="mt-[20px]" key={`room-${idx}`}>
+        // Nav 영역 맨 마지막 부분 잘리는 문제로 추가
+        <div className={`mt-[20px] ${rooms.length-1 === idx ? 'mb-[83px]': ''}`}  key={`room-${idx}`}>
           <RoomCard room={room} onClick={() => handleCardClick(idx)} />
         </div>
       ))}
