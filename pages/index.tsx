@@ -14,10 +14,11 @@ import { FilterType } from '@/public/types/filter';
 import useModal from '@/hooks/useModal.ts';
 import { FieldValues } from 'react-hook-form';
 import Filter from '@/components/Filter/Filter.tsx';
+import { useTranslation } from 'next-i18next';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
-    ...(await serverSideTranslations(locale as string, ['common'])),
+    ...(await serverSideTranslations(locale as string, ['roomList', 'common'])),
   },
 });
 
@@ -26,6 +27,9 @@ type HomeProps = NextPage & {
 };
 
 function Home() {
+  const roomListTranslation = useTranslation('roomList');
+  const commonTranslation = useTranslation('common');
+
   const [rooms, setRooms] = useState<Room[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
@@ -44,8 +48,7 @@ function Home() {
   const makeFilters = (filterParams: FilterType) => {
     const resultFilter: string[] = [];
     Object.keys(filterParams).forEach((key) => {
-      // eslint-disable-next-line no-unused-expressions
-      filterParams[`${key}`] && resultFilter.push(key);
+      filterParams[`${key}`] && resultFilter.push(commonTranslation.t(`${key}`));
     });
     setFilters(() => [...resultFilter]);
   };
@@ -73,7 +76,7 @@ function Home() {
     let location = false;
     let dateAvailable = false
 
-    // typeofhousing 중 하나라도 체크되면 true
+    // typeOfHousing 중 하나라도 체크되면 true
     typeOfHousings.forEach((key) => {
       if (data[`${key}`]) {
         typeOfHousing = true;
@@ -110,7 +113,6 @@ function Home() {
   const getChildData = async (childData: any) => {
     const filteredChips = makeSubmitParam(childData);
     makeFilters(filteredChips);
-    debugger;
     await selectRooms();
   };
 
@@ -151,7 +153,9 @@ function Home() {
   };
   // 옵션 제거 시 실행될 함수
   const handleOptionRemove = (option: string, index: number) => {
-    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option ));
+    const resultFilters = filters.filter( (item) => item !== option);
+    setFilters(() => [...resultFilters]);
+
     const removedOptions = selectedOptions.filter((item) => item === option);
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
     if (selectedOptions.length === 0 || removedOptions.length > 0) {
@@ -168,6 +172,7 @@ function Home() {
           style={{ alignSelf: 'flex-start' }}
         />
         {filters.map((label, index) => {
+          console.log('label >>', label);
           return (
             <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }}>
               <Chip
