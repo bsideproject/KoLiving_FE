@@ -3,5 +3,6 @@
   "email": "이메일",
   "password": "비밀번호",
   "validEmail": "유효한 이메일 정보가 아닙니다",
-  "validPassword": "이메일 또는 비밀번호가 유효하지 않습니다"
+  "validPassword": "이메일 또는 비밀번호가 유효하지 않습니다",
+  "typeOfHousing" : "Type of housing"
 }

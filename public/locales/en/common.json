@@ -11,5 +11,6 @@
   "complete": "Complete",
   "filters" : "Filters",
   "uptofive" : "You can select up to five",
-  "viewRooms": "View rooms without deposit"
+  "viewRooms": "View rooms without deposit",
+  "typeOfHousing" : "Type of housing"
 }
