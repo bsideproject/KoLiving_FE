@@ -139,15 +139,18 @@ function Home() {
     router.push(`/room/${id}`);
   };
 
+  // Chip 클릭 했을 때 이벤트
   const handleChipClick = (label: React.SetStateAction<string>) => {
     setClickedChip(label);
   };
+
+  // 맨 처음 Filter 에서 불러올 때 첫번째 항목이 선택되어 있도록 수정
   const handlePropsClick = (option: string, index: number) => {
     let result = false;
-    if ((clickedChip || '') !== '') {
-      result = clickedChip === option || selectedOptions.length === 1;
-    } else {
-      result = index === 0;
+    if ((clickedChip || '') !== '' && filters.length > 1) {
+      result = filters[0] === option;
+    } else if (filters.length === 1 ) {
+      result = option === filters?.[0]
     }
     return result;
   };
@@ -156,10 +159,9 @@ function Home() {
     const resultFilters = filters.filter( (item) => item !== option);
     setFilters(() => [...resultFilters]);
 
-    const removedOptions = selectedOptions.filter((item) => item === option);
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
-    if (selectedOptions.length === 0 || removedOptions.length > 0) {
-      setClickedChip(selectedOptions[0] || '');
+    if ((clickedChip || '' )  === '' ||  selectedOptions.length !== filters.length) {
+      setClickedChip(filters?.[0]);
     }
   };
 
