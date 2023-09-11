@@ -40,15 +40,9 @@ export default function Step1() {
     label: '',
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [showToast, setShowToast] = useState(false);
-  const [showMessage, setMessage] = useState<string>('');
-  const filteredDongList = DongList.filter((v) => v.gu === guValue.value);
+  const filteredDongList = DongList.filter((v) => v.gu === guValue?.value || '');
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // durl
-  };
-
-  const handleToastVisibleChange = (visible: boolean) => {
-    setShowToast(visible);
+    
   };
 
   // 옵션 선택 시 실행될 함수, 유효성 검증
@@ -61,18 +55,14 @@ export default function Step1() {
       const isExist = prevSelectedOptions.some((item) => item.includes(option));
       // Location이 5개 이상 선택 될 경우 Toast 노출
       if (prevSelectedOptions.length >= 5) {
-        setShowToast(true);
-        // TODO translation 사용해서 여기 나중에 바꿔줘야함
-        setMessage('You can select up to five');
+        
         return [...prevSelectedOptions];
       }
 
       if (!isExist) {
         resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
       } else {
-        setShowToast(true);
         // TODO translation 사용해서 여기 나중에 바꿔줘야함
-        setMessage('Already selected');
         resultOptions = prevSelectedOptions;
       }
       return [...resultOptions];
@@ -84,7 +74,7 @@ export default function Step1() {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
       setDongValue({ ...option, gu: guValue.value, guLabel: guValue.label });
     },
-    [guValue.label, guValue.value]
+    [guValue?.label, guValue?.value]
   );
   /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
   const handleGuChange = useCallback((option: Option) => {
