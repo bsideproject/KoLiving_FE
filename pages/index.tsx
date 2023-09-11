@@ -150,7 +150,7 @@ function Home() {
     if ((clickedChip || '') !== '' && filters.length > 1) {
       result = filters[0] === option;
     } else if (filters.length === 1 ) {
-      result = option === filters?.[0]
+      result = option === filters[0]
     }
     return result;
   };
