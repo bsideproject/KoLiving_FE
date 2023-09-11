@@ -79,11 +79,11 @@ export default function Step1() {
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="w-6/7 sm:w-1/2 md:w-3/7 lg:w-1/4 xl:w-1/5">
           <div className="mb-[4px]">
-            <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
+            <Typography variant="body" customClassName="text-[16px] font-bold text-g7 mb-[16px]">
               Type of housing
             </Typography>
           </div>
-          <div className="mb-[13px]">
+          <div className="mb-[14px]">
             <div className="mb-3 grid grid-cols-3 gap-0 text-g0">
               <div className="col-span-1 text-[16px] text-g0">
                 <Button size="lg" type="button" disabled={false}>
@@ -103,12 +103,12 @@ export default function Step1() {
             </div>
           </div>
           <div className="py-[28px]">
-            <div className="mb-[4px]">
+            <div className="mb-[16px]">
               <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
                 House Information
               </Typography>
             </div>
-            <div className="flex justify-between items-center mb-[20px]">
+            <div className="flex justify-between items-center mb-[8px]">
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total bedrooms
               </Typography>
@@ -131,7 +131,7 @@ export default function Step1() {
               />
             </div>
           </div>
-          <div className="flex justify-between items-center mb-[20px]">
+          <div className="flex justify-between items-center mb-[8px]">
             <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
               Total Roomates
             </Typography>
@@ -141,7 +141,7 @@ export default function Step1() {
             register={register('dateAvailable')}
             placeholder={"Select"}
           />
-          <div className="mb-[4px]">
+          <div className="mb-[4px] mt-[30px]">
             <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
               Furnishing
             </Typography>
