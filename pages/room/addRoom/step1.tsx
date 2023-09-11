@@ -42,7 +42,7 @@ export default function Step1() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [showToast, setShowToast] = useState(false);
   const [showMessage, setMessage] = useState<string>('');
-  const filteredDongList = DongList.filter((v) => v.gu === guValue.value);
+  const filteredDongList = DongList.filter((v) => v.gu === guValue?.value || '');
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     // durl
   };
@@ -84,7 +84,7 @@ export default function Step1() {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
       setDongValue({ ...option, gu: guValue.value, guLabel: guValue.label });
     },
-    [guValue.label, guValue.value]
+    [guValue?.label, guValue?.value]
   );
   /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
   const handleGuChange = useCallback((option: Option) => {
