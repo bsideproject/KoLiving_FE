@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
+import Router, { useRouter } from 'next/router';
 import {
   Stepper,
   Select,
@@ -36,8 +37,7 @@ export default function Step1() {
   });
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // 여기
-
+    Router.push('/room/addRoom/step3');
   };
 
   // 옵션 선택 시 실행될 함수, 유효성 검증
