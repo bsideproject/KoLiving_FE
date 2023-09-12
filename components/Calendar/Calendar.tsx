@@ -36,6 +36,15 @@ export default function Calendar({ placeholder, register, error, disabled, value
     // 마운트 시 이벤트 등록
     document.addEventListener('click', handleClickOutside);
 
+    const customEvent = {
+      target: {
+        name: register.name,
+        value: isCalendarShow
+      },
+    };
+
+    register.onChange(customEvent);
+
     // 언마운트 시 이벤트 해제
     return () => {
       document.removeEventListener('click', handleClickOutside);
@@ -74,7 +83,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
   return (
     <div className="relative w-full" ref={calendarRef}>
       <input
-        className={`${styles.input} ${hasError ? styles.error : ''}`}
+        className={`${styles.input} ${hasError ? styles.error : ''} ${disabled ? 'bg-g2': 'bg-g0'} `}
         placeholder={placeholder}
         disabled={disabled}
         onClick={toggleCalendar}
