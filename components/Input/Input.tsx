@@ -28,7 +28,7 @@ function Input({ placeholder, register, type, error, maxLength, disabled }: Inpu
   return (
     <div className="relative w-full">
       <input
-        className={`${styles.input} ${hasError ? styles.error : ''}`}
+        className={`${styles.input} ${hasError ? styles.error : ''} ${disabled ? 'bg-g2': 'bg-g0'}`}
         placeholder={placeholder}
         type={inputType}
         maxLength={maxLength}
