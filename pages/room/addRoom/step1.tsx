@@ -32,8 +32,7 @@ export default function Step1() {
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [yesButtonClicked, setYesButtonClicked] = useState(true);
   const [noButtonClicked, setNoButtonClicked] = useState(false);
-  const [calendarClick, setCalendarClicked] = useState(false);
-
+  const [isCalendarShow, setCalendarShow] = useState(false);
   const [guValue, setGuValue] = useState<Option>({
     value: '',
     label: '',
@@ -91,6 +90,10 @@ export default function Step1() {
   const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
   };
+  const handleCalendarShow = (isShow: boolean) => {
+    setCalendarShow(isShow);
+  }
+  
   useEffect(() => {
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
@@ -160,10 +163,9 @@ export default function Step1() {
               <Input
                 placeholder="Price"
                 type="number"
-                register={register('monthMin', {
+                register={register('monthPrice', {
                   validate: () => {
                     return true;
-                    // return !!watch('monthToggle') && isRequired(value, '필수 항목');
                   },
                 })}
               />
@@ -183,7 +185,7 @@ export default function Step1() {
             <Input
               placeholder={"Price"}
               type="text"
-              register={register('price')}
+              register={register('depositPrice')}
               disabled={watch('depositChecked')}
             />
           </div>
@@ -220,7 +222,7 @@ export default function Step1() {
               <Input
                 placeholder={filterTranslation.t('Price') as string}
                 type="text"
-                register={register('price', {
+                register={register('maintananceFee', {
                   validate: () => {
                     return true;
                   },
@@ -266,9 +268,9 @@ export default function Step1() {
             </Typography>
           </div>
           <section className='mb-[8px]'>
-            <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} disabled={watch('availableChecked')}/>
+            <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} disabled={watch('availableChecked')} handleCalendarShow={handleCalendarShow}/>
           </section>
-          <div className={`grid grid-cols-2 gap-[8px] ${watch('dateAvailable') ? 'mb-[450px]' : 'mb-[83px]'} `}>
+          <div className={`grid grid-cols-2 gap-[8px] ${isCalendarShow ? 'mb-[533px]' : 'mb-[166px]'} `}>
             <Checkbox
               type="outlined"
               label={filterTranslation.t('Available now') as string}
@@ -279,7 +281,9 @@ export default function Step1() {
           <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
-                <Button size="lg" type="submit" disabled={false}>
+                <Button size="lg" type="submit" disabled={!watch('dong') || !watch('monthPrice') || !(watch('depositPrice') || watch('depositChecked')) || !(watch('availableChecked') || watch('dateAvailable')) }
+                  onClick={() => { console.log('dateAvailable', watch('dateAvailable'));}}
+                >
                   {filterTranslation.t('Next')}
                 </Button>
               </div>
