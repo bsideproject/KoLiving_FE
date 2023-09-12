@@ -85,6 +85,13 @@ export default function Step1() {
   const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
   };
+  const handleDeposit = (checked: boolean) => {
+    if (!checked) {
+      
+    } else {
+      
+    }
+  };
   useEffect(() => {
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
@@ -169,26 +176,20 @@ export default function Step1() {
               Min 0 ￦ - Max 50,000,000 ￦
             </Typography>
           </div>
-          <div className="mb-[16px]">
+          <div className={`mb-[16px]`}>
             <Input
-              placeholder={filterTranslation.t('Price') as string}
+              placeholder={"Price"}
               type="text"
-              register={register('price', {
-                validate: () => {
-                  return true;
-                  // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
-                },
-              })}
-              disabled={!watch('dateAvailable')}
-              // error={errors.mmddyyyy as FieldError}
+              register={register('price')}
+              disabled={watch('depositChecked')}
             />
           </div>
           <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
             <Checkbox
               type="outlined"
-              label={filterTranslation.t('No Deposit') as string}
-              register={register('studioChecked')}
-              checked={watch('studioChecked')}
+              label={"No Deposit"}
+              register={register('depositChecked')}
+              checked={watch('depositChecked')}
             />
           </div>
           <div className="mb-[4px] mt-[28px]">
@@ -220,7 +221,7 @@ export default function Step1() {
                   // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
                 },
               })}
-              disabled={!watch('dateAvailable')}
+              
             />
           </div>
           <div className="flex justify-between items-center mb-[20px]">
