@@ -13,13 +13,14 @@ interface InputProps {
   maxLength?: number;
   disabled?: boolean;
   value?: string;
+  handleCalendarShow?: (data: boolean) => void;
 }
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function Calendar({ placeholder, register, error, disabled, value }: InputProps) {
+export default function Calendar({ placeholder, register, error, disabled, value, handleCalendarShow }: InputProps) {
   const hasError = error && error.message;
   const [isCalendarShow, setIsCalendarShow] = useState(false);
   const calendarRef = useRef<HTMLDivElement | null>(null);
@@ -36,15 +37,6 @@ export default function Calendar({ placeholder, register, error, disabled, value
     // 마운트 시 이벤트 등록
     document.addEventListener('click', handleClickOutside);
 
-    const customEvent = {
-      target: {
-        name: register.name,
-        value: isCalendarShow
-      },
-    };
-
-    register.onChange(customEvent);
-
     // 언마운트 시 이벤트 해제
     return () => {
       document.removeEventListener('click', handleClickOutside);
@@ -53,6 +45,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
 
   const toggleCalendar = () => {
     setIsCalendarShow((state) => !state);
+    handleCalendarShow?.(!isCalendarShow);
   };
 
   useEffect(() => {
