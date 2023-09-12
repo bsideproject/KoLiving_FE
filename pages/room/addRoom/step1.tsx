@@ -18,6 +18,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import { Option } from '@/components/Select/Select';
 import { GuDong } from '../addRoom';
+import Calendar from '@/components/Calendar/Calendar.tsx';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -28,6 +29,10 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 export default function Step1() {
   const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
+  const [yesButtonClicked, setYesButtonClicked] = useState(true);
+  const [noButtonClicked, setNoButtonClicked] = useState(false);
+  const [calendarClick, setCalendarClicked] = useState(false);
+
   const [guValue, setGuValue] = useState<Option>({
     value: '',
     label: '',
@@ -85,13 +90,6 @@ export default function Step1() {
   const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
   };
-  const handleDeposit = (checked: boolean) => {
-    if (!checked) {
-      
-    } else {
-      
-    }
-  };
   useEffect(() => {
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
@@ -110,7 +108,7 @@ export default function Step1() {
               Location
             </Typography>
           </div>
-          <section>
+          <section className="mb-[8px]">
             <Select
               options={GuList}
               register={register('gu', {
@@ -142,13 +140,17 @@ export default function Step1() {
               return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
             })}
           </div>
+
+          {/* 구분선 */}
+          <hr />
+
           <div className="py-[28px]">
-            <div className="mb-[4px] mt-[36px]">
+            <div className="mt-[64px] mb-[16px]">
               <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
-                {filterTranslation.t('monthlyRent')}
+                Monthly rent
               </Typography>
             </div>
-            <div className="flex justify-between items-center mb-[20px]">
+            <div className="flex justify-between items-center mb-[8px]">
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Min 0 ￦ - Max 20,000,000 ￦
               </Typography>
@@ -166,12 +168,12 @@ export default function Step1() {
               />
             </div>
           </div>
-          <div className="mb-[4px]">
+          <div className="mb-[10px]">
             <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
               Deposit
             </Typography>
           </div>
-          <div className="flex justify-between items-center mb-[20px]">
+          <div className="flex justify-between items-center mb-[8px]">
             <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
               Min 0 ￦ - Max 50,000,000 ￦
             </Typography>
@@ -200,30 +202,31 @@ export default function Step1() {
           <div className="mb-[13px]">
             <div className="mb-3 grid grid-cols-2 gap-0">
               <div className="col-span-1">
-                <Button size="lg" type="submit" disabled={false}>
-                  {filterTranslation.t('YES')}
+                <Button size="lg" type="button" onClick={() => { setNoButtonClicked(false); setYesButtonClicked(true); return; }} color={`${noButtonClicked ? 'outlined' : 'r1' }`} >
+                  YES
                 </Button>
               </div>
               <div className="col-span-1">
-                <Button size="lg" type="submit" color="noBg" disabled={false}>
-                  {filterTranslation.t('NO')}
+                <Button size="lg" type="button" onClick={() => { setYesButtonClicked(false); setNoButtonClicked(true); return; }} color={`${yesButtonClicked ? 'outlined' : 'r1' }`}>
+                  NO
                 </Button>
               </div>
             </div>
           </div>
-          <div className="mt-[16px] mb-[16px]">
-            <Input
-              placeholder={filterTranslation.t('Price') as string}
-              type="text"
-              register={register('price', {
-                validate: () => {
-                  return true;
-                  // return !!watch('dateAvailable') && isRequired(value, '필수 항목');
-                },
-              })}
-              
-            />
-          </div>
+          {
+            yesButtonClicked &&
+            <div className="mt-[16px] mb-[16px]">
+              <Input
+                placeholder={filterTranslation.t('Price') as string}
+                type="text"
+                register={register('price', {
+                  validate: () => {
+                    return true;
+                  },
+                })}
+              />
+            </div>
+          }
           <div className="flex justify-between items-center mb-[20px]">
             <Typography variant="body" fontStyle="semiBold" customClassName="text-[16px]">
               Included (optional)
@@ -261,27 +264,18 @@ export default function Step1() {
               Date available
             </Typography>
           </div>
-          <section>
-            <Select
-              options={[]}
-              register={register('dateAvailable', {
-                // validate: () => {
-                //   setGuValue(watch('dateAvailable'));
-                //   return true;
-                // },
-              })}
-              placeholder={filterTranslation.t('MM-DD-YYYY') as string}
-            />
+          <section className='mb-[8px]'>
+            <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} disabled={watch('availableChecked')}/>
           </section>
-          <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
+          <div className={`grid grid-cols-2 gap-[8px] ${watch('dateAvailable') ? 'mb-[450px]' : 'mb-[83px]'} `}>
             <Checkbox
               type="outlined"
               label={filterTranslation.t('Available now') as string}
-              register={register('studioChecked')}
-              checked={watch('studioChecked')}
+              register={register('availableChecked')}
+              checked={watch('availableChecked')}
             />
           </div>
-          <div className="mt-[111px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+          <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
                 <Button size="lg" type="submit" disabled={false}>
@@ -295,3 +289,4 @@ export default function Step1() {
     </>
   );
 }
+
