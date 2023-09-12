@@ -22,6 +22,7 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 });
 
 export default function Step1() {
+  console.log('useRouter >>', useRouter());
   const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [guValue, setGuValue] = useState<Option>({
