@@ -5,13 +5,10 @@ import { GetStaticPropsContext } from 'next';
 import Router, { useRouter } from 'next/router';
 import {
   Stepper,
-  Toast,
   Chip,
   Select,
   Typography,
-  Toggle,
   Checkbox,
-  Space,
   Button,
   Input,
 } from '@/components/index.tsx';
@@ -29,7 +26,7 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function Step1() {
   const filterTranslation = useTranslation('filter');
-  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch, setValue } = useForm({ mode: 'onChange' });
   const [yesButtonClicked, setYesButtonClicked] = useState(true);
   const [noButtonClicked, setNoButtonClicked] = useState(false);
   const [isCalendarShow, setCalendarShow] = useState(false);
@@ -47,7 +44,13 @@ export default function Step1() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const filteredDongList = DongList.filter((v) => v.gu === guValue?.value || '');
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    Router.push('/room/addRoom/step2');
+    Router.push(
+      {
+      pathname: '/room/addRoom/step2',
+      query: { ...data },
+    },
+    `/room/addRoom/step2`
+    )
   };
 
   // 옵션 선택 시 실행될 함수, 유효성 검증
@@ -92,6 +95,16 @@ export default function Step1() {
   };
   const handleCalendarShow = (isShow: boolean) => {
     setCalendarShow(isShow);
+  }
+
+  const isNextStep = () => {
+    return !watch('dong') || !watch('monthPrice') || !(watch('depositPrice') || watch('depositChecked')) || !(watch('availableChecked') || watch('dateAvailable')) || !(yesButtonClicked && watch('maintananceFee') || noButtonClicked);
+  }
+
+  const handleNoButtonClicked = () => {
+    setYesButtonClicked(false); 
+    setNoButtonClicked(true); 
+    setValue('maintananceFee', '');
   }
   
   useEffect(() => {
@@ -138,7 +151,7 @@ export default function Step1() {
               onChange={handleDongChange}
             />
           </section>
-          <div>
+          <div className={'mb-[32px]'}>
             {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
             {selectedOptions.map((option) => {
               return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
@@ -149,7 +162,7 @@ export default function Step1() {
           <hr />
 
           <div className="py-[28px]">
-            <div className="mt-[64px] mb-[16px]">
+            <div className="mt-[32px] mb-[16px]">
               <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
                 Monthly rent
               </Typography>
@@ -210,7 +223,7 @@ export default function Step1() {
                 </Button>
               </div>
               <div className="col-span-1">
-                <Button size="lg" type="button" onClick={() => { setYesButtonClicked(false); setNoButtonClicked(true); return; }} color={`${yesButtonClicked ? 'outlined' : 'r1' }`}>
+                <Button size="lg" type="button" onClick={ () => handleNoButtonClicked()} color={`${yesButtonClicked ? 'outlined' : 'r1' }`}>
                   NO
                 </Button>
               </div>
@@ -281,7 +294,7 @@ export default function Step1() {
           <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
-                <Button size="lg" type="submit" disabled={!watch('dong') || !watch('monthPrice') || !(watch('depositPrice') || watch('depositChecked')) || !(watch('availableChecked') || watch('dateAvailable')) }
+                <Button size="lg" type="submit" disabled={isNextStep()}
                   onClick={() => { console.log('dateAvailable', watch('dateAvailable'));}}
                 >
                   {filterTranslation.t('Next')}
