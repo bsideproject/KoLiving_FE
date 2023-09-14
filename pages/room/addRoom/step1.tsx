@@ -27,9 +27,9 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 export default function Step1() {
   const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch, setValue } = useForm({ mode: 'onChange' });
-  const [yesButtonClicked, setYesButtonClicked] = useState(true);
-  const [noButtonClicked, setNoButtonClicked] = useState(false);
+  const [buttonState, setButtonState] = useState('YES');
   const [isCalendarShow, setCalendarShow] = useState(false);
+  
   const [guValue, setGuValue] = useState<Option>({
     value: '',
     label: '',
@@ -49,7 +49,7 @@ export default function Step1() {
       pathname: '/room/addRoom/step2',
       query: { ...data },
     },
-    `/room/addRoom/step2`
+    '/room/addRoom/step2'
     )
   };
 
@@ -98,14 +98,16 @@ export default function Step1() {
   }
 
   const isNextStep = () => {
-    return !watch('dong') || !watch('monthPrice') || !(watch('depositPrice') || watch('depositChecked')) || !(watch('availableChecked') || watch('dateAvailable')) || !(yesButtonClicked && watch('maintananceFee') || noButtonClicked);
+    return !watch('dong') || !watch('monthPrice') || !(watch('depositPrice') || watch('depositChecked')) || !(watch('availableChecked') || watch('dateAvailable')) || !(buttonState === 'YES' && watch('maintananceFee') || buttonState === 'NO');
   }
 
-  const handleNoButtonClicked = () => {
-    setYesButtonClicked(false); 
-    setNoButtonClicked(true); 
-    setValue('maintananceFee', '');
-  }
+  const handleButtonClick = (value: string) => {
+    setButtonState(value);
+  };
+
+  const getButtonColor = (value: string) => {
+    return buttonState === value ? 'r1' : 'outlined';
+  };
   
   useEffect(() => {
     handleOptionSelect();
@@ -218,19 +220,19 @@ export default function Step1() {
           <div className="mb-[13px]">
             <div className="mb-3 grid grid-cols-2 gap-0">
               <div className="col-span-1">
-                <Button size="lg" type="button" onClick={() => { setNoButtonClicked(false); setYesButtonClicked(true); return; }} color={`${noButtonClicked ? 'outlined' : 'r1' }`} >
+                <Button size="lg" type="button" onClick={() => handleButtonClick('YES')} color={getButtonColor('YES')} >
                   YES
                 </Button>
               </div>
               <div className="col-span-1">
-                <Button size="lg" type="button" onClick={ () => handleNoButtonClicked()} color={`${yesButtonClicked ? 'outlined' : 'r1' }`}>
+                <Button size="lg" type="button" onClick={() => handleButtonClick('NO')} color={getButtonColor('NO')} >
                   NO
                 </Button>
               </div>
             </div>
           </div>
           {
-            yesButtonClicked &&
+            (buttonState === 'YES') &&
             <div className="mt-[16px] mb-[16px]">
               <Input
                 placeholder={filterTranslation.t('Price') as string}
