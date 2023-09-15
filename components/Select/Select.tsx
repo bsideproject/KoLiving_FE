@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import ReactSelect, { ActionMeta, GroupBase, OnChangeValue, StylesConfig } from 'react-select';
 
@@ -71,6 +71,7 @@ function Select({ placeholder, register, options, size, disabled, onChange }: Se
 
   return (
     <ReactSelect
+      instanceId={useId()}
       {...register}
       onChange={handleSelectChange}
       placeholder={placeholder}
