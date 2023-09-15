@@ -94,7 +94,6 @@ const Footer = ({ room }: CardProps) => {
 };
 
 export default function RoomCard({ room, onClick }: CardProps) {
-  console.log('room>>>>>', room);
   return (
     <Card
       title={<UserInfo userInfo={room?.userInfo} />}

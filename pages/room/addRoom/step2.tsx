@@ -21,8 +21,9 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 export default function Step1() {
   console.log('useRouter >>', useRouter());
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [selectedButton, setSelectedButton] = useState('Studio');
-  const [buttonState, setButtonState] = useState('YES');
+  const [typeButton, setTypeButton] = useState('Studio');
+  const [ynButton, setYnButton] = useState('YES');
+  const [bedroomCount, setBedroomCount ] = useState(2);
   
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     Router.push('/room/addRoom/step3');
@@ -35,20 +36,24 @@ export default function Step1() {
   ];
 
   const handleButtonClick = (label: string) => {
-    setSelectedButton(label);
+    setTypeButton(label);
   };
 
   const getButtonColor = (label: string) => {
-    return selectedButton === label ? 'r1' : 'outlined';
+    return typeButton === label ? 'r1' : 'outlined';
   }
 
   const handleYNButtonClick = (value: string) => {
-    setButtonState(value);
+    setYnButton(value);
   };
 
   const getYNButtonColor = (value: string) => {
-    return buttonState === value ? 'r1' : 'outlined';
+    return ynButton === value ? 'r1' : 'outlined';
   };
+
+  const callbackBedroomCount = (count: number) => {
+    setBedroomCount(count);
+  }
 
   return (
     <>
@@ -94,19 +99,24 @@ export default function Step1() {
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total bedrooms
               </Typography>
-              <Stepper2 disabled={true}/>
+              <Stepper2 
+                disabled={['Studio', '1bed flat'].indexOf(typeButton) > -1} 
+                initCount={typeButton === 'Studio' ? 0 : (typeButton === 'Share house') ? 2 : 1 } 
+                disabledLeft={(typeButton === 'Share house') && bedroomCount === 2}
+                callbackCount={callbackBedroomCount}
+              />
             </div>
             <div className="flex justify-between items-center mb-[8px]">
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total bathrooms
               </Typography>
-              <Stepper2 />
+              <Stepper2 initCount={0} />
             </div>
             <div className="flex justify-between items-center mb-[8px]">
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total roommates
               </Typography>
-              <Stepper2 />
+              <Stepper2 initCount={0} />
             </div>
           </div>
 
@@ -132,7 +142,7 @@ export default function Step1() {
             </div>
           </div>
           {
-            (buttonState === 'YES') &&
+            (ynButton === 'YES') &&
             <div className="grid grid-cols-2 gap-[12px] mt-[16px]">
               <Checkbox
                 type="outlined"
