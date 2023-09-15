@@ -5,15 +5,12 @@ import { GetStaticPropsContext } from 'next';
 import Router, { useRouter } from 'next/router';
 import {
   Stepper,
-  Select,
+  Stepper2,
   Typography,
   Checkbox,
   Button,
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { GuList, DongList } from '@/public/js/guDongList.ts';
-import { Option } from '@/components/Select/Select';
-import { GuDong } from '../addRoom';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -23,52 +20,35 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function Step1() {
   console.log('useRouter >>', useRouter());
-  
-  const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [guValue, setGuValue] = useState<Option>({
-    value: '',
-    label: '',
-  });
+  const [selectedButton, setSelectedButton] = useState('Studio');
+  const [buttonState, setButtonState] = useState('YES');
   
-  const [dongValue, setDongValue] = useState<GuDong>({
-    gu: '',
-    guLabel: '',
-    value: '',
-    label: '',
-  });
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     Router.push('/room/addRoom/step3');
   };
 
-  // 옵션 선택 시 실행될 함수, 유효성 검증
-  const handleOptionSelect = useCallback(() => {
-    if (!dongValue.label) return;
+  const buttons = [
+    { label: 'Studio'},
+    { label: '1bed flat'},
+    { label: 'Share house'}
+  ];
 
-    let resultOptions: string[];
-    const option = dongValue.label;
-    setSelectedOptions((prevSelectedOptions) => {
-      const isExist = prevSelectedOptions.some((item) => item.includes(option));
-      // Location이 5개 이상 선택 될 경우 Toast 노출
-      if (prevSelectedOptions.length >= 5) {
-        
-        return [...prevSelectedOptions];
-      }
+  const handleButtonClick = (label: string) => {
+    setSelectedButton(label);
+  };
 
-      if (!isExist) {
-        resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
-      } else {
-        // TODO translation 사용해서 여기 나중에 바꿔줘야함
-        resultOptions = prevSelectedOptions;
-      }
-      return [...resultOptions];
-    });
-  }, [dongValue.label, guValue?.label]);
-  
-  useEffect(() => {
-    handleOptionSelect();
-  }, [dongValue.label, handleOptionSelect]);
+  const getButtonColor = (label: string) => {
+    return selectedButton === label ? 'r1' : 'outlined';
+  }
+
+  const handleYNButtonClick = (value: string) => {
+    setButtonState(value);
+  };
+
+  const getYNButtonColor = (value: string) => {
+    return buttonState === value ? 'r1' : 'outlined';
+  };
 
   return (
     <>
@@ -85,25 +65,25 @@ export default function Step1() {
               Type of housing
             </Typography>
           </div>
-          <div className="mb-[14px]">
+          <div className="mb-[32px]">
             <div className="mb-3 grid grid-cols-3 gap-0 text-g0">
-              <div className="col-span-1 text-[16px] text-g0">
-                <Button size="lg" type="button" disabled={false}>
-                  Studio
-                </Button>
-              </div>
-              <div className="col-span-1 text-[16px] bg-g0">
-                <Button size="lg" type="button" disabled={false}>
-                  1bed flat
-                </Button>
-              </div>
-              <div className="col-span-1 text-[16px]">
-                <Button size="lg" type="button" disabled={false}>
-                  Share house
-                </Button>
-              </div>
+              {buttons.map( (button,index) => (
+                <div key={button.label + index} >
+                  <Button 
+                    size="lg"
+                    type="button"
+                    color={getButtonColor(button.label)}
+                    onClick={() => handleButtonClick(button.label)}
+                  >
+                    {button.label}
+                  </Button>
+                </div>
+              ))}
             </div>
           </div>
+
+          <hr />
+
           <div className="py-[28px]">
             <div className="mb-[16px]">
               <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
@@ -114,106 +94,107 @@ export default function Step1() {
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total bedrooms
               </Typography>
+              <Stepper2 disabled={true}/>
             </div>
-            <div className="mb-[8px]">
-              <Select
-                options={[]}
-                register={register('dateAvailable')}
-                placeholder={"Select"}
-              />
-              <Select
-                options={[]}
-                register={register('dateAvailable')}
-                placeholder={"Select"}
-              />
-              <Select
-                options={[]}
-                register={register('dateAvailable')}
-                placeholder={"Select"}
-              />
+            <div className="flex justify-between items-center mb-[8px]">
+              <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
+                Total bathrooms
+              </Typography>
+              <Stepper2 />
+            </div>
+            <div className="flex justify-between items-center mb-[8px]">
+              <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
+                Total roommates
+              </Typography>
+              <Stepper2 />
             </div>
           </div>
-          <div className="flex justify-between items-center mb-[8px]">
-            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              Total Roomates
-            </Typography>
-          </div>
-          <Select
-            options={[]}
-            register={register('dateAvailable')}
-            placeholder={"Select"}
-          />
-          <div className="mb-[4px] mt-[30px]">
+
+          <hr />
+          
+          <div className="mb-[4px] mt-[32px]">
             <Typography variant="body" customClassName="text-[16px] font-bold text-g7">
-              Furnishing
+              Furnished
             </Typography>
           </div>
-          <div className="flex justify-between items-center mb-[20px]">
-            <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
-              Not furnished
-            </Typography>
+          <div className="mb-[16px]">
+            <div className="mb-3 grid grid-cols-2 gap-0">
+              <div className="col-span-1">
+                <Button size="lg" type="button" onClick={() => handleYNButtonClick('YES')} color={getYNButtonColor('YES')} >
+                  YES
+                </Button>
+              </div>
+              <div className="col-span-1">
+                <Button size="lg" type="button" onClick={() => handleYNButtonClick('NO')} color={getYNButtonColor('NO')} >
+                  NO
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
-            <Checkbox
-              type="outlined"
-              label="Bed"
-              register={register('gasChecked')}
-              checked={watch('gasChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label="Wardrobe"
-              register={register('waterChecked')}
-              checked={watch('waterChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label="TV"
-              register={register('electricityChecked')}
-              checked={watch('electricityChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label="Air conditioner"
-              register={register('cleaningChecked')}
-              checked={watch('cleaningChecked')}
-            />
-             <Checkbox
-              type="outlined"
-              label="Heater"
-              register={register('electricityChecked')}
-              checked={watch('electricityChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label="Washing machine"
-              register={register('cleaningChecked')}
-              checked={watch('cleaningChecked')}
-            />
-             <Checkbox
-              type="outlined"
-              label="Stove"
-              register={register('electricityChecked')}
-              checked={watch('electricityChecked')}
-            />
-            <Checkbox
-              type="outlined"
-              label="Refrigerator"
-              register={register('cleaningChecked')}
-              checked={watch('cleaningChecked')}
-            />
-             <Checkbox
-              type="outlined"
-              label="Door lock"
-              register={register('electricityChecked')}
-              checked={watch('electricityChecked')}
-            />
-          </div>
-          <div className="mt-[111px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+          {
+            (buttonState === 'YES') &&
+            <div className="grid grid-cols-2 gap-[12px] mt-[16px]">
+              <Checkbox
+                type="outlined"
+                label="Bed"
+                register={register('gasChecked')}
+                checked={watch('gasChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Wardrobe"
+                register={register('waterChecked')}
+                checked={watch('waterChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="TV"
+                register={register('electricityChecked')}
+                checked={watch('electricityChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Air conditioner"
+                register={register('cleaningChecked')}
+                checked={watch('cleaningChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Heater"
+                register={register('electricityChecked')}
+                checked={watch('electricityChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Washing machine"
+                register={register('cleaningChecked')}
+                checked={watch('cleaningChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Stove"
+                register={register('electricityChecked')}
+                checked={watch('electricityChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Refrigerator"
+                register={register('cleaningChecked')}
+                checked={watch('cleaningChecked')}
+              />
+              <Checkbox
+                type="outlined"
+                label="Door lock"
+                register={register('electricityChecked')}
+                checked={watch('electricityChecked')}
+              />
+            </div>
+          }
+          <div className=" fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
-                <Button size="lg" type="submit" disabled={false}>
-                  {filterTranslation.t('Next')}
+                <Button size="lg" type="submit" disabled={true}>
+                  Next
                 </Button>
               </div>
             </div>
