@@ -11,6 +11,7 @@ export { default as Radio } from '@/components/Radio/Radio.tsx';
 export { default as Select } from '@/components/Select/Select.tsx';
 export { default as SignUp } from '@/components/SignUp/Step1.tsx';
 export { default as Stepper } from '@/components/Stepper/Stepper.tsx';
+export { default as Stepper2 } from '@/components/Stepper2/Stepper2.tsx';
 export { default as Textarea } from '@/components/Textarea/Textarea.tsx';
 export { default as Toggle } from '@/components/Toggle/Toggle.tsx';
 export { default as Typography } from '@/components/Typography/Typography.tsx';

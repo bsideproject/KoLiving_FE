@@ -1,0 +1,12 @@
+.stepper_container {
+    @apply flex items-center justify-center space-x-4;
+  }
+  
+  .rounded {
+    @apply w-[32px] h-[32px] rounded-full text-r1 flex items-center justify-center focus:outline-none;
+    background: rgba(255, 142, 0, 0.10)
+  }
+
+  .disabled {
+    @apply bg-g3 text-g0
+  }
