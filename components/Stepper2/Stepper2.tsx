@@ -18,7 +18,7 @@ export default function Stepper2 ( { disabled }: StepperProps )  {
         disabled={disabled}
       >-
       </button>
-      <span className='font-bold text-g7'>{count}</span>
+      <span className='w-10 inline-block text-center font-bold text-g7'>{count}</span>
       <button 
         type="button"
         className={`${styles.rounded} ${disabled ? styles.disabled : ''} `}
