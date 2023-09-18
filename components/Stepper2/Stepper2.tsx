@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Stepper2.module.scss';
 
-
 interface StepperProps {
-    disabled ?: boolean
-    disabledLeft ?: boolean
-    disabledRight ?: boolean
-    initCount : number
-    callbackCount?: (count: number) => void;
+  disabled?: boolean;
+  disabledLeft?: boolean;
+  disabledRight?: boolean;
+  initCount: number;
+  callbackCount?: (count: number) => void;
 }
 
-export default function Stepper2 ( { disabled, disabledLeft, disabledRight, initCount, callbackCount }: StepperProps )  {
-    const [count, setCount] = useState(initCount || 0);
+export default function Stepper2({ disabled, disabledLeft, disabledRight, initCount, callbackCount }: StepperProps) {
+  const [count, setCount] = useState(initCount || 0);
 
-    useEffect(() => {
-        setCount(initCount);
-    }, [initCount])
+  useEffect(() => {
+    setCount(initCount);
+  }, [initCount]);
 
-    const sendCount = (count: number) => {
-        callbackCount?.(count);
-    }
+  const sendCount = (count: number) => {
+    callbackCount?.(count);
+  };
 
   return (
     <div className={styles.stepper_container}>
-      <button 
+      <button
         type="button"
         className={`${styles.rounded} ${(disabled || disabledLeft) && styles.disabled } `}
         onClick={() => { setCount(count - 1); sendCount(count-1); return;}}
         disabled={disabled || disabledLeft}
-      >-
-      </button>
+      >-</button>
       <span className='w-10 inline-block text-center font-bold text-g7'>{count}</span>
       <button 
         type="button"
