@@ -12,7 +12,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Option } from '@/components/Select/Select';
 import { GuDong } from '../addRoom';
 import Rectangle from '@/public/icons/rectangle.svg';
-import RectanglePlus from '@/public/icons/rectanglePlus.svg';
+import RectangleCamera from '@/public/icons/rectangleCamera.svg';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -91,8 +91,8 @@ export default function Step1() {
           {/* 업로드 버튼으로 사용될 SVG */}
           <div className="relative w-[120px] h-[110px] mt-[8px]"> 
             <Rectangle className="z-0" />
-            <RectanglePlus className="absolute z-10 top-[35px] left-[55px] transform -translate-x-1/2 -translate-y-1/2" />
-            <span className="absolute z-10 top-[67px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 text-r1 semibold text-[12px]">Add photos</span>
+            <RectangleCamera className="absolute z-10 top-[45px] left-[55px] transform -translate-x-1/2 -translate-y-1/2" />
+            <span className="absolute z-10 top-[67px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 text-g4 semibold text-[12px]">3/5</span>
           </div>
 
           <div className="mt-[30px]">
@@ -107,7 +107,7 @@ export default function Step1() {
             <div className="w-full">
               <div className="mb-[13px]">
                 <Button size="lg" type="submit" disabled={false}>
-                  {filterTranslation.t('Complete')}
+                  {filterTranslation.t('Next')}
                 </Button>
               </div>
             </div>
