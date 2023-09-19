@@ -20,10 +20,31 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function Step1() {
   console.log('useRouter >>', useRouter());
-  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [typeButton, setTypeButton] = useState('Studio');
-  const [ynButton, setYnButton] = useState('YES');
+  const { register, handleSubmit, watch, setValue  } = useForm({ mode: 'onChange' });
+  
+  const useButtonState = (initValue: string) => {
+    const [value, setValue] = useState(initValue);
+    const handleButtonClick = (newValue: string) => setValue(newValue);
+    
+    return [value, handleButtonClick] as const;
+  };
+
+  const selectedCheckboxes = watch([
+    "bedChecked",
+    "wardrobeChecked",
+    "tvChecked",
+    "airconditionerChecked",
+    "heaterChecked",
+    "washingMachineChecked",
+    "refrigeratorChecked",
+    "doorLookChecked"
+  ]);
+
+  const [typeButton, setTypeButton] = useButtonState('Studio');
+  const [ynButton, setYnButton] = useButtonState('NO');
   const [bedroomCount, setBedroomCount ] = useState(2);
+  const [bathroomCount, setBathroomCount ] = useState(1);
+  const [roommatesCount, setRoommatesCount ] = useState(0);
   
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     Router.push('/room/addRoom/step3');
@@ -35,24 +56,43 @@ export default function Step1() {
     { label: 'Share house'}
   ];
 
+  const checkBoxes = [
+    {label: "Bed", name: "bedChecked"},
+    {label: "Wardrobe", name: "wardrobeChecked"},
+    {label: "TV", name: "tvChecked"},
+    {label: "Air conditioner", name: "airconditionerChecked"},
+    {label: "Heater", name: "heaterChecked"},
+    {label: "Washing machine", name: "washingMachineChecked"},
+    {label: "Refrigerator", name: "refrigeratorChecked"},
+    {label: "Door lock", name: "doorLookChecked"},
+  ]
+
   const handleButtonClick = (label: string) => {
     setTypeButton(label);
   };
 
+  /** 버튼 색상 관련, 클릭 시 색상 조정 */
   const getButtonColor = (label: string) => {
     return typeButton === label ? 'r1' : 'outlined';
   }
+  const getYNButtonColor = (label: string) => {
+    return ynButton === label ? 'r1' : 'outlined';
+  };
 
+  // YES, NO 버튼 클릭 시 
   const handleYNButtonClick = (value: string) => {
     setYnButton(value);
+
+    if (value === 'NO') {
+      checkBoxes.forEach(item => {
+        setValue(item.name, false);
+      });
+    }
   };
 
-  const getYNButtonColor = (value: string) => {
-    return ynButton === value ? 'r1' : 'outlined';
-  };
-
-  const callbackBedroomCount = (count: number) => {
-    setBedroomCount(count);
+  // + - 버튼 클릭 시 Count 값 콜백
+  const handleCountUpdate = (callbackCountUpdate: Function, count: number) => {
+    callbackCountUpdate(count);
   }
 
   return (
@@ -86,7 +126,8 @@ export default function Step1() {
               ))}
             </div>
           </div>
-
+        
+          {/* 경계선~ */}
           <hr />
 
           <div className="py-[28px]">
@@ -102,21 +143,32 @@ export default function Step1() {
               <Stepper2 
                 disabled={['Studio', '1bed flat'].indexOf(typeButton) > -1} 
                 initCount={typeButton === 'Studio' ? 0 : (typeButton === 'Share house') ? 2 : 1 } 
-                disabledLeft={(typeButton === 'Share house') && bedroomCount === 2}
-                callbackCount={callbackBedroomCount}
+                disabledLeft={(typeButton === 'Share house') && bedroomCount <= 2}
+                disabledRight={(typeButton === 'Share house') && bedroomCount >= 20}
+                callbackCount={(count) => handleCountUpdate(setBedroomCount, count)}
               />
             </div>
             <div className="flex justify-between items-center mb-[8px]">
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total bathrooms
               </Typography>
-              <Stepper2 initCount={0} />
+              <Stepper2 
+                initCount={1} 
+                disabledLeft={bathroomCount <= 1}
+                disabledRight={bathroomCount >= 20}
+                callbackCount={(count) => handleCountUpdate(setBathroomCount, count)}
+              />
             </div>
             <div className="flex justify-between items-center mb-[8px]">
               <Typography variant="label" fontStyle="semiBold" customClassName="text-[16px]">
                 Total roommates
               </Typography>
-              <Stepper2 initCount={0} />
+              <Stepper2 
+                initCount={1}
+                disabledLeft={roommatesCount <= 0}
+                disabledRight={roommatesCount >= 20}
+                callbackCount={(count) => handleCountUpdate(setRoommatesCount, count)}
+              />
             </div>
           </div>
 
@@ -142,68 +194,23 @@ export default function Step1() {
             </div>
           </div>
           {
-            (ynButton === 'YES') &&
-            <div className="grid grid-cols-2 gap-[12px] mt-[16px]">
-              <Checkbox
-                type="outlined"
-                label="Bed"
-                register={register('gasChecked')}
-                checked={watch('gasChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Wardrobe"
-                register={register('waterChecked')}
-                checked={watch('waterChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="TV"
-                register={register('electricityChecked')}
-                checked={watch('electricityChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Air conditioner"
-                register={register('cleaningChecked')}
-                checked={watch('cleaningChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Heater"
-                register={register('electricityChecked')}
-                checked={watch('electricityChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Washing machine"
-                register={register('cleaningChecked')}
-                checked={watch('cleaningChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Stove"
-                register={register('electricityChecked')}
-                checked={watch('electricityChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Refrigerator"
-                register={register('cleaningChecked')}
-                checked={watch('cleaningChecked')}
-              />
-              <Checkbox
-                type="outlined"
-                label="Door lock"
-                register={register('electricityChecked')}
-                checked={watch('electricityChecked')}
-              />
+            (ynButton === 'YES') && <div className="grid grid-cols-2 gap-[12px] mt-[16px]">
+              {
+               checkBoxes.map(item => (
+                <Checkbox
+                  type="outlined"
+                  label={item.label}
+                  register={register(item.name)}
+                  checked={watch(item.name)}
+                />
+               ))
+              }
             </div>
           }
           <div className=" fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
-                <Button size="lg" type="submit" disabled={true}>
+                <Button size="lg" type="submit" disabled={(ynButton === 'YES' && !Object.values(selectedCheckboxes).some(val => val))}>
                   Next
                 </Button>
               </div>
