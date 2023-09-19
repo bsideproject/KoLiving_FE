@@ -4,16 +4,15 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticPropsContext } from 'next';
 import {
   Stepper,
-  Select,
   Textarea,
   Typography,
-  Checkbox,
   Button,
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Option } from '@/components/Select/Select';
 import { GuDong } from '../addRoom';
-import Upload from '@/public/icons/upload.svg';
+import Rectangle from '@/public/icons/rectangle.svg';
+import RectanglePlus from '@/public/icons/rectanglePlus.svg';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -90,7 +89,11 @@ export default function Step1() {
             </Typography>
           </div>
           {/* 업로드 버튼으로 사용될 SVG */}
-          <Upload />
+          <div className="relative w-[120px] h-[110px] mt-[8px]"> 
+            <Rectangle className="z-0" />
+            <RectanglePlus className="absolute z-10 top-[35px] left-[55px] transform -translate-x-1/2 -translate-y-1/2" />
+            <span className="absolute z-10 top-[67px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 text-r1 semibold text-[12px]">Add photos</span>
+          </div>
 
           <div className="mt-[30px]">
             <Typography variant="body" customClassName="text-[16px] font-bold text-g7 mb-[12px]">
@@ -98,7 +101,7 @@ export default function Step1() {
             </Typography>
           </div>
           <div>
-            <Textarea placeholder={"Describe your house to others!"} register={register('describe')} />
+            <Textarea placeholder={"Describe your house to others!"} register={register('describe')} maxByte={3000} />
           </div>
           <div className="mt-[111px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
