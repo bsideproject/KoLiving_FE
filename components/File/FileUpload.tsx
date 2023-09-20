@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useImperativeHandle } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import Rectangle from '@/public/icons/rectangle.svg';
 import RectangleCamera from '@/public/icons/rectangleCamera.svg';
+import Close2 from '@/public/icons/close2.svg';
 
 
 export default function FileUpload() {
@@ -42,12 +43,13 @@ export default function FileUpload() {
             &nbsp;
             {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
             {imageList.map((image, index) => (
-              <div key={index} className="image-item">
-                <img src={image.dataURL} alt="" width="100" />
-                <div className="image-item__btn-wrapper">
-                  {/* <button onClick={() => onImageUpdate(index)}>Update</button> */}
-                  <button onClick={() => onImageRemove(index)}>Remove</button>
-                </div>
+              <div key={index} className="image-item relative w-[100px] h-[100px] ">
+                <img src={image.dataURL} alt="" className="top-0 left-0 w-full h-full object-cover" />
+                <button 
+                  className="absolute top-0 right-0 bg-g5 text-g1 w-5 h-5 -translate-y-[0.5%] cursor-pointer leading-[4px]" 
+                  onClick={() => onImageRemove(index)}
+                > x
+                </button>
               </div>
             ))}
           </div>
