@@ -60,6 +60,9 @@ export default function Step1() {
           </div>
           {/* 업로드 버튼으로 사용될 SVG */}
           <Upload />
+
+          <hr className="mt-[32px]"/>
+
           <div className="mt-[30px]">
             <Typography variant="body" customClassName="text-[16px] font-bold text-g7 mb-[12px]">
               About the house
