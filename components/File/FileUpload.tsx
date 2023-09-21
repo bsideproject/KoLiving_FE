@@ -35,9 +35,12 @@ export default function FileUpload() {
         }) => (
           // write your building UI
           <div className="upload__image-wrapper flex items-center w-[600px] overflow-x-auto">
-            <div className={`relative w-[108px] h-[108px] mt-[8px]`} {...dragProps}> 
+            <div className={`relative w-[108px] h-[110px] mt-[8px]`} {...dragProps}> 
                 <Rectangle className="z-0" />
-                <RectangleCamera className={`absolute z-10 top-[45px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer ${isDragging ? "bg-r1": ""}`} onClick={onImageUpload}/>
+                <RectangleCamera 
+                  className={`absolute z-10 top-[45px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer ${isDragging ? "bg-r1": ""}`} 
+                  onClick={() => { (imageList || []).length < 5 && onImageUpload()}}
+                />
                 <span className={`absolute z-10 top-[67px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 text-g4 semibold text-[12px] ${isDragging ? "text-r1": ""}`}>{(imageList || []).length}/{maxNumber}</span>
             </div>
             &nbsp;
