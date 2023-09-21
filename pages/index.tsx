@@ -27,12 +27,10 @@ type HomeProps = NextPage & {
 };
 
 function Home() {
-  const roomListTranslation = useTranslation('roomList');
   const commonTranslation = useTranslation('common');
-
   const [rooms, setRooms] = useState<Room[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [clickedChip, setClickedChip] = useState('');
   const router = useRouter();
   const { openModal, closeModal } = useModal();
@@ -160,8 +158,9 @@ function Home() {
     setFilters(() => [...resultFilters]);
 
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
-    if ((clickedChip || '' )  === '' ||  selectedOptions.length !== filters.length) {
-      setClickedChip(filters?.[0]);
+    //if ((clickedChip || '' )  === '' ||  selectedOptions.length !== filters.length) {
+      if ((clickedChip || '' )  === '') {
+        setClickedChip(filters?.[0]);
     }
   };
 
