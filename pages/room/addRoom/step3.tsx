@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPropsContext } from 'next';
+import React, { useState } from 'react';
+import { ImageListType } from "react-images-uploading";
+import ModalBox from '@/components/Modal/ModalBox.tsx';
 import {
   Stepper,
   Textarea,
@@ -9,34 +9,37 @@ import {
   Upload
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import Rectangle from '@/public/icons/rectangle.svg';
-import RectangleCamera from '@/public/icons/rectangleCamera.svg';
+import Router, { useRouter } from 'next/router';
 
-export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ['filter', 'common'])),
-  },
-});
 
-export default function Step1() {
+interface Step2Props {
+  step1Data?: any;
+  step2Data?: any;
+}
+
+/***
+ * @see   룸등록 Step3
+ */
+export default function Step3({ step1Data, step2Data }: Step2Props) {
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [showUpload, setShowUpload] = useState(false);
-  const uploadRef = useRef(null);
+  const [imageList, setImageList] = useState<ImageListType>([]);
+  const [showComplete, setShowComplete] = useState(false);
 
-  
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // 여기
+    console.log('step1 Data', step1Data);
+    console.log('step2 Data', step2Data);
+    console.log('step3 Data', data);
+
+    setShowComplete(true);
+    // roomPostComplete();
   };
 
-  const handleCameraClick = () => {
-    setShowUpload(true);
+  const callbackImageList = (_imageList: ImageListType) => {
+    setImageList(_imageList);
   }
-
-  // callback
-  // const handleFilesAdded = (newImages: File[]) => {
-  //   // TODO: 여기서 새로 추가된 이미지를 처리하십시오.
-  //   console.log(newImages);
-  // }
+  const roomPostComplete = () => {
+    Router.push('/');
+  }
 
   return (
     <>
@@ -59,7 +62,9 @@ export default function Step1() {
             </Typography>
           </div>
           {/* 업로드 버튼으로 사용될 SVG */}
-          <Upload />
+          <Upload 
+            callbackImageFn={callbackImageList}
+          />
 
           <hr className="mt-[32px]"/>
 
@@ -74,14 +79,24 @@ export default function Step1() {
           <div className="mt-[111px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
-                <Button size="lg" type="submit" disabled={false}>
-                  Next
+                <Button size="lg" type="submit" disabled={(imageList || []).length <= 0 || !watch('describe')}>
+                  Complete
                 </Button>
               </div>
             </div>
           </div>
-   
         </form>
+        {
+          showComplete&&
+            <ModalBox
+              title="Congratulation!"
+              content="Your room is now added to the list!"
+              buttonType="default"
+              buttonName="Complete"
+              overlayClose
+              handleClose={roomPostComplete}
+            />
+        }
       </div>
     </>
   );

@@ -2,18 +2,19 @@ import React, { forwardRef, useEffect, useImperativeHandle } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import Rectangle from '@/public/icons/rectangle.svg';
 import RectangleCamera from '@/public/icons/rectangleCamera.svg';
-import Close2 from '@/public/icons/close2.svg';
 
+interface FileUploadProps {
+  callbackImageFn?: (imageList: ImageListType) => void;
+};
 
-export default function FileUpload() {
+export default function FileUpload({ callbackImageFn }: FileUploadProps) {
   const [images, setImages] = React.useState<ImageListType>([]);
   const maxNumber = 5;
-
-  const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
-    console.log(imageList, addUpdateIndex);
-    setImages(imageList);
   
-   };
+  const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
+    setImages(imageList);
+    callbackImageFn?.(imageList);
+  };
 
   return (
     <div className="App">
@@ -27,7 +28,6 @@ export default function FileUpload() {
         {({
           imageList,
           onImageUpload,
-          onImageRemoveAll,
           onImageUpdate,
           onImageRemove,
           isDragging,

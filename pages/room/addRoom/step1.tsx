@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPropsContext } from 'next';
-import Router, { useRouter } from 'next/router';
+import useModal from '@/hooks/useModal.ts';
 import {
   Stepper,
   Chip,
@@ -17,16 +15,16 @@ import { GuList, DongList } from '@/public/js/guDongList.ts';
 import { Option } from '@/components/Select/Select';
 import { GuDong } from '../addRoom';
 import Calendar from '@/components/Calendar/Calendar.tsx';
+import Step2 from '@/pages/room/addRoom/step2.tsx'
 
-export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ['filter', 'common'])),
-  },
-});
+interface roomAddProps {
+  closeModal1?: () => void;
+}
 
-export default function Step1() {
+export default function Step1({ closeModal1 }: roomAddProps) {
+  const { openModal, closeModal } = useModal();
   const filterTranslation = useTranslation('filter');
-  const { register, handleSubmit, watch, setValue } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [buttonState, setButtonState] = useState('YES');
   const [isCalendarShow, setCalendarShow] = useState(false);
   
@@ -44,13 +42,15 @@ export default function Step1() {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const filteredDongList = DongList.filter((v) => v.gu === guValue?.value || '');
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    Router.push(
-      {
-      pathname: '/room/addRoom/step2',
-      query: { ...data },
-    },
-    '/room/addRoom/step2'
-    )
+    openModal({
+      props: {
+        title: 'Add room',
+        size: 'full',
+        custom: true,
+        customHeader: true,
+      },
+      children: <Step2 step1Data={data} />,
+    });
   };
 
   // 옵션 선택 시 실행될 함수, 유효성 검증
@@ -59,6 +59,7 @@ export default function Step1() {
 
     let resultOptions: string[];
     const option = dongValue.label;
+
     setSelectedOptions((prevSelectedOptions) => {
       const isExist = prevSelectedOptions.some((item) => item.includes(option));
       // Location이 5개 이상 선택 될 경우 Toast 노출
@@ -70,13 +71,12 @@ export default function Step1() {
       if (!isExist) {
         resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
       } else {
-        // TODO translation 사용해서 여기 나중에 바꿔줘야함
         resultOptions = prevSelectedOptions;
       }
       return [...resultOptions];
     });
   }, [dongValue.label, guValue?.label]);
-  /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
+
   const handleDongChange = useCallback(
     (option: Option) => {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
@@ -84,12 +84,11 @@ export default function Step1() {
     },
     [guValue?.label, guValue?.value]
   );
-  /** Dong Select Component 변경될 경우 -> 일반 선언형 함수로 정의할 경우 Rendering 마다 새로운 인스턴스가 생성됨 */
+
   const handleGuChange = useCallback((option: Option) => {
-    // 선택된 value와 label 값을 이용하여 원하는 작업 수행
     setGuValue(option);
   }, []);
-  // 옵션 제거 시 실행될 함수
+  
   const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
   };
@@ -112,6 +111,7 @@ export default function Step1() {
   useEffect(() => {
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
+
   return (
     <>
       <Stepper step={1} totalStep={3} />

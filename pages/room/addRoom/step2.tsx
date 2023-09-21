@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPropsContext } from 'next';
+import React, { useState, useEffect } from 'react';
 import Router, { useRouter } from 'next/router';
 import {
   Stepper,
@@ -11,15 +8,15 @@ import {
   Button,
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import useModal from '@/hooks/useModal.ts';
+import Step3 from '@/pages/room/addRoom/step3.tsx'
 
-export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ['filter', 'common'])),
-  },
-});
+interface Step2Props {
+  step1Data?: any;
+}
 
-export default function Step1() {
-  console.log('useRouter >>', useRouter());
+export default function Step2({ step1Data }: Step2Props) {
+  const { openModal, closeModal } = useModal();
   const { register, handleSubmit, watch, setValue  } = useForm({ mode: 'onChange' });
   
   const useButtonState = (initValue: string) => {
@@ -45,8 +42,18 @@ export default function Step1() {
   const [bedroomCount, setBedroomCount ] = useState(2);
   const [bathroomCount, setBathroomCount ] = useState(1);
   const [roommatesCount, setRoommatesCount ] = useState(0);
-  
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    openModal({
+      props: {
+        title: 'Add room',
+        size: 'full',
+        custom: true,
+        customHeader: true,
+      },
+      children: <Step3 step1Data={step1Data} step2Data={data} />,
+    });
+
     Router.push('/room/addRoom/step3');
   };
 
@@ -94,6 +101,11 @@ export default function Step1() {
   const handleCountUpdate = (callbackCountUpdate: Function, count: number) => {
     callbackCountUpdate(count);
   }
+
+  // useEffect(() => {
+  //   console.log('closeModal >>' , closeModal1);
+  //   closeModal1 && closeModal1();
+  // }, [])
 
   return (
     <>
@@ -194,16 +206,16 @@ export default function Step1() {
             </div>
           </div>
           {
-            (ynButton === 'YES') && <div className="grid grid-cols-2 gap-[12px] mt-[16px]">
-              {
-               checkBoxes.map(item => (
-                <Checkbox
-                  type="outlined"
-                  label={item.label}
-                  register={register(item.name)}
-                  checked={watch(item.name)}
-                />
-               ))
+            <div className={`grid grid-cols-2 gap-[12px] mt-[16px] ${ynButton ? 'mb-[200px]' : 'mb-[166px]'}`}>
+              { 
+                ynButton === 'YES' && checkBoxes.map(item => (
+                  <Checkbox
+                    type="outlined"
+                    label={item.label}
+                    register={register(item.name)}
+                    checked={watch(item.name)}
+                  />
+                ))
               }
             </div>
           }
