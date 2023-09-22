@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { GetStaticPropsContext } from 'next';
 import 'tailwindcss/tailwind.css';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import RoomCard from '@/components/RoomCard/RoomCard';
 import { fetchRooms } from '@/api/room';
 import { Room } from '@/public/types/room';
@@ -15,12 +13,6 @@ import useModal from '@/hooks/useModal.ts';
 import { FieldValues } from 'react-hook-form';
 import Filter from '@/components/Filter/Filter.tsx';
 import { useTranslation } from 'next-i18next';
-
-export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ['roomList', 'common'])),
-  },
-});
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
