@@ -13,15 +13,15 @@ import {
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import { Option } from '@/components/Select/Select';
-import { GuDong } from '../addRoom';
 import Calendar from '@/components/Calendar/Calendar.tsx';
 import Step2 from '@/pages/room/addRoom/step2.tsx'
 
-interface roomAddProps {
-  closeModal1?: () => void;
+interface GuDong extends Option {
+  gu: string | number;
+  guLabel: string;
 }
 
-export default function Step1({ closeModal1 }: roomAddProps) {
+export default function Step1() {
   const { openModal, closeModal } = useModal();
   const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
@@ -32,7 +32,6 @@ export default function Step1({ closeModal1 }: roomAddProps) {
     value: '',
     label: '',
   });
-  // const modalSetter = React.useContext(ModalSetterContext);
   const [dongValue, setDongValue] = useState<GuDong>({
     gu: '',
     guLabel: '',

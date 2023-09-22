@@ -53,8 +53,6 @@ export default function Step2({ step1Data }: Step2Props) {
       },
       children: <Step3 step1Data={step1Data} step2Data={data} />,
     });
-
-    Router.push('/room/addRoom/step3');
   };
 
   const buttons = [
@@ -101,11 +99,6 @@ export default function Step2({ step1Data }: Step2Props) {
   const handleCountUpdate = (callbackCountUpdate: Function, count: number) => {
     callbackCountUpdate(count);
   }
-
-  // useEffect(() => {
-  //   console.log('closeModal >>' , closeModal1);
-  //   closeModal1 && closeModal1();
-  // }, [])
 
   return (
     <>

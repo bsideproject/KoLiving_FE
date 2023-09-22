@@ -9,8 +9,7 @@ import {
   Upload
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import Router, { useRouter } from 'next/router';
-
+import Router from 'next/router';
 
 interface Step2Props {
   step1Data?: any;
@@ -31,7 +30,6 @@ export default function Step3({ step1Data, step2Data }: Step2Props) {
     console.log('step3 Data', data);
 
     setShowComplete(true);
-    // roomPostComplete();
   };
 
   const callbackImageList = (_imageList: ImageListType) => {

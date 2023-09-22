@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback, use, useMemo } from 'react';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticPropsContext } from 'next';
-import { Toast, Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/index.tsx';
+import { Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import toast from 'react-hot-toast';
@@ -10,11 +7,6 @@ import styles from './Filter.module.scss';
 import { Option } from '../Select/Select';
 import Calendar from '../Calendar/Calendar';
 
-export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
-  props: {
-    ...(await serverSideTranslations(locale as string, ['filter', 'common'])),
-  },
-});
 
 const TYPE_OF_HOUSING = [
   {
