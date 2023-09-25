@@ -7,6 +7,7 @@ module.exports = {
         r2: '#FE75B9',
         r3: '#FFD3DD',
         r4: '#DD5D18',
+        r5: '#FFD39C',
         a1: '#F42500',
         a2: '#717D96',
         g0: '#FFFFFF',
@@ -18,6 +19,7 @@ module.exports = {
         g6: '#424242',
         g7: '#212121',
         n700: '#696F8C',
+        
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

@@ -3,19 +3,21 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface TextareaProps {
   placeholder?: string;
-  value?: string;
   maxByte?: number;
   maxLength?: number;
   register: UseFormRegisterReturn;
+  initValue?: string;
+  className?: string;
+  readonly?: boolean;
 }
 
 const getByteSize = (str: string) => {
   return new Blob([str]).size;
 }
 
-function Textarea({ placeholder, register, maxByte, maxLength }: TextareaProps) {
+function Textarea({ placeholder, register, maxByte, maxLength, initValue, className, readonly }: TextareaProps) {
   const [byteCount, setByteCount] = useState(0);
-  const [textValue, setTextValue] = useState('');
+  const [textValue, setTextValue] = useState(initValue || '');
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let currentText = e.target.value;
@@ -49,11 +51,13 @@ function Textarea({ placeholder, register, maxByte, maxLength }: TextareaProps) 
   return (
     <div className="flex flex-col space-y-2">
       <textarea
-        className="w-full h-[120px] rounded-[2px] border-g4 border-[1px] resize-none pl-[14px] pt-[14px] focus:border-g6 focus:outline-none"
+        className={`w-full rounded-[2px] resize-none pl-[14px] pt-[14px] focus:border-g6 focus:outline-none ${className || 'border-g4 border-[1px] h-[120px]'}`}
         placeholder={placeholder}
         {...register}
         onChange={handleTextareaChange}
         maxLength={maxLength}
+        value={textValue}
+        readOnly={readonly}
         // readOnly={!!((maxByte && byteCount >= maxByte) || (maxLength && textValue.length >= maxLength)) }
       />
       { 
