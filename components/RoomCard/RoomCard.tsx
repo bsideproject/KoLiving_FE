@@ -7,8 +7,6 @@ import Like from '@/public/icons/like.svg';
 import Camera from '@/public/icons/camera.svg';
 import Card from '../Card/Card';
 import styles from '@/pages/room/room.module.scss';
-import useModal from '@/hooks/useModal.ts';
-import UserProfile from '@/pages/profile/index.tsx';
 import {useRouter} from 'next/router';
 
 interface CardProps {

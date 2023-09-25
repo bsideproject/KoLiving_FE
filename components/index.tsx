@@ -21,3 +21,4 @@ export { default as Toast } from '@/components/Toast/Toast.tsx';
 export { default as Upload } from '@/components/File/FileUpload.tsx';
 export { default as Calendar } from '@/components/Calendar/Calendar.tsx';
 export { default as FileUpload } from '@/components/File/FileUpload.tsx';
+export { default as ProfileCard } from '@/components/ProfileCard/index.tsx';
