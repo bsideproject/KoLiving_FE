@@ -35,7 +35,6 @@ export default function Nav() {
     <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center`}>
       {menus.map((menu, index) => {
         const IconComponent = menu.icon;
-
         return (
           <div
             className="my-[9px] align-middle items-center cursor-pointer"
