@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Textarea } from '@/components/index.tsx';
+import { Nav, Textarea } from '@/components/index.tsx';
 import { useForm } from 'react-hook-form';
 import MyPosting from '@/public/icons/myPosting.svg';
 import ChangePassword from '@/public/icons/Password.svg';
@@ -21,8 +21,6 @@ interface ListItemProps {
     index: number;
 };
 
-
-
 export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCardProps) {
     const { register } = useForm({ mode: 'onChange' });
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -34,13 +32,16 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
 
     const ListItem = ({ IconComponent, text, route, index }: ListItemProps) => (
         <div 
-            className="flex justify-between items-center mb-[10px] border border-gray-300 p-[10px] h-[56px]"
+            className="flex justify-between items-center border border-gray-300 p-[10px]"
             onMouseOver ={() => { console.log('mouseover', index); setHoveredIndex(index)} }
             onMouseOut={() => setHoveredIndex(null)}
+            onTouchStart={() => setHoveredIndex(index)} 
+            onTouchEnd={() => setHoveredIndex(null)}  
+            onClick={() => handleRouting(route)}
         >
-            <div className="flex items-center">
-                <IconComponent className="mr-[10px] w-[24px] h-[24px]" onClick={() => handleRouting(route)}/>
-                <div className="text-base">{text}</div>
+            <div className="flex items-center h-[35px]">
+                <IconComponent className="mr-[10px] w-[24px] h-[24px] stroke-g2 stroke-[1px]"/>
+                <div className="text-base text-g6 font-bold">{text}</div>
             </div>
             { hoveredIndex === index && <Vector /> }
         </div>
@@ -52,13 +53,15 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
         { IconComponent: Logout, text: "Log out", route: "/"},
     ];
     
-    const ListContainer = () => (
-        <div className="flex flex-col mt-[20px] h-[56px] w-full">
-            {items.map((item, index) => (
-                <ListItem key={index} {...item} index={index} />
-            ))}
-        </div>
-    );
+    function ListContainer() {
+        return (
+            <div className="flex flex-col w-full">
+                {items.map((item, index) => (
+                    <ListItem key={index} {...item} index={index} />
+                ))}
+            </div>
+        )
+    };
    
     return (
         <>
@@ -83,6 +86,14 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
                 />
             </div>
             <ListContainer />
+            <hr className="mt-[345px]"/>
+            <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+                <div className="w-full">
+                    <div className="mb-[13px] space-x-[8px] max-w-max">
+                        <Nav />
+                    </div>
+                </div>
+            </div>
         </>
   );
 }
