@@ -1,0 +1,6 @@
+.center {
+    @apply flex items-center justify-center w-full overflow-hidden
+}
+.default {
+    @apply flex items-center w-[600px] overflow-x-auto
+}

@@ -5,6 +5,7 @@ import { isValidEmail } from '@/utils/validCheck.ts';
 import {
   Textarea,
   Button,
+  Upload,
   Input,
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
@@ -16,11 +17,17 @@ interface ProfileProps {
     name?: string;
     age?: number;
     gender?: 'Male' | 'Female';
-    imageSrc : string;
+    _imageSrc : string;
 };
 
-export default function EditProfile({ imageSrc }: ProfileProps) {
+interface ImageComponentClickProps {
+    imageSrc: string;
+    onClick ?: () => void;
+}
+
+export default function EditProfile({ _imageSrc }: ProfileProps) {
   const { openModal, closeModal } = useModal();
+  const [imageSrc, setImageSrc] = useState(_imageSrc);
   const subHeader = 'font-pretendard font-semibold text-[16px]';
   const {
     register,
@@ -65,20 +72,34 @@ export default function EditProfile({ imageSrc }: ProfileProps) {
     { label: 'Others'}
   ];
 
+  const ProfileImage = ({ imageSrc, onClick }: ImageComponentClickProps) => {
+    return (
+        <div className="flex justify-center items-center h-[90px] mt-[20px] mb-[36px]" onClick={onClick}>
+            <div style={{ position: 'relative', width: 90, height: 90 }} className="flex items-center justify-center">
+                <div style={{ borderRadius: '50%', overflow: 'hidden', width: '100%', height: '100%' }} className="flex items-center justify-center">
+                    <img src={imageSrc || _imageSrc} alt={`${name}'s profile`} className="object-cover" />
+                </div>
+                <div className="absolute border-g2 border-[1px] bottom-0 right-0 bg-g0 flex items-center justify-center" style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: "" }}>
+                    <ProfileCamera className="w-[20px] h-[20px]" />
+                </div>
+            </div>
+        </div>
+    )
+  }
+    
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
         <div className="h-screen overflow-y-scroll font-pretendard">
-            <div className="flex justify-center items-center h-[90px] mt-[20px] mb-[36px]">
-                <div style={{ position: 'relative', width: 90, height: 90 }} className="flex items-center justify-center">
-                    <div style={{ borderRadius: '50%', overflow: 'hidden', width: '100%', height: '100%' }} className="flex items-center justify-center">
-                        <img src={imageSrc} alt={`${name}'s profile`} className="object-cover" />
-                    </div>
-                    <div className="absolute border-g2 border-[1px] bottom-0 right-0 bg-g0 flex items-center justify-center" style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: "" }}>
-                        <ProfileCamera className="w-[20px] h-[20px]" />
-                    </div>
-                </div>
-            </div>
-
+            <Upload 
+                InitImageComponent={ProfileImage}
+                multiImage={false}
+                callbackImageFn={(imageList) => {
+                    if (imageList && imageList[0] && imageList[0].dataURL) {
+                        setImageSrc(imageList[0].dataURL);
+                    }
+                }}
+                style={'center'}
+            />
             <div className="mb-[12px]">
                 <div className={subHeader}>Email</div>
             </div>
