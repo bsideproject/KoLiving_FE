@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ResetPasswordLayout from '@/components/layouts/ResetPasswordLayout.tsx';
 import { Link, Stepper, Button, ModalBox, Input, Space, Typography } from '@/components/index.tsx';
 import { FieldError, useForm as UseForm } from 'react-hook-form';

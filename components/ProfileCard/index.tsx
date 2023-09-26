@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Nav, Textarea } from '@/components/index.tsx';
+import EditProfile from '@/pages/profile/editProfile';
 import { useForm } from 'react-hook-form';
 import MyPosting from '@/public/icons/myPosting.svg';
 import ChangePassword from '@/public/icons/Password.svg';
@@ -41,7 +42,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
               custom: true,
               customHeader: true,
             },
-            children: <div>hi</div>,
+            children: <EditProfile imageSrc={`${imageSrc}`}/>,
           });
     }
 
