@@ -1,4 +1,3 @@
-// TODO: 일단은 로컬로 한다
 const baseURL = process.env.NEXT_PUBLIC_API_HOST;
 
 export const fetchData = async <T>(url: string, options?: RequestInit): Promise<T | null> => {
@@ -14,8 +13,17 @@ export const fetchData = async <T>(url: string, options?: RequestInit): Promise<
       throw new Error('Failed to fetch data');
     }
 
-    const data = await response.json();
-    return data;
+    // TODO:나중에 삭제
+    try {
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      if (response.status === 200) {
+        return null;
+      }
+    }
+    // const data = await response.json();
+    // return data;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to fetch data');

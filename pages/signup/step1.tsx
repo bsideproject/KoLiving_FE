@@ -103,7 +103,7 @@ export default function SignUp() {
       openModal({
         props: {
           title: 'Check Your Mail Box',
-          content: `A verification has just been sent to<br/> <b>user@koliving.com<b>`,
+          content: `A verification has just been sent to<br/> <b>${data.email}<b>`,
           buttonType: 'outline',
           buttonName: 'Resend link',
         },

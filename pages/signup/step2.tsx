@@ -45,7 +45,7 @@ export default function SignUp() {
         email: signUpState?.email || (email as string),
         password: data.password1,
       });
-      Router.push('/signup/step3');
+      Router.push(`/signup/step3?email=${signUpState?.email || (email as string)}`);
     } catch (e) {
       console.error(e);
     }

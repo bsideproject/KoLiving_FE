@@ -6,6 +6,7 @@ import { FieldError, useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { LoginLayout, Link, CustomImage, Chip, Button, Input, Space } from '@/components/index.tsx';
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validCheck.ts';
+import { login } from '@/api/signup';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -15,15 +16,20 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function Login() {
   const router = useRouter();
-  const doLogin = () => {
-    // 상세 페이지로 이동
-    router.push('/main');
-  };
   const { t } = useTranslation('common');
   const {
+    handleSubmit,
     register,
     formState: { errors },
+    watch,
   } = useForm({ mode: 'onChange' });
+
+  const email = watch('email');
+  const password = watch('password');
+
+  const onSubmit = async () => {
+    await login({ email, password });
+  };
 
   return (
     <div className="font-pretendard w-full">
@@ -39,7 +45,7 @@ export default function Login() {
       </div>
       <div className="m-[auto]">
         <div className="font-semibold text-2xl text-G6 font-poppins mb-4">{t('welcome')}</div>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
             <Input
               type="email"
@@ -70,14 +76,16 @@ export default function Login() {
               {t('resetPwd')}
             </Link>
           </div>
-          <Button onClick={doLogin} disabled={false} size="lg">
+          <Button disabled={false} size="lg" type="submit">
             Login
           </Button>
           <div className="flex items-center justify-center mt-[9px]">
             <p className="mr-[4px] text-g6 text-[14px]">Don&apos;t have account?</p>
-            <Link href="/signup/step1" className="underline text-r1 font-semibold text-[14px] mb-[8px]">
-              {t('signup')}
-            </Link>
+            <div onClick={onSubmit}>
+              <Link href="/signup/step1" className="underline text-r1 font-semibold text-[14px] mb-[8px]">
+                {t('signup')}
+              </Link>
+            </div>
           </div>
           {/* <Chip label="테스트" onDelete={console.log} clicked /> */}
         </form>

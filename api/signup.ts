@@ -41,3 +41,16 @@ export const postProfile = async (payload: ProfilePayload) => {
     },
   });
 };
+
+export const login = async (payload: { email: string; password: string }) => {
+  return fetchData('/login', {
+    method: 'POST',
+    body: JSON.stringify({
+      email: payload.email,
+      password: payload.password,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};

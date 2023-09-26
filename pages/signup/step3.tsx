@@ -13,7 +13,8 @@ import Radio from '@/components/Radio/Radio.tsx';
 import Select from '@/components/Select/Select.tsx';
 import Textarea from '@/components/Textarea/Textarea.tsx';
 import useModal from '@/hooks/useModal.ts';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
+import { postProfile } from '@/api/signup';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -54,23 +55,35 @@ const dayList = Array.from({ length: 31 }, (_, index) => ({
   label: `${index + 1}`,
 }));
 
+const GENDER_CODE: Record<string, number> = {
+  male: 0,
+  female: 1,
+  other: 2,
+};
 export default function SignUp() {
   const signUpTranslation = useTranslation('signup');
   const commonTranslation = useTranslation('common');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const { setSignUpData } = useSignUp();
   const { openModal, closeModal } = useModal();
+  const router = useRouter();
+
+  const formatNumber = (num: number) => {
+    return num < 10 ? `0${num}` : num;
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    await setSignUpData({
+    const { query } = router;
+    const { email } = query;
+
+    await postProfile({
       firstName: data.firstName,
       lastName: data.lastName,
-      gender: data.gender,
-      birth: `${data.year}-${data.month}-${data.day}`,
-      introduce: data.introduce,
+      genderCode: GENDER_CODE[data.gender as string],
+      birthDate: `${data.year.value}-${formatNumber(data.month.value)}-${formatNumber(data.day.value)}`,
+      description: data.introduce,
+      email: email as string,
     });
 
-    // TODO: 추후 API 연동
     openModal({
       props: {
         title: signUpTranslation.t('congratulation') as string,
