@@ -82,7 +82,7 @@ function Modal({
     let result = <Header type="title" title={title} right="close" logoColor="black" handleButtonClick={goBack} />;
     // TODO 나중에 여기 layoutHeader쪽 Component를 받는 거로 변경
     if (customHeader) {
-      result = <Header type="back" logoColor="black" bgColor="white" title="Add rooms" handleButtonClick={goBack} />;
+      result = <Header type="back" logoColor="black" bgColor="white" title={title} handleButtonClick={goBack} />;
     }
     return result;
   };

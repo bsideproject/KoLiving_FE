@@ -7,6 +7,8 @@ import Logout from '@/public/icons/LogOut.svg';
 import Vector from '@/public/icons/Vector 115.svg';
 import { useRouter } from 'next/router';
 
+import useModal from '@/hooks/useModal.ts';
+
 interface ProfileCardProps {
     name : string;
     age: number;
@@ -25,9 +27,22 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
     const { register } = useForm({ mode: 'onChange' });
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const router = useRouter();
+    const { openModal, closeModal } = useModal();
 
     const handleRouting = (route: string) => {
         router.push(route);
+    }
+
+    const handleProfileEdit = () => {
+        openModal({
+            props: {
+              title: 'Edit profile',
+              size: 'full',
+              custom: true,
+              customHeader: true,
+            },
+            children: <div>hi</div>,
+          });
     }
 
     const ListItem = ({ IconComponent, text, route, index }: ListItemProps) => (
@@ -75,7 +90,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
                         <div className="text-base">{age} years old | {gender}</div>
                     </div>
                     <div className="ml-auto flex items-center pr-4">
-                        <button className="text-sm text-r5 border border-r5 rounded-full w-[50px] h-[24px]">Edit</button>
+                        <button className="text-sm text-r5 border border-r5 rounded-full w-[50px] h-[24px]" onClick={handleProfileEdit}>Edit</button>
                     </div>
                 </div>
                 <Textarea 
