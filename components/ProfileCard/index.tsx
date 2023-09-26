@@ -42,7 +42,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
               custom: true,
               customHeader: true,
             },
-            children: <EditProfile imageSrc={`${imageSrc}`}/>,
+            children: <EditProfile _imageSrc={`${imageSrc}`} />,
           });
     }
 
@@ -81,7 +81,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
    
     return (
         <>
-            <div className="w-full h-auto border border-gray-300 flex flex-col bg-r1 text-g0 mt-[30px]">
+            <div className="w-full h-auto border border-gray-300 flex flex-col bg-r1 text-g0 mt-[50px]">
                 <div className="flex w-full">
                     <div className="ml-[20px] w-[52px] h-[72px] flex items-center justify-center mt-[20px]">
                         <img src={imageSrc} alt={`${name}'s profile`} />
