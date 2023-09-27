@@ -13,7 +13,6 @@ interface MyPostingProps {
 
 export default function MyPosting({ roomInfo }: MyPostingProps) {
     const { openModal } = useModal();
-
     const handleAddPosting = () => {
         openModal({
             props: {
@@ -57,14 +56,12 @@ export default function MyPosting({ roomInfo }: MyPostingProps) {
      * 룸이 있을 때 보여주는 Component (TODO : 구체화 해줘야함)
      */
     const MyRooms = () => {
-
         return (
             <div>
                 호이호이
             </div>
         );
     };
-
     return (
         (roomInfo || []).length === 0 ? <NoPostings /> : <MyRooms />
     )
