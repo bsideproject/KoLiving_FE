@@ -2,7 +2,7 @@ import React from 'react';
 import NoPosting from '@/public/icons/noPosting.svg';
 import Step1 from '@/pages/room/addRoom/step1.tsx';
 import useModal from '@/hooks/useModal';
-
+import DefaultLayout from '@/components/layouts/DefaultLayout';
 //import { useRouter } from 'next/router';
 
 
@@ -31,8 +31,8 @@ export default function MyPosting({ roomInfo }: MyPostingProps) {
      */
     const NoPostings = () => {
         const noPostingStyle = 'text-[20px] font-bold mt-[29px] text-center'; 
-        const containerStyle = 'h-screen flex flex-col items-center justify-center'; 
-
+        const containerStyle = 'h-screen flex flex-col items-center justify-start mt-[135px]';  // 'justify-start'로 변경
+    
         return (
             <div className={containerStyle}>
                 <NoPosting />
@@ -68,4 +68,13 @@ export default function MyPosting({ roomInfo }: MyPostingProps) {
     return (
         (roomInfo || []).length === 0 ? <NoPostings /> : <MyRooms />
     )
+
 }
+
+MyPosting.getLayout = function getLayout(page: React.ReactElement) {
+    const handleGoBack = () => {
+        window.history.back();
+    }
+    return <DefaultLayout children={page} title={'My postings'} handleButtonClick={handleGoBack} />;
+  };
+  
