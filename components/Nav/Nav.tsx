@@ -41,7 +41,7 @@ export default function Nav({ initMenu } : NavProps) {
     if (index ===0) {
       router.push('/');
     } else if (index === 3) {
-      router.push('profile');
+      router.push('userInfo');
     }
   }
 
