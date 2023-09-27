@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FieldError, useForm as UseForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
 import useModal from '@/hooks/useModal.ts';
 import { isValidEmail } from '@/utils/validCheck.ts';
 import {
@@ -7,10 +7,8 @@ import {
   Button,
   Upload,
   Input,
+  Calendar
 } from '@/components/index.tsx';
-import { FieldValues, SubmitHandler } from 'react-hook-form';
-import Calendar from '@/components/Calendar/Calendar.tsx';
-
 import ProfileCamera from '@/public/icons/profileCamera.svg';
 
 interface ProfileProps {
@@ -36,8 +34,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
   const [buttonState, setButtonState] = useState('Male');
-  const [isCalendarShow, setCalendarShow] = useState(false);
-
+  
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     openModal({
       props: {
@@ -49,10 +46,6 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
       children: <>hi</>,
     });
   };
- 
-  const handleCalendarShow = (isShow: boolean) => {
-    setCalendarShow(isShow);
-  }
 
   const isPostingComplete = () => {
     return true;
@@ -165,7 +158,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
                 <div className={subHeader}>Date of birth</div>
             </div>
             <section className='mb-[8px]'>
-                <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} disabled={watch('availableChecked')} handleCalendarShow={handleCalendarShow}/>
+                <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} disabled={watch('availableChecked')} />
             </section>
             <div className="mb-[12px] mt-[32px]">
                 <div className={subHeader}>About you</div>
