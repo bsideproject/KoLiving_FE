@@ -43,6 +43,15 @@ export default function Step2({ step1Data }: Step2Props) {
   const [roommatesCount, setRoommatesCount ] = useState(0);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const params = {
+      ...data, 
+      roomType: typeButton, 
+      bedRooms: bedroomCount, 
+      bathrooms: bathroomCount, 
+      roommates: roommatesCount,
+      furnishingIds: [0] // TEST
+    }
+    
     openModal({
       props: {
         title: 'Add room',
@@ -50,7 +59,7 @@ export default function Step2({ step1Data }: Step2Props) {
         custom: true,
         customHeader: true,
       },
-      children: <Step3 step1Data={step1Data} step2Data={data} />,
+      children: <Step3 step1Data={step1Data} step2Data={params} />,
     });
   };
 
