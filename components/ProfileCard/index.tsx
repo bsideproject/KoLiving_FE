@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Nav, Textarea } from '@/components/index.tsx';
-import EditProfile from '@/pages/profile/editProfile';
 import { useForm } from 'react-hook-form';
+import { Nav, Textarea } from '@/components/index.tsx';
+import EditProfile from '@/pages/userInfo/editProfile';
+
 import MyPosting from '@/public/icons/myPosting.svg';
 import ChangePassword from '@/public/icons/Password.svg';
 import Logout from '@/public/icons/LogOut.svg';
 import Vector from '@/public/icons/Vector 115.svg';
 import { useRouter } from 'next/router';
-
 import useModal from '@/hooks/useModal.ts';
 
 interface ProfileCardProps {
@@ -49,10 +49,10 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
     const ListItem = ({ IconComponent, text, route, index }: ListItemProps) => (
         <div 
             className="flex justify-between items-center border border-gray-300 p-[10px]"
-            onMouseOver ={() => { console.log('mouseover', index); setHoveredIndex(index)} }
+            onMouseOver ={() => { setHoveredIndex(index)} }
             onMouseOut={() => setHoveredIndex(null)}
-            onTouchStart={() => setHoveredIndex(index)} 
-            onTouchEnd={() => setHoveredIndex(null)}  
+            onTouchStart={() => setHoveredIndex(index)}
+            onTouchEnd={() => setHoveredIndex(null)}
             onClick={() => handleRouting(route)}
         >
             <div className="flex items-center h-[35px]">
@@ -64,12 +64,12 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
     );
     
     const items = [
-        { IconComponent: MyPosting, text: "My postings", route: '/myPosting'},
+        { IconComponent: MyPosting, text: "My postings", route: '/userInfo/myPostings'},
         { IconComponent: ChangePassword, text: "Change password", route: '/resetPassword/step1'},
         { IconComponent: Logout, text: "Log out", route: "/"},
     ];
     
-    function ListContainer() {
+    const ListContainer = () =>{
         return (
             <div className="flex flex-col w-full">
                 {items.map((item, index) => (
@@ -94,7 +94,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
                         <button className="text-sm text-r5 border border-r5 rounded-full w-[50px] h-[24px]" onClick={handleProfileEdit}>Edit</button>
                     </div>
                 </div>
-                <Textarea 
+                <Textarea
                     register={ register('describe') } 
                     initValue={"Hi, I'm Dennis. I'm 31 years old and I'm from Seoul, South Korea. I'm a software engineer with 5 years of experience in the industry. I'm passionate about building innovative products that make people's lives easier."}
                     className="bg-r1 mb-[20px] h-[120px] text-[14px]"
