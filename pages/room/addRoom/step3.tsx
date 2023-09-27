@@ -9,7 +9,7 @@ import {
   Upload
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 interface Step2Props {
   step1Data?: any;
@@ -23,20 +23,21 @@ export default function Step3({ step1Data, step2Data }: Step2Props) {
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [imageList, setImageList] = useState<ImageListType>([]);
   const [showComplete, setShowComplete] = useState(false);
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log('step1 Data', step1Data);
-    console.log('step2 Data', step2Data);
-    console.log('step3 Data', data);
-
     setShowComplete(true);
   };
-
   const callbackImageList = (_imageList: ImageListType) => {
     setImageList(_imageList);
   }
   const roomPostComplete = () => {
-    Router.push('/');
+    try {
+      // 라우팅이 안되요,,,, const result = router.push('/');
+      window.location.href= window.location.origin;
+    } catch(error) {
+      console.error('routingError', error);
+    }
   }
 
   return (

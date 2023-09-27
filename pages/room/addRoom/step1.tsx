@@ -9,11 +9,11 @@ import {
   Checkbox,
   Button,
   Input,
+  Calendar,
 } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import { Option } from '@/components/Select/Select';
-import Calendar from '@/components/Calendar/Calendar.tsx';
 import Step2 from '@/pages/room/addRoom/step2.tsx'
 
 interface GuDong extends Option {
@@ -22,7 +22,7 @@ interface GuDong extends Option {
 }
 
 export default function Step1() {
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
   const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [buttonState, setButtonState] = useState('YES');
@@ -32,6 +32,7 @@ export default function Step1() {
     value: '',
     label: '',
   });
+  
   const [dongValue, setDongValue] = useState<GuDong>({
     gu: '',
     guLabel: '',
@@ -296,7 +297,7 @@ export default function Step1() {
             <div className="w-full">
               <div className="mb-[13px]">
                 <Button size="lg" type="submit" disabled={isNextStep()}
-                  onClick={() => { console.log('dateAvailable', watch('dateAvailable'));}}
+                  onClick={() => { watch('dateAvailable') }}
                 >
                   {filterTranslation.t('Next')}
                 </Button>
@@ -308,4 +309,3 @@ export default function Step1() {
     </>
   );
 }
-

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Router, { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import {
   Stepper,
   Stepper2,
@@ -16,7 +15,7 @@ interface Step2Props {
 }
 
 export default function Step2({ step1Data }: Step2Props) {
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
   const { register, handleSubmit, watch, setValue  } = useForm({ mode: 'onChange' });
   
   const useButtonState = (initValue: string) => {
