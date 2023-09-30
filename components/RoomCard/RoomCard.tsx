@@ -5,9 +5,9 @@ import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import Dot from '@/public/icons/dot.svg';
 import Like from '@/public/icons/like.svg';
 import Camera from '@/public/icons/camera.svg';
-import Card from '../Card/Card';
 import styles from '@/pages/room/room.module.scss';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
+import Card from '../Card/Card';
 
 interface CardProps {
   room: Room;
@@ -26,14 +26,14 @@ interface PhotoProps {
 const UserInfo = ({ userInfo }: UserInfoProps) => {
   const router = useRouter();
   const age = formatAge(userInfo.year);
-  
+
   const handleUserClick = () => {
-    router.push("/profile");
-  }
+    router.push('/profile');
+  };
 
   return (
     <div className="flex">
-      <img className="rounded-[40px] w-[40px] h-[40px]" src={userInfo.image} alt="user" onClick={handleUserClick}/>
+      <img className="rounded-[40px] w-[40px] h-[40px]" src={userInfo.image} alt="user" onClick={handleUserClick} />
       <div className="ml-[12px]">
         <div className="text-[16px] text-g7 font-semibold">{userInfo.name}</div>
         <div className="text-a2 text-[12px]">
@@ -48,15 +48,12 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 
 const Photo = ({ photos, onClick }: PhotoProps) => {
   return (
-      <div className="relative h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }} onClick={onClick}>
-        <div className={`${styles.tag} flex items-center gap-[4px]`}>
-          <Camera
-            xmlns="http://www.w3.org/2000/svg"
-            width="16px" 
-            height="16px"
-          />{`+${(photos || []).length }`}
-        </div>
+    <div className="relative h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }} onClick={onClick}>
+      <div className={`${styles.tag} flex items-center gap-[4px]`}>
+        <Camera xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" />
+        {`+${(photos || []).length}`}
       </div>
+    </div>
   );
 };
 
@@ -104,7 +101,7 @@ export default function RoomCard({ room, onClick }: CardProps) {
   return (
     <Card
       title={<UserInfo userInfo={room?.userInfo} />}
-      content={<Photo photos={room.images} onClick={onClick}/>}
+      content={<Photo photos={room.images} onClick={onClick} />}
       footer={<Footer room={room} />}
     />
   );

@@ -19,7 +19,6 @@ module.exports = {
         g6: '#424242',
         g7: '#212121',
         n700: '#696F8C',
-        
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

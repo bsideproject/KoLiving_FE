@@ -13,7 +13,7 @@ interface TextareaProps {
 
 const getByteSize = (str: string) => {
   return new Blob([str]).size;
-}
+};
 
 function Textarea({ placeholder, register, maxByte, maxLength, initValue, className, readonly }: TextareaProps) {
   const [byteCount, setByteCount] = useState(0);
@@ -22,7 +22,7 @@ function Textarea({ placeholder, register, maxByte, maxLength, initValue, classN
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let currentText = e.target.value;
     let currentByte = getByteSize(currentText);
-    
+
     // byte 수가 초과 될 경우
     if (maxByte && currentByte >= maxByte) {
       // 초과되는 byte를 제거하기 위해 글자를 줄여나간다.
@@ -51,7 +51,9 @@ function Textarea({ placeholder, register, maxByte, maxLength, initValue, classN
   return (
     <div className="flex flex-col space-y-2">
       <textarea
-        className={`w-full rounded-[2px] resize-none pl-[14px] pt-[14px] focus:border-g6 focus:outline-none ${className || 'border-g4 border-[1px] h-[120px]'}`}
+        className={`w-full rounded-[2px] resize-none pl-[14px] pt-[14px] focus:border-g6 focus:outline-none ${
+          className || 'border-g4 border-[1px] h-[120px]'
+        }`}
         placeholder={placeholder}
         {...register}
         onChange={handleTextareaChange}
@@ -60,12 +62,11 @@ function Textarea({ placeholder, register, maxByte, maxLength, initValue, classN
         readOnly={readonly}
         // readOnly={!!((maxByte && byteCount >= maxByte) || (maxLength && textValue.length >= maxLength)) }
       />
-      { 
-      (maxByte || 0) > 0 &&
-      <div className="text-right text-g5 text-[14px] bold">
-        {byteCount} / {maxByte} byte
-      </div>
-      }
+      {(maxByte || 0) > 0 && (
+        <div className="text-right text-g5 text-[14px] bold">
+          {byteCount} / {maxByte} byte
+        </div>
+      )}
     </div>
   );
 }
