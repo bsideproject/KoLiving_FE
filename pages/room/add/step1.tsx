@@ -1,24 +1,15 @@
-import React, { useState, useEffect, useCallback, use, useMemo } from 'react';
-import { useTranslation } from 'next-i18next';
-import useModal from '@/hooks/useModal.ts';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Stepper, Chip, Select, Typography, Checkbox, Button, Input, Calendar } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import { Option } from '@/components/Select/Select';
-import Step2 from '@/pages/room/addRoom/step2.tsx';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import toast from 'react-hot-toast';
 import MultiButton from '@/components/MultiButton/MultiButton';
 import { useRouter } from 'next/router';
 import { formatDateForAPI } from '@/utils/transform';
-import { Furnishing } from '@/public/types/room';
 import { fetchFurnishings } from '@/api/room';
 import styles from './add.module.scss';
-
-interface GuDong2 extends Option {
-  gu: string | number;
-  guLabel: string;
-}
 
 interface GuDong {
   gu: Option;
@@ -36,40 +27,49 @@ const MAINTANANCE_FEE_OPTIONS = [
   },
 ];
 
-const INCLUDE_OPTIONS = [
-  {
-    value: 'gasChecked',
-    label: 'Gas',
-  },
-  {
-    value: 'waterChecked',
-    label: 'Water',
-  },
-  {
-    value: 'electricityChecked',
-    label: 'Electricity',
-  },
-  {
-    value: 'cleaningChecked',
-    label: 'Cleaning',
-  },
-];
-
 export default function AddRoom() {
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const router = useRouter();
-  const [furnishings, setFurnishings] = useState<Furnishing[]>([]);
+  const [furnishings, setFurnishings] = useState<Option[] | null>([]);
 
-  const data = await fetchFurnishings();
+  const getFurnishings = async () => {
+    try {
+      const data = await fetchFurnishings();
+
+      if (!data) {
+        return;
+      }
+
+      const mappedFurnishing = data.map((item) => {
+        return {
+          value: item.id,
+          label: item.desc,
+        };
+      });
+
+      setFurnishings(mappedFurnishing);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getFurnishings();
+  }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const furnishingIds = Object.keys(data)
+      .filter((key) => key.includes('furnishing-') && data[key])
+      .map((key) => key.replace(/^furnishing-/, ''));
+
     const params = {
       locationId: data.dong.value,
       monthlyRent: data.monthPrice,
       deposit: data.depositPrice,
       maintananceFee: data.maintananceFee,
       availableDate: formatDateForAPI(data.dateAvailable),
+      furnishingIds,
     };
     router.push(
       {
@@ -242,17 +242,17 @@ export default function AddRoom() {
             <div className="text-g5 text-[12px] font-normal">Included (optional)</div>
           </div>
           <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[40px]">
-            {INCLUDE_OPTIONS.map((item) => {
-              return (
-                <Checkbox
-                  key={item.value}
-                  type="outlined"
-                  label={item.label}
-                  register={register(item.value)}
-                  checked={watch(item.value)}
-                />
-              );
-            })}
+            {furnishings &&
+              furnishings.map((item) => {
+                return (
+                  <Checkbox
+                    key={item.value}
+                    type="outlined"
+                    label={item.label}
+                    register={register(`furnishing-${item.value}`)}
+                  />
+                );
+              })}
           </div>
         </>
       )}
