@@ -1,20 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 import useModal from '@/hooks/useModal.ts';
-import {
-  Stepper,
-  Chip,
-  Select,
-  Typography,
-  Checkbox,
-  Button,
-  Input,
-  Calendar,
-} from '@/components/index.tsx';
+import { Stepper, Chip, Select, Typography, Checkbox, Button, Input, Calendar } from '@/components/index.tsx';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import { Option } from '@/components/Select/Select';
-import Step2 from '@/pages/room/addRoom/step2.tsx'
+import Step2 from '@/pages/room/addRoom/step2.tsx';
 
 interface GuDong extends Option {
   gu: string | number;
@@ -27,12 +18,12 @@ export default function Step1() {
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [buttonState, setButtonState] = useState('YES');
   const [isCalendarShow, setCalendarShow] = useState(false);
-  
+
   const [guValue, setGuValue] = useState<Option>({
     value: '',
     label: '',
   });
-  
+
   const [dongValue, setDongValue] = useState<GuDong>({
     gu: '',
     guLabel: '',
@@ -64,7 +55,6 @@ export default function Step1() {
       const isExist = prevSelectedOptions.some((item) => item.includes(option));
       // Location이 5개 이상 선택 될 경우 Toast 노출
       if (prevSelectedOptions.length >= 5) {
-        
         return [...prevSelectedOptions];
       }
 
@@ -88,17 +78,23 @@ export default function Step1() {
   const handleGuChange = useCallback((option: Option) => {
     setGuValue(option);
   }, []);
-  
+
   const handleOptionRemove = (option: string) => {
     setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
   };
   const handleCalendarShow = (isShow: boolean) => {
     setCalendarShow(isShow);
-  }
+  };
 
   const isNextStep = () => {
-    return !watch('dong') || !watch('monthPrice') || !(watch('depositPrice') || watch('depositChecked')) || !(watch('availableChecked') || watch('dateAvailable')) || !(buttonState === 'YES' && watch('maintananceFee') || buttonState === 'NO');
-  }
+    return (
+      !watch('dong') ||
+      !watch('monthPrice') ||
+      !(watch('depositPrice') || watch('depositChecked')) ||
+      !(watch('availableChecked') || watch('dateAvailable')) ||
+      !((buttonState === 'YES' && watch('maintananceFee')) || buttonState === 'NO')
+    );
+  };
 
   const handleButtonClick = (value: string) => {
     setButtonState(value);
@@ -107,7 +103,7 @@ export default function Step1() {
   const getButtonColor = (value: string) => {
     return buttonState === value ? 'r1' : 'outlined';
   };
-  
+
   useEffect(() => {
     handleOptionSelect();
   }, [dongValue.label, handleOptionSelect]);
@@ -153,7 +149,7 @@ export default function Step1() {
               onChange={handleDongChange}
             />
           </section>
-          <div className={'mb-[32px]'}>
+          <div className="mb-[32px]">
             {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
             {selectedOptions.map((option) => {
               return <Chip key={option} label={option} onDelete={() => handleOptionRemove?.(option)} clicked />;
@@ -196,9 +192,9 @@ export default function Step1() {
               Min 0 ￦ - Max 50,000,000 ￦
             </Typography>
           </div>
-          <div className={`mb-[16px]`}>
+          <div className="mb-[16px]">
             <Input
-              placeholder={"Price"}
+              placeholder="Price"
               type="text"
               register={register('depositPrice')}
               disabled={watch('depositChecked')}
@@ -207,7 +203,7 @@ export default function Step1() {
           <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
             <Checkbox
               type="outlined"
-              label={"No Deposit"}
+              label="No Deposit"
               register={register('depositChecked')}
               checked={watch('depositChecked')}
             />
@@ -220,19 +216,18 @@ export default function Step1() {
           <div className="mb-[13px]">
             <div className="mb-3 grid grid-cols-2 gap-0">
               <div className="col-span-1">
-                <Button size="lg" type="button" onClick={() => handleButtonClick('YES')} color={getButtonColor('YES')} >
+                <Button size="lg" type="button" onClick={() => handleButtonClick('YES')} color={getButtonColor('YES')}>
                   YES
                 </Button>
               </div>
               <div className="col-span-1">
-                <Button size="lg" type="button" onClick={() => handleButtonClick('NO')} color={getButtonColor('NO')} >
+                <Button size="lg" type="button" onClick={() => handleButtonClick('NO')} color={getButtonColor('NO')}>
                   NO
                 </Button>
               </div>
             </div>
           </div>
-          {
-            (buttonState === 'YES') &&
+          {buttonState === 'YES' && (
             <div className="mt-[16px] mb-[16px]">
               <Input
                 placeholder={filterTranslation.t('Price') as string}
@@ -244,7 +239,7 @@ export default function Step1() {
                 })}
               />
             </div>
-          }
+          )}
           <div className="flex justify-between items-center mb-[20px]">
             <Typography variant="body" fontStyle="semiBold" customClassName="text-[16px]">
               Included (optional)
@@ -282,8 +277,14 @@ export default function Step1() {
               Date available
             </Typography>
           </div>
-          <section className='mb-[8px]'>
-            <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateAvailable')} disabled={watch('availableChecked')} handleCalendarShow={handleCalendarShow}/>
+          <section className="mb-[8px]">
+            <Calendar
+              placeholder="MM-DD-YYYY"
+              type="text"
+              register={register('dateAvailable')}
+              disabled={watch('availableChecked')}
+              handleCalendarShow={handleCalendarShow}
+            />
           </section>
           <div className={`grid grid-cols-2 gap-[8px] ${isCalendarShow ? 'mb-[533px]' : 'mb-[166px]'} `}>
             <Checkbox
@@ -296,8 +297,13 @@ export default function Step1() {
           <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
             <div className="w-full">
               <div className="mb-[13px]">
-                <Button size="lg" type="submit" disabled={isNextStep()}
-                  onClick={() => { watch('dateAvailable') }}
+                <Button
+                  size="lg"
+                  type="submit"
+                  disabled={isNextStep()}
+                  onClick={() => {
+                    watch('dateAvailable');
+                  }}
                 >
                   {filterTranslation.t('Next')}
                 </Button>

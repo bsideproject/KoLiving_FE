@@ -3,14 +3,14 @@ import Like from '@/public/icons/like.svg';
 import Home from '@/public/icons/home.svg';
 import Chat from '@/public/icons/chat.svg';
 import Me from '@/public/icons/me.svg';
-import styles from './Nav.module.scss';
 import { useRouter } from 'next/router';
+import styles from './Nav.module.scss';
 
 const defaultStrokeColor = 'stroke-g4 stroke-[1.5px]';
 const activeStrokeColor = 'stroke-r1 stroke-[1.5px]';
 
 interface NavProps {
-  initMenu ?: number;
+  initMenu?: number;
 }
 
 const menus = [
@@ -32,18 +32,18 @@ const menus = [
   },
 ];
 
-export default function Nav({ initMenu } : NavProps) {
+export default function Nav({ initMenu }: NavProps) {
   const [activeMenu, setActiveMenu] = useState(initMenu || 0); // 초기 활성 메뉴 인덱스
   const [hoverMenu, setHoverMenu] = useState(-1); // 초기화
   const router = useRouter();
   const handleNavClicked = (index: number) => {
     setActiveMenu(index);
-    if (index ===0) {
+    if (index === 0) {
       router.push('/');
     } else if (index === 3) {
       router.push('userInfo');
     }
-  }
+  };
 
   return (
     <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center`}>
