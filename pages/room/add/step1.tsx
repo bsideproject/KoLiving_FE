@@ -59,19 +59,6 @@ export default function AddRoom() {
   const [isCalendarShow, setCalendarShow] = useState(false);
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
 
-  const [guValue, setGuValue] = useState<Option>({
-    value: '',
-    label: '',
-  });
-
-  const [dongValue, setDongValue] = useState<GuDong2>({
-    gu: '',
-    guLabel: '',
-    value: '',
-    label: '',
-  });
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  // const filteredDongList = DongList.filter((v) => v.gu === guValue?.value || '');
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     openModal({
       props: {
@@ -84,48 +71,6 @@ export default function AddRoom() {
     });
   };
 
-  // 옵션 선택 시 실행될 함수, 유효성 검증
-  const handleOptionSelect = useCallback(() => {
-    if (!dongValue.label) return;
-
-    let resultOptions: string[];
-    const option = dongValue.label;
-
-    setSelectedOptions((prevSelectedOptions) => {
-      const isExist = prevSelectedOptions.some((item) => item.includes(option));
-      // Location이 5개 이상 선택 될 경우 Toast 노출
-      if (prevSelectedOptions.length >= 5) {
-        return [...prevSelectedOptions];
-      }
-
-      if (!isExist) {
-        resultOptions = [...prevSelectedOptions, guValue?.label.concat(`, ${option}`)];
-      } else {
-        resultOptions = prevSelectedOptions;
-      }
-      return [...resultOptions];
-    });
-  }, [dongValue.label, guValue?.label]);
-
-  const handleDongChange = useCallback(
-    (option: Option) => {
-      // 선택된 value와 label 값을 이용하여 원하는 작업 수행
-      setDongValue({ ...option, gu: guValue.value, guLabel: guValue.label });
-    },
-    [guValue?.label, guValue?.value]
-  );
-
-  const handleGuChange = useCallback((option: Option) => {
-    setGuValue(option);
-  }, []);
-
-  const handleOptionRemove = (option: string) => {
-    setSelectedOptions((prevSelectedOptions) => prevSelectedOptions.filter((item) => item !== option));
-  };
-  const handleCalendarShow = (isShow: boolean) => {
-    setCalendarShow(isShow);
-  };
-
   const isNextStep = () => {
     return (
       !watch('dong') ||
@@ -135,18 +80,6 @@ export default function AddRoom() {
       !((buttonState === 'YES' && watch('maintananceFee')) || buttonState === 'NO')
     );
   };
-
-  const handleButtonClick = (value: string) => {
-    setButtonState(value);
-  };
-
-  const getButtonColor = (value: string) => {
-    return buttonState === value ? 'r1' : 'outlined';
-  };
-
-  useEffect(() => {
-    handleOptionSelect();
-  }, [dongValue.label, handleOptionSelect]);
 
   const gu = watch('gu');
   const dong = watch('dong');
