@@ -10,7 +10,7 @@ interface MultiButtonProps {
 }
 
 function MultiButton({ options, register }: MultiButtonProps) {
-  const [selected, setSelected] = React.useState<Option>(options[0]);
+  const [selected, setSelected] = React.useState<Option>();
 
   const handleButtonClick = (value: string) => {
     const selectedButton = options.find((option) => option.value === value);
@@ -39,6 +39,11 @@ function MultiButton({ options, register }: MultiButtonProps) {
     register.onChange(customEvent);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
+
+  useEffect(() => {
+    setSelected(options[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={`mb-3 grid  gap-0 grid-cols-${options.length}`}>
