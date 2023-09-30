@@ -60,29 +60,58 @@ export default function AddRoom() {
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    openModal({
-      props: {
-        title: 'Add room',
-        size: 'full',
-        custom: true,
-        customHeader: true,
-      },
-      children: <Step2 step1Data={data} />,
-    });
+    // openModal({
+    //   props: {
+    //     title: 'Add room',
+    //     size: 'full',
+    //     custom: true,
+    //     customHeader: true,
+    //   },
+    //   children: <Step2 step1Data={data} />,
+    // });
+
+    console.log('%c 🤩🤩🤩 영우의 로그 : ', 'font-size: x-large; color: #bada55;', '', data);
   };
 
-  const isNextStep = () => {
-    return (
-      !watch('dong') ||
-      !watch('monthPrice') ||
-      !(watch('depositPrice') || watch('depositChecked')) ||
-      !(watch('availableChecked') || watch('dateAvailable')) ||
-      !((buttonState === 'YES' && watch('maintananceFee')) || buttonState === 'NO')
-    );
-  };
+  // const isNextStep = () => {
+  //   return (
+  //     !watch('dong') ||
+  //     !watch('monthPrice') ||
+  //     !(watch('depositPrice') || watch('noDeposit')) ||
+  //     !(watch('availableNow') || watch('dateAvailable')) ||
+  //     !((buttonState === 'YES' && watch('maintananceFee')) || buttonState === 'NO')
+  //   );
+  // };
 
   const gu = watch('gu');
   const dong = watch('dong');
+  const monthPrice = watch('monthPrice');
+  const depositPrice = watch('depositPrice');
+  const noDeposit = watch('noDeposit');
+  const availableNow = watch('availableNow');
+  const dateAvailable = watch('dateAvailable');
+  const isUseMaintananceFee = watch('isUseMaintananceFee');
+  const maintananceFee = watch('maintananceFee');
+
+  const isDisabledNextStep = useMemo(() => {
+    return (
+      !dong ||
+      !monthPrice ||
+      (!noDeposit && !depositPrice) ||
+      (!availableNow && !dateAvailable) ||
+      (isUseMaintananceFee?.value === 'yes' && !maintananceFee)
+    );
+  }, [
+    availableNow,
+    dateAvailable,
+    depositPrice,
+    dong,
+    isUseMaintananceFee?.value,
+    maintananceFee,
+    monthPrice,
+    noDeposit,
+  ]);
+
   const filteredDongList = useMemo(() => {
     if (!gu) {
       return [];
@@ -165,7 +194,6 @@ export default function AddRoom() {
         )}
       </div>
 
-      {/* 구분선 */}
       <hr />
 
       {/* Monthly rent */}
@@ -190,29 +218,24 @@ export default function AddRoom() {
           <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
         </div>
         <div className="mb-[16px]">
-          <Input
-            placeholder="Price"
-            type="number"
-            register={register('depositPrice')}
-            disabled={watch('depositChecked')}
-          />
+          <Input placeholder="Price" type="number" register={register('depositPrice')} disabled={watch('noDeposit')} />
         </div>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
-          <Checkbox type="outlined" label="No Deposit" register={register('depositChecked')} />
+          <Checkbox type="outlined" label="No Deposit" register={register('noDeposit')} />
         </div>
       </div>
 
       {/* Maintanance fee */}
-      <div>
-        <div className="mb-[4px] mt-[28px]">
-          <div className="mb-[10px]">
-            <div className={styles['sub-header']}> Maintanance fee</div>
-          </div>
+      <div className="mb-[4px] mt-[28px]">
+        <div className="mb-[10px]">
+          <div className={styles['sub-header']}> Maintanance fee</div>
         </div>
-        <div className="mb-[24px]">
-          <MultiButton options={MAINTANANCE_FEE_OPTIONS} register={register('maintananceFee')} />
-        </div>
-        {watch('maintananceFee')?.value === 'yes' && (
+      </div>
+      <div className="mb-[24px]">
+        <MultiButton options={MAINTANANCE_FEE_OPTIONS} register={register('isUseMaintananceFee')} />
+      </div>
+      {watch('isUseMaintananceFee')?.value === 'yes' && (
+        <>
           <div className="mb-[16px]">
             <Input
               placeholder={filterTranslation.t('Price') as string}
@@ -220,26 +243,26 @@ export default function AddRoom() {
               register={register('maintananceFee')}
             />
           </div>
-        )}
 
-        {/* Maintanance fee - Included */}
-        <div className="mb-[16px]">
-          <div className="text-g5 text-[12px] font-normal">Included (optional)</div>
-        </div>
-        <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[40px]">
-          {INCLUDE_OPTIONS.map((item) => {
-            return (
-              <Checkbox
-                key={item.value}
-                type="outlined"
-                label={item.label}
-                register={register(item.value)}
-                checked={watch(item.value)}
-              />
-            );
-          })}
-        </div>
-      </div>
+          {/* Maintanance fee - Included */}
+          <div className="mb-[16px]">
+            <div className="text-g5 text-[12px] font-normal">Included (optional)</div>
+          </div>
+          <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[40px]">
+            {INCLUDE_OPTIONS.map((item) => {
+              return (
+                <Checkbox
+                  key={item.value}
+                  type="outlined"
+                  label={item.label}
+                  register={register(item.value)}
+                  checked={watch(item.value)}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
 
       <hr />
 
@@ -253,11 +276,11 @@ export default function AddRoom() {
           placeholder="MM-DD-YYYY"
           type="text"
           register={register('dateAvailable')}
-          disabled={watch('availableChecked')}
+          disabled={watch('availableNow')}
         />
       </section>
       <div className={`grid grid-cols-2 gap-[8px] ${isCalendarShow ? 'mb-[533px]' : 'mb-[166px]'} `}>
-        <Checkbox type="outlined" label="Available now" register={register('availableChecked')} />
+        <Checkbox type="outlined" label="Available now" register={register('availableNow')} />
       </div>
       <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
         <div className="w-full">
@@ -265,7 +288,7 @@ export default function AddRoom() {
             <Button
               size="lg"
               type="submit"
-              disabled={isNextStep()}
+              disabled={isDisabledNextStep}
               onClick={() => {
                 watch('dateAvailable');
               }}
