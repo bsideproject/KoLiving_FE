@@ -38,6 +38,7 @@ function Home() {
   const makeFilters = (filterParams: FilterType) => {
     const resultFilter: string[] = [];
     Object.keys(filterParams).forEach((key) => {
+      // eslint-disable-next-line no-unused-expressions
       filterParams[`${key}`] && resultFilter.push(commonTranslation.t(`${key}`));
     });
     setFilters(() => [...resultFilter]);
