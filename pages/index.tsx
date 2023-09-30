@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import RoomCard from '@/components/RoomCard/RoomCard';
-import { fetchRooms } from '@/api/room';
+import { fetchRooms } from '@/api/room-dev';
 import { Room } from '@/public/types/room';
 import { NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
@@ -43,7 +43,7 @@ function Home() {
     setFilters(() => [...resultFilter]);
   };
 
-  const makeSubmitParam = (data: FieldValues) : FilterType  => {
+  const makeSubmitParam = (data: FieldValues): FilterType => {
     const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
     const furnishings = [
       'bedChecked',
@@ -56,7 +56,7 @@ function Home() {
       'doorLockChecked',
       'tvChecked',
       'kitchenetteChecked',
-      'heaterChecked'
+      'heaterChecked',
     ];
 
     let typeOfHousing = false;
@@ -64,7 +64,7 @@ function Home() {
     let monthRent = false;
     let deposit = false;
     let location = false;
-    let dateAvailable = false
+    let dateAvailable = false;
 
     // typeOfHousing 중 하나라도 체크되면 true
     typeOfHousings.forEach((key) => {
@@ -139,20 +139,20 @@ function Home() {
     let result = false;
     if ((clickedChip || '') !== '' && filters.length > 1) {
       result = filters[0] === option;
-    } else if (filters.length === 1 ) {
-      result = option === filters[0]
+    } else if (filters.length === 1) {
+      result = option === filters[0];
     }
     return result;
   };
   // 옵션 제거 시 실행될 함수
   const handleOptionRemove = (option: string, index: number) => {
-    const resultFilters = filters.filter( (item) => item !== option);
+    const resultFilters = filters.filter((item) => item !== option);
     setFilters(() => [...resultFilters]);
 
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
-    //if ((clickedChip || '' )  === '' ||  selectedOptions.length !== filters.length) {
-      if ((clickedChip || '' )  === '') {
-        setClickedChip(filters?.[0]);
+    // if ((clickedChip || '' )  === '' ||  selectedOptions.length !== filters.length) {
+    if ((clickedChip || '') === '') {
+      setClickedChip(filters?.[0]);
     }
   };
 
@@ -184,7 +184,7 @@ function Home() {
       </Typography>
       {rooms.map((room, idx) => (
         // Nav 영역 맨 마지막 부분 잘리는 문제로 추가
-        <div className={`mt-[20px] ${rooms.length-1 === idx ? 'mb-[83px]': ''}`}  key={`room-${idx}`}>
+        <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
           <RoomCard room={room} onClick={() => handleCardClick(idx)} />
         </div>
       ))}

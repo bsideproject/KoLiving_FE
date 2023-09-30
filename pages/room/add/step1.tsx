@@ -9,6 +9,10 @@ import Step2 from '@/pages/room/addRoom/step2.tsx';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import toast from 'react-hot-toast';
 import MultiButton from '@/components/MultiButton/MultiButton';
+import { useRouter } from 'next/router';
+import { formatDateForAPI } from '@/utils/transform';
+import { Furnishing } from '@/public/types/room';
+import { fetchFurnishings } from '@/api/room';
 import styles from './add.module.scss';
 
 interface GuDong2 extends Option {
@@ -52,36 +56,29 @@ const INCLUDE_OPTIONS = [
 ];
 
 export default function AddRoom() {
-  const { openModal } = useModal();
-  const filterTranslation = useTranslation('filter');
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
-  const [buttonState, setButtonState] = useState('YES');
-  const [isCalendarShow, setCalendarShow] = useState(false);
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
+  const router = useRouter();
+  const [furnishings, setFurnishings] = useState<Furnishing[]>([]);
+
+  const data = await fetchFurnishings();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    // openModal({
-    //   props: {
-    //     title: 'Add room',
-    //     size: 'full',
-    //     custom: true,
-    //     customHeader: true,
-    //   },
-    //   children: <Step2 step1Data={data} />,
-    // });
-
-    console.log('%c 🤩🤩🤩 영우의 로그 : ', 'font-size: x-large; color: #bada55;', '', data);
+    const params = {
+      locationId: data.dong.value,
+      monthlyRent: data.monthPrice,
+      deposit: data.depositPrice,
+      maintananceFee: data.maintananceFee,
+      availableDate: formatDateForAPI(data.dateAvailable),
+    };
+    router.push(
+      {
+        pathname: '/room/add/step2',
+        query: { data: JSON.stringify(params) },
+      },
+      '/room/add/step2'
+    );
   };
-
-  // const isNextStep = () => {
-  //   return (
-  //     !watch('dong') ||
-  //     !watch('monthPrice') ||
-  //     !(watch('depositPrice') || watch('noDeposit')) ||
-  //     !(watch('availableNow') || watch('dateAvailable')) ||
-  //     !((buttonState === 'YES' && watch('maintananceFee')) || buttonState === 'NO')
-  //   );
-  // };
 
   const gu = watch('gu');
   const dong = watch('dong');
@@ -237,11 +234,7 @@ export default function AddRoom() {
       {watch('isUseMaintananceFee')?.value === 'yes' && (
         <>
           <div className="mb-[16px]">
-            <Input
-              placeholder={filterTranslation.t('Price') as string}
-              type="number"
-              register={register('maintananceFee')}
-            />
+            <Input placeholder="Price" type="number" register={register('maintananceFee')} />
           </div>
 
           {/* Maintanance fee - Included */}
@@ -279,7 +272,7 @@ export default function AddRoom() {
           disabled={watch('availableNow')}
         />
       </section>
-      <div className={`grid grid-cols-2 gap-[8px] ${isCalendarShow ? 'mb-[533px]' : 'mb-[166px]'} `}>
+      <div className="grid grid-cols-2 gap-[8px] mb-[166px]">
         <Checkbox type="outlined" label="Available now" register={register('availableNow')} />
       </div>
       <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
@@ -293,7 +286,7 @@ export default function AddRoom() {
                 watch('dateAvailable');
               }}
             >
-              {filterTranslation.t('Next')}
+              Next
             </Button>
           </div>
         </div>

@@ -25,13 +25,13 @@ export interface Room {
 
 export interface RoomPost {
   locationId: number;
-  roomType: "STUDIO" | "ONE_BED_FLATS" | "SHARE_HOUSE";
-  //bedrooms: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX_OR_OVER";
+  roomType: 'STUDIO' | 'ONE_BED_FLATS' | 'SHARE_HOUSE';
+  // bedrooms: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX_OR_OVER";
   bedrooms: string;
   bathrooms: string;
   roommates: string;
-  //bathrooms: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX" | "SIX_OR_OVER";
-  //roommates: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX" | "SIX_OR_OVER";
+  // bathrooms: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX" | "SIX_OR_OVER";
+  // roommates: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX" | "SIX_OR_OVER";
   deposit: number;
   monthlyRent: number;
   maintenanceFee: number;
@@ -40,8 +40,13 @@ export interface RoomPost {
   electricityIncluded: boolean;
   cleaningIncluded: boolean;
   furnishingIds: Array<number>;
-  //availableDate: Date;
+  // availableDate: Date;
   availableDate: string;
   description: string;
-  imageIds : Array<number>;
+  imageIds: Array<number>;
+}
+
+export interface Furnishing {
+  id: number;
+  desc: string;
 }

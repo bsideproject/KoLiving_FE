@@ -12,3 +12,7 @@ export const formatAge = (year: number) => {
 export const formatDate = (date: string) => {
   return format(new Date(date), 'MMM dd yyyy');
 };
+
+export const formatDateForAPI = (date: string) => {
+  return format(new Date(date), 'yyyy-MM-dd');
+};
