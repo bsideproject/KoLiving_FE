@@ -2,7 +2,7 @@
 import React, { ChangeEvent } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
-interface Option {
+export interface Option {
   value: string;
   label: string;
 }

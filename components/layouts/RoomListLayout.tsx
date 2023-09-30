@@ -3,7 +3,6 @@ import Header from '@/components/Header/Header.tsx';
 import useModal from '@/hooks/useModal.ts';
 import Step1 from '@/pages/room/addRoom/step1.tsx';
 
-
 interface AppLayoutProps {
   children: ReactNode;
 }
