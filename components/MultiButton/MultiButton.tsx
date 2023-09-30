@@ -37,7 +37,8 @@ function MultiButton({ options, register }: MultiButtonProps) {
       },
     };
     register.onChange(customEvent);
-  }, [selected, register]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   return (
     <div className={`mb-3 grid  gap-0 grid-cols-${options.length}`}>
