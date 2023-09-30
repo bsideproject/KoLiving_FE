@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactCalendar from 'react-calendar';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { format, parse } from 'date-fns';
@@ -26,6 +26,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const [dateValue, setDateValue] = useState<string>(value || '');
   const [originDateValue, setOriginDateValue] = useState<string>(value || '');
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -33,6 +34,12 @@ export default function Calendar({ placeholder, register, error, disabled, value
         setIsCalendarShow(false);
       }
     };
+
+    if (calendarRef.current) {
+      const elementRect = calendarRef.current.getBoundingClientRect();
+
+      setScrollPosition(window.innerHeight - Number(elementRect?.bottom));
+    }
 
     // 마운트 시 이벤트 등록
     document.addEventListener('click', handleClickOutside);
@@ -45,6 +52,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
 
   const toggleCalendar = () => {
     setIsCalendarShow((state) => !state);
+    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
     handleCalendarShow?.(!isCalendarShow);
   };
 
@@ -69,6 +77,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
     setOriginDateValue(dateValue);
     register.onChange(customEvent);
     toggleCalendar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateValue, register]);
 
   const valueToDisplay = dateValue ? parse(dateValue, 'MM-dd-yyyy', new Date()) : '';
@@ -76,7 +85,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
   return (
     <div className="relative w-full" ref={calendarRef}>
       <input
-        className={`${styles.input} ${hasError ? styles.error : ''} ${disabled ? 'bg-g2': 'bg-g0'} `}
+        className={`${styles.input} ${hasError ? styles.error : ''} ${disabled ? 'bg-g2' : 'bg-g0'} `}
         placeholder={placeholder}
         disabled={disabled}
         onClick={toggleCalendar}
@@ -85,7 +94,11 @@ export default function Calendar({ placeholder, register, error, disabled, value
         {...register}
       />
       {isCalendarShow && (
-        <div className="border-[#bdbdbd] border-[1px] absolute bg-g0">
+        <div
+          className={`border-[#bdbdbd] border-[1px] absolute bg-g0 ${
+            scrollPosition < 450 ? styles['top-position'] : ''
+          }`}
+        >
           <ReactCalendar
             value={valueToDisplay}
             onChange={changeDate}
@@ -93,7 +106,7 @@ export default function Calendar({ placeholder, register, error, disabled, value
             next2Label={null}
             maxDetail="month"
             minDetail="month"
-            calendarType="US" // 일요일부터 시작하도록 한다
+            calendarType="gregory" // 일요일부터 시작하도록 한다
             formatShortWeekday={(locale, date) => ['S', 'M', 'T', 'W', 'T', 'F', 'S'][date.getDay()]}
             formatDay={(locale, date) => format(date, 'd')}
             formatMonthYear={(locale, date) => format(date, 'MMMM yyyy')}
