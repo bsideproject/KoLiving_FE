@@ -16,3 +16,7 @@
 .warning {
   @apply text-a1 font-pretendard text-[14px] h-[14px] mt-[4px];
 }
+
+.top-position {
+  @apply absolute bottom-[50px];
+}

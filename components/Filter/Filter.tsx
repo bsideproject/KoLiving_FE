@@ -7,7 +7,6 @@ import styles from './Filter.module.scss';
 import { Option } from '../Select/Select';
 import Calendar from '../Calendar/Calendar';
 
-
 const TYPE_OF_HOUSING = [
   {
     value: 'studioChecked',

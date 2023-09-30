@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Header, Space } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { fetchRoom } from '@/api/room';
+import { fetchRoom } from '@/api/room-dev';
 import { useRouter } from 'next/router';
 import { ROOM_TYPE, Room } from '@/public/types/room';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';

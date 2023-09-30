@@ -15,7 +15,6 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 });
 
 export default function Login() {
-  const router = useRouter();
   const { t } = useTranslation('common');
   const {
     handleSubmit,

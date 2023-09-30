@@ -1,15 +1,6 @@
-import { Room, RoomPost } from '@/public/types/room';
-import { fetchData } from './index-dev';
+import { Furnishing } from '@/public/types/room';
+import { fetchData } from './index';
 
-
-export const fetchRooms = async () => {
-  return fetchData<Room[]>('/api/room');
+export const fetchFurnishings = async () => {
+  return fetchData<Furnishing[]>('/api/v1/furnishings');
 };
-
-export const fetchRoom = async (id: string) => {
-  return fetchData<Room>(`/api/room/${id}`);
-};
-
-export const fetchPostRoom = async(data: RoomPost) => {
-  return fetchData<RoomPost>(`/api/v1/rooms`);
-}
