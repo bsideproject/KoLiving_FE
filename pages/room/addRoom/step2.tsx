@@ -144,6 +144,7 @@ export default function Step2({ step1Data }: Step2Props) {
                 Total bedrooms
               </Typography>
               <Stepper2
+                register={register('bedRooms')}
                 disabled={['Studio', '1bed flat'].indexOf(typeButton) > -1}
                 initCount={typeButton === 'Studio' ? 0 : typeButton === 'Share house' ? 2 : 1}
                 disabledLeft={typeButton === 'Share house' && bedroomCount <= 2}
@@ -156,6 +157,7 @@ export default function Step2({ step1Data }: Step2Props) {
                 Total bathrooms
               </Typography>
               <Stepper2
+                register={register('bathrooms')}
                 initCount={1}
                 disabledLeft={bathroomCount <= 1}
                 disabledRight={bathroomCount >= 20}
@@ -167,6 +169,7 @@ export default function Step2({ step1Data }: Step2Props) {
                 Total roommates
               </Typography>
               <Stepper2
+                register={register('roommates')}
                 initCount={1}
                 disabledLeft={roommatesCount <= 0}
                 disabledRight={roommatesCount >= 20}
