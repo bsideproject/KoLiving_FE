@@ -6,7 +6,7 @@ export const ROOM_TYPE = {
   SHARE: 'share',
 } as const;
 
-export interface Room {
+export interface RoomDev {
   userInfo: User;
   images: string[];
   dong: string;
@@ -49,4 +49,32 @@ export interface RoomPost {
 export interface Furnishing {
   id: number;
   desc: string;
+}
+
+export interface RoomFile {
+  createdAt: string;
+  deleted: boolean;
+  id: number;
+  path: string;
+  size: number;
+  updatedAt: string;
+}
+
+export interface Room {
+  locationId: number;
+  roomType: string;
+  bedrooms: string;
+  bathrooms: string;
+  roommates: string;
+  deposit: number;
+  monthlyRent: number;
+  maintenanceFee: number;
+  gasIncluded: boolean;
+  waterIncluded: boolean;
+  electricityIncluded: boolean;
+  cleaningIncluded: boolean;
+  furnishingIds: number[];
+  availableDate: string;
+  description: string;
+  imageIds: number[];
 }

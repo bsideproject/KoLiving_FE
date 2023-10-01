@@ -1,4 +1,4 @@
-import { ROOM_TYPE, Room } from '@/public/types/room';
+import { ROOM_TYPE, RoomDev } from '@/public/types/room';
 import React, { useState } from 'react';
 import { User } from '@/public/types/user';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import Card from '../Card/Card';
 
 interface CardProps {
-  room: Room;
+  room: RoomDev;
   onClick?: () => void;
 }
 

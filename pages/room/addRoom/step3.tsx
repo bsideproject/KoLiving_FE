@@ -118,7 +118,12 @@ export default function Step3({ step1Data, step2Data }: Step2Props) {
             </Typography>
           </div>
           {/* 업로드 버튼으로 사용될 SVG */}
-          <Upload callbackImageFn={callbackImageList} InitImageComponent={null} multiImage />
+          <Upload
+            callbackImageFn={callbackImageList}
+            InitImageComponent={null}
+            multiImage
+            register={register('images')}
+          />
 
           <hr className="mt-[32px]" />
 

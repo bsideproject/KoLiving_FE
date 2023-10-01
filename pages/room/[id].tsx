@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { fetchRoom } from '@/api/room-dev';
 import { useRouter } from 'next/router';
-import { ROOM_TYPE, Room } from '@/public/types/room';
+import { ROOM_TYPE, RoomDev } from '@/public/types/room';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import ArrowDown from '@/public/icons/arrow-down.svg';
 import Pin from '@/public/icons/pin.svg';
@@ -22,7 +22,7 @@ export default function Login() {
   const { id } = router.query;
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  const [room, setRoom] = React.useState<Room | undefined>();
+  const [room, setRoom] = React.useState<RoomDev | undefined>();
   const age = room ? formatAge(room.userInfo.year) : 0;
   const [isShowDetail, setIsShowDetail] = React.useState(false);
 

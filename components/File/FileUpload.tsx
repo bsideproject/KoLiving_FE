@@ -3,6 +3,7 @@ import ImageUploading, { ImageListType } from 'react-images-uploading';
 import Rectangle from '@/public/icons/rectangle.svg';
 import RectangleCamera from '@/public/icons/rectangleCamera.svg';
 import styles from '@/components/File/FileUpload.module.scss';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface ImageComponentClickProps {
   imageSrc: string;
@@ -12,18 +13,38 @@ interface ImageComponentClickProps {
 interface FileUploadProps {
   multiImage: boolean;
   callbackImageFn?: (imageList: ImageListType) => void;
-  InitImageComponent: React.ComponentType<ImageComponentClickProps> | null;
+  InitImageComponent?: React.ComponentType<ImageComponentClickProps> | null;
   style?: 'center' | 'left' | 'default';
+  register: UseFormRegisterReturn;
 }
 
-export default function FileUpload({ callbackImageFn, InitImageComponent, multiImage, style }: FileUploadProps) {
+export default function FileUpload({
+  callbackImageFn,
+  InitImageComponent,
+  multiImage,
+  style,
+  register,
+}: FileUploadProps) {
   const [images, setImages] = React.useState<ImageListType>([]);
   const maxNumber = 5;
 
   const onChange = (imageList: ImageListType) => {
     const lastImage = imageList.slice(-1);
-    multiImage ? setImages(imageList) : setImages(lastImage);
+    const customEvent = {
+      target: {
+        name: register.name,
+        value: lastImage,
+      },
+    };
+
+    if (multiImage) {
+      customEvent.target.value = imageList;
+      setImages(imageList);
+    } else {
+      setImages(lastImage);
+    }
     callbackImageFn?.(imageList);
+    register.onChange(customEvent);
   };
 
   return (
@@ -33,7 +54,7 @@ export default function FileUpload({ callbackImageFn, InitImageComponent, multiI
           {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
             // write your building UI
             <div className={`upload__image-wrapper ${styles[`${style || 'default'}`]}`}>
-              {InitImageComponent === null ? (
+              {!InitImageComponent ? (
                 <div className="relative w-[108px] h-[110px] mt-[8px]" {...dragProps}>
                   <Rectangle className="z-0" />
                   <RectangleCamera
@@ -41,7 +62,9 @@ export default function FileUpload({ callbackImageFn, InitImageComponent, multiI
                       isDragging ? 'bg-r1' : ''
                     }`}
                     onClick={() => {
-                      (imageList || []).length < 5 && onImageUpload();
+                      if ((imageList || []).length < 5) {
+                        onImageUpload();
+                      }
                     }}
                   />
                   <span

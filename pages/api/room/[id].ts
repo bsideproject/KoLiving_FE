@@ -1,7 +1,7 @@
-import { ROOM_TYPE, Room } from '@/public/types/room';
+import { ROOM_TYPE, RoomDev } from '@/public/types/room';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<Room>) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<RoomDev>) {
   const userInfo = {
     name: 'Dennis',
     image: 'https://source.unsplash.com/random',

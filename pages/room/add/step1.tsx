@@ -19,11 +19,11 @@ interface GuDong {
 const MAINTANANCE_FEE_OPTIONS = [
   {
     value: 'yes',
-    label: 'YES',
+    label: 'Yes',
   },
   {
     value: 'no',
-    label: 'NO',
+    label: 'No',
   },
 ];
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import RoomCard from '@/components/RoomCard/RoomCard';
 import { fetchRooms } from '@/api/room-dev';
-import { Room } from '@/public/types/room';
+import { RoomDev } from '@/public/types/room';
 import { NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
 import FilterImg from '@/public/icons/filter.svg';
@@ -20,7 +20,7 @@ type HomeProps = NextPage & {
 
 function Home() {
   const commonTranslation = useTranslation('common');
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<RoomDev[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [clickedChip, setClickedChip] = useState('');
