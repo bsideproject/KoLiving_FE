@@ -88,6 +88,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
             }
           }}
           style="center"
+          register={register('images')}
         />
         <div className="mb-[12px]">
           <div className={subHeader}>Email</div>
