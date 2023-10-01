@@ -184,7 +184,7 @@ function Home() {
         There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
-        // Nav 영역 맨 마지막 부분 잘리는 문제로 추가
+        // Nav 영역 맨 마지막 부분 잘리는 문제로 추가!!
         <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
           <RoomCard room={room} onClick={() => handleCardClick(idx)} />
         </div>
