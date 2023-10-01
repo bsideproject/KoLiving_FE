@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 import styles from './Stepper2.module.scss';
 
 interface StepperProps {
@@ -7,12 +8,20 @@ interface StepperProps {
   disabledRight?: boolean;
   initCount: number;
   callbackCount?: (count: number) => void;
+  register: UseFormRegisterReturn;
 }
 
 /**
  * @see Stepper + - Component
  */
-export default function Stepper2({ disabled, disabledLeft, disabledRight, initCount, callbackCount }: StepperProps) {
+export default function Stepper2({
+  disabled,
+  disabledLeft,
+  disabledRight,
+  initCount,
+  callbackCount,
+  register,
+}: StepperProps) {
   const [count, setCount] = useState(initCount || 0);
 
   useEffect(() => {
@@ -22,6 +31,17 @@ export default function Stepper2({ disabled, disabledLeft, disabledRight, initCo
   const sendCount = (_count: number) => {
     callbackCount?.(_count);
   };
+
+  useEffect(() => {
+    const customEvent = {
+      target: {
+        name: register.name,
+        value: count,
+      },
+    };
+    register.onChange(customEvent);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count]);
 
   return (
     <div className={styles.stepper_container}>

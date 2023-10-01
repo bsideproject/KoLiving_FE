@@ -27,49 +27,41 @@ const MAINTANANCE_FEE_OPTIONS = [
   },
 ];
 
+const INCLUDE_OPTIONS = [
+  {
+    value: 'gasChecked',
+    label: 'Gas',
+  },
+  {
+    value: 'waterChecked',
+    label: 'Water',
+  },
+  {
+    value: 'electricityChecked',
+    label: 'Electricity',
+  },
+  {
+    value: 'cleaningChecked',
+    label: 'Cleaning',
+  },
+];
+
 export default function AddRoom() {
   const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const router = useRouter();
-  const [furnishings, setFurnishings] = useState<Option[] | null>([]);
-
-  const getFurnishings = async () => {
-    try {
-      const data = await fetchFurnishings();
-
-      if (!data) {
-        return;
-      }
-
-      const mappedFurnishing = data.map((item) => {
-        return {
-          value: item.id,
-          label: item.desc,
-        };
-      });
-
-      setFurnishings(mappedFurnishing);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getFurnishings();
-  }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const furnishingIds = Object.keys(data)
-      .filter((key) => key.includes('furnishing-') && data[key])
-      .map((key) => key.replace(/^furnishing-/, ''));
-
     const params = {
       locationId: data.dong.value,
       monthlyRent: data.monthPrice,
       deposit: data.depositPrice,
       maintananceFee: data.maintananceFee,
       availableDate: formatDateForAPI(data.dateAvailable),
-      furnishingIds,
+      gasIncluded: data.gasChecked,
+      waterIncluded: data.waterChecked,
+      electricityIncluded: data.electricityChecked,
+      cleaningIncluded: data.cleaningChecked,
     };
     router.push(
       {
@@ -242,17 +234,17 @@ export default function AddRoom() {
             <div className="text-g5 text-[12px] font-normal">Included (optional)</div>
           </div>
           <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[40px]">
-            {furnishings &&
-              furnishings.map((item) => {
-                return (
-                  <Checkbox
-                    key={item.value}
-                    type="outlined"
-                    label={item.label}
-                    register={register(`furnishing-${item.value}`)}
-                  />
-                );
-              })}
+            {INCLUDE_OPTIONS.map((item) => {
+              return (
+                <Checkbox
+                  key={item.value}
+                  type="outlined"
+                  label={item.label}
+                  register={register(item.value)}
+                  checked={watch(item.value)}
+                />
+              );
+            })}
           </div>
         </>
       )}
