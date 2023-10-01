@@ -4,6 +4,7 @@ import Rectangle from '@/public/icons/rectangle.svg';
 import RectangleCamera from '@/public/icons/rectangleCamera.svg';
 import styles from '@/components/File/FileUpload.module.scss';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import Delete from '@/public/icons/delete.svg';
 
 interface ImageComponentClickProps {
   imageSrc: string;
@@ -48,12 +49,12 @@ export default function FileUpload({
   };
 
   return (
-    <div className="App">
+    <div className="App inline-block">
       {
         <ImageUploading multiple value={images} onChange={onChange} maxNumber={maxNumber}>
           {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
             // write your building UI
-            <div className={`upload__image-wrapper ${styles[`${style || 'default'}`]}`}>
+            <div className="flex">
               {!InitImageComponent ? (
                 <div className="relative w-[108px] h-[110px] mt-[8px]" {...dragProps}>
                   <Rectangle className="z-0" />
@@ -81,21 +82,30 @@ export default function FileUpload({
                   onClick={onImageUpload}
                 />
               )}
-              &nbsp;
-              {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
-              {multiImage &&
-                imageList.map((image, index) => (
-                  <div key={index} className="image-item relative w-[108px] h-[108px] mt-[8px]">
-                    <img src={image.dataURL} alt="" className="top-0 left-0 w-full h-full object-cover" />
-                    <button
-                      className="absolute top-0 right-0 bg-g5 text-g1 w-5 h-5 -translate-y-[0.5%] cursor-pointer leading-[4px]"
-                      onClick={() => onImageRemove(index)}
-                    >
-                      {' '}
-                      x
-                    </button>
+              <div className="whitespace-nowrap overflow-x-auto">
+                {multiImage && (
+                  <div className="w-[236px]">
+                    {imageList.map((image, index) => (
+                      <div
+                        key={index}
+                        className="image-item relative inline-block w-[108px] h-[108px] mt-[8px] rounded-[2px] ml-[8px]"
+                      >
+                        <img
+                          src={image.dataURL}
+                          alt=""
+                          className="top-0 left-0 object-cover rounded-[2px] w-[108px] h-[108px] "
+                        />
+                        <button
+                          className={`absolute top-0 right-0 text-g1 w-[24px] h-[24px] cursor-pointer ${styles['delete-button']}`}
+                          onClick={() => onImageRemove(index)}
+                        >
+                          <Delete className="m-[7px]" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
+              </div>
             </div>
           )}
         </ImageUploading>

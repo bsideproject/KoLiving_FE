@@ -1,6 +1,10 @@
 .center {
-    @apply flex items-center justify-center w-full overflow-hidden
+  @apply flex items-center justify-center w-full overflow-hidden;
 }
 .default {
-    @apply flex items-center w-[600px] overflow-x-auto
+  @apply inline-block;
+}
+.delete-button {
+  border-radius: 0px 2px 0px 0px;
+  background: rgba(33, 33, 33, 0.3);
 }
