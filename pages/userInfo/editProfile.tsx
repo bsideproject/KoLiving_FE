@@ -1,3 +1,7 @@
+/* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/style-prop-object */
 import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
 import useModal from '@/hooks/useModal.ts';
@@ -5,10 +9,15 @@ import { isValidEmail } from '@/utils/validCheck.ts';
 import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.tsx';
 import ProfileCamera from '@/public/icons/profileCamera.svg';
 
+/*
 interface ProfileProps {
   name?: string;
   age?: number;
   gender?: 'Male' | 'Female';
+  _imageSrc: string;
+}
+*/
+interface ProfileProps {
   _imageSrc: string;
 }
 
@@ -18,7 +27,7 @@ interface ImageComponentClickProps {
 }
 
 export default function EditProfile({ _imageSrc }: ProfileProps) {
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
   const [imageSrc, setImageSrc] = useState(_imageSrc);
   const subHeader = 'font-pretendard font-semibold text-[16px]';
   const {
@@ -42,7 +51,15 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
   };
 
   const isPostingComplete = () => {
-    return true;
+    return (
+      (imageSrc || _imageSrc || '') === '' ||
+      !watch('email') ||
+      !!errors.email?.message ||
+      !watch('firstName') ||
+      !watch('lastName') ||
+      !watch('dateOfBirth') ||
+      !watch('describe')
+    );
   };
 
   const handleButtonClick = (value: string) => {
@@ -155,12 +172,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
           <div className={subHeader}>Date of birth</div>
         </div>
         <section className="mb-[8px]">
-          <Calendar
-            placeholder="MM-DD-YYYY"
-            type="text"
-            register={register('dateAvailable')}
-            disabled={watch('availableChecked')}
-          />
+          <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateOfBirth')} />
         </section>
         <div className="mb-[12px] mt-[32px]">
           <div className={subHeader}>About you</div>
@@ -176,7 +188,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
         <div className="mt-[255px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
             <div className="mb-[13px]">
-              <Button size="lg" type="submit" disabled={isPostingComplete()} onClick={() => {}}>
+              <Button size="lg" type="submit" disabled={isPostingComplete()} onClick={() => alert('완성!')}>
                 Complete
               </Button>
             </div>
