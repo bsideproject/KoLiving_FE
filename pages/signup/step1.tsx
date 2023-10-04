@@ -34,7 +34,7 @@ export default function SignUp() {
   } = useForm({ mode: 'onChange' });
 
   const { setSignUpData, signUpState } = useSignUp();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const handleAllCheck = (checked: boolean) => {
     if (!checked) {
@@ -106,6 +106,18 @@ export default function SignUp() {
           content: `A verification has just been sent to<br/> <b>${data.email}<b>`,
           buttonType: 'outline',
           buttonName: 'Resend link',
+          handleClose: async () => {
+            await postSignup(data.email);
+            closeModal();
+            openModal({
+              props: {
+                title: 'Check Your Mail Box',
+                content: `A verification has just been sent to<br/> <b>${data.email}<b>`,
+                buttonType: 'disabled',
+                buttonName: 'Resend link',
+              },
+            });
+          },
         },
       });
     } catch (e) {

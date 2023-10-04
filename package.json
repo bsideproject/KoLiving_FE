@@ -9,10 +9,15 @@
     "lint": "eslint './**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './**/*.{ts,tsx,js,jsx}'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "ts": "tsc --noEmit --incremental",
+    "ts:watch": "yarn ts --watch",
+    "dev:ts": "yarn dev & yarn ts:watch"
   },
   "dependencies": {
-    "next": "13.4.4",
+    "next": "13.4.7",
+    "next-auth": "^4.22.0",
+    "next-cookies": "^2.0.3",
     "react": "^18.2.0",
     "react-calendar": "^4.6.0",
     "react-dom": "^18.2.0",
@@ -35,6 +40,7 @@
     "@storybook/testing-library": "^0.1.0",
     "@svgr/webpack": "5.5.0",
     "@types/date-fns": "^2.6.0",
+    "@types/next-auth": "^3.15.0",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",

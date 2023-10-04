@@ -43,7 +43,7 @@ export const postProfile = async (payload: ProfilePayload) => {
 };
 
 export const login = async (payload: { email: string; password: string }) => {
-  return fetchData('/login', {
+  return fetchData<{ accessToken: string }>('/api/v1/auth/token/create', {
     method: 'POST',
     body: JSON.stringify({
       email: payload.email,

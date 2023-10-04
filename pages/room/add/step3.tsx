@@ -63,7 +63,7 @@ export default function Step3() {
   return (
     <>
       <Stepper step={3} totalStep={3} />
-      <div className="h-screen overflow-y-scroll">
+      <div className="overflow-y-scroll">
         <div className="mt-[9px] mb-[20px]" key="filter">
           <Typography variant="header" fontStyle="semiBold">
             Introduce your room

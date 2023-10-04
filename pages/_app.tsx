@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/tailwind.scss';
 import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
@@ -6,6 +6,9 @@ import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import Providers from '@/context/Providers.tsx';
+import { SessionProvider, getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
@@ -19,6 +22,39 @@ interface LayoutAppProps extends AppProps {
 }
 
 function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
+  const { token } = pageProps;
+  const [data, setData] = React.useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const { fetch: originalFetch } = window;
+      if (token) {
+        window.fetch = async (...args) => {
+          // eslint-disable-next-line prefer-const
+          let [resource, config] = args;
+          const configHeaders = config?.headers ?? {};
+
+          config = {
+            ...config,
+            headers: {
+              ...configHeaders,
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: 'include',
+            // mode: 'cors',
+          };
+
+          const response = await originalFetch(resource, config);
+
+          return response;
+        };
+        setData(true);
+      }
+      setData(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
   const Toaster = dynamic(() => import('react-hot-toast').then((c) => c.Toaster), {
@@ -32,12 +68,18 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <ModalProvider>
-        <AppLayout>
-          {getLayout(<Component {...pageProps} />)}
-          <ModalContainer />
-        </AppLayout>
-      </ModalProvider>
+      <Providers>
+        <SessionProvider>
+          <ModalProvider>
+            {data && (
+              <AppLayout>
+                {getLayout(<Component {...pageProps} />)}
+                <ModalContainer />
+              </AppLayout>
+            )}
+          </ModalProvider>
+        </SessionProvider>
+      </Providers>
       <Toaster
         toastOptions={{
           duration: 3000,
@@ -65,5 +107,31 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
     </>
   );
 }
+
+export interface CustomUser {
+  id: string;
+  name: string;
+  token: string;
+}
+
+export interface CustomSession extends Session {
+  user: CustomUser;
+}
+
+MyApp.getInitialProps = async (appContext: any) => {
+  const { Component, ctx } = appContext;
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  const session = (await getSession(appContext)) as CustomSession;
+
+  pageProps = {
+    ...pageProps,
+    token: session?.user?.token,
+  };
+  return { pageProps };
+};
 
 export default appWithTranslation(MyApp);

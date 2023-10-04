@@ -10,6 +10,7 @@ import Logout from '@/public/icons/LogOut.svg';
 import Vector from '@/public/icons/Vector 115.svg';
 import { useRouter } from 'next/router';
 import useModal from '@/hooks/useModal.ts';
+import { signOut } from 'next-auth/react';
 
 interface ProfileCardProps {
   name: string;
@@ -23,6 +24,7 @@ interface ListItemProps {
   text: string;
   route: string;
   index: number;
+  onclick?: () => void;
 }
 
 export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCardProps) {
@@ -52,7 +54,16 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
     });
   };
 
-  const ListItem = ({ IconComponent, text, route, index }: ListItemProps) => (
+  const handleClick = ({ route, onclick }: { route: string; onclick?: () => void }) => {
+    if (onclick) {
+      onclick();
+      return;
+    }
+
+    handleRouting(route);
+  };
+
+  const ListItem = ({ IconComponent, text, route, index, onclick }: ListItemProps) => (
     <div
       className="flex justify-between items-center border border-gray-300 p-[10px]"
       onMouseOver={() => {
@@ -61,7 +72,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
       onMouseOut={() => setHoveredIndex(null)}
       onTouchStart={() => setHoveredIndex(index)}
       onTouchEnd={() => setHoveredIndex(null)}
-      onClick={() => handleRouting(route)}
+      onClick={() => handleClick({ route, onclick })}
     >
       <div className="flex items-center h-[35px]">
         <IconComponent className="mr-[10px] w-[24px] h-[24px] stroke-g2 stroke-[1px]" />
@@ -71,10 +82,16 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
     </div>
   );
 
+  const handleLogout = () => {
+    signOut({
+      callbackUrl: '/',
+    });
+  };
+
   const items = [
     { IconComponent: MyPosting, text: 'My postings', route: '/userInfo/myPostings' },
     { IconComponent: ChangePassword, text: 'Change password', route: '/resetPassword/step1' },
-    { IconComponent: Logout, text: 'Log out', route: '/' },
+    { IconComponent: Logout, text: 'Log out', route: '/', onclick: handleLogout },
   ];
 
   const ListContainer = () => {
