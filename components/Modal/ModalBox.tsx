@@ -70,6 +70,12 @@ function Modal({
             {buttonName}
           </Button>
         );
+      case 'disabled':
+        return (
+          <Button disabled size="lg">
+            {buttonName}
+          </Button>
+        );
       default:
         return null;
     }
