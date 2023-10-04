@@ -77,10 +77,16 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
       <div className="flex justify-center items-center h-[90px] mt-[20px] mb-[36px]" onClick={onClick}>
         <div style={{ position: 'relative', width: 90, height: 90 }} className="flex items-center justify-center">
           <div
-            style={{ borderRadius: '50%', overflow: 'hidden', width: '100%', height: '100%' }}
-            className="flex items-center justify-center"
+            style={{
+              borderRadius: '50%',
+              overflow: 'hidden',
+              width: '100%',
+              height: '100%',
+              border: '1px solid #dcdcdc',
+              alignItems: 'center',
+            }}
           >
-            <img src={imageSrc || _imageSrc} className="object-cover" />
+            <img src={imageSrc || _imageSrc} className="object-cover w-full h-full" />
           </div>
           <div
             className="absolute border-g2 border-[1px] bottom-0 right-0 bg-g0 flex items-center justify-center"
@@ -96,17 +102,19 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="h-screen overflow-y-scroll font-pretendard">
-        <Upload
-          InitImageComponent={ProfileImage}
-          multiImage={false}
-          callbackImageFn={(imageList) => {
-            if (imageList && imageList[0] && imageList[0].dataURL) {
-              setImageSrc(imageList[0].dataURL);
-            }
-          }}
-          style="center"
-          register={register('images')}
-        />
+        <div className="justify-center items-center flex">
+          <Upload
+            InitImageComponent={ProfileImage}
+            multiImage={false}
+            callbackImageFn={(imageList) => {
+              if (imageList && imageList[0] && imageList[0].dataURL) {
+                setImageSrc(imageList[0].dataURL);
+              }
+            }}
+            style="center"
+            register={register('images')}
+          />
+        </div>
         <div className="mb-[12px]">
           <div className={subHeader}>Email</div>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import NoPosting from '@/public/icons/noPosting.svg';
 import Step1 from '@/pages/room/addRoom/step1.tsx';

@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Nav, Textarea } from '@/components/index.tsx';
 import EditProfile from '@/pages/userInfo/editProfile';
-
 import MyPosting from '@/public/icons/myPosting.svg';
 import ChangePassword from '@/public/icons/Password.svg';
 import Logout from '@/public/icons/LogOut.svg';
