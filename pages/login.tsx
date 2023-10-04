@@ -85,11 +85,9 @@ export default function Login() {
           </Button>
           <div className="flex items-center justify-center mt-[9px]">
             <p className="mr-[4px] text-g6 text-[14px]">Don&apos;t have account?</p>
-            <div onClick={onSubmit}>
-              <Link href="/signup/step1" className="underline text-r1 font-semibold text-[14px] mb-[8px]">
-                {t('signup')}
-              </Link>
-            </div>
+            <Link href="/signup/step1" className="underline text-r1 font-semibold text-[14px] mb-[8px]">
+              {t('signup')}
+            </Link>
           </div>
           {/* <Chip label="테스트" onDelete={console.log} clicked /> */}
         </form>
