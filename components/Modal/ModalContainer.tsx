@@ -15,7 +15,9 @@ export interface ModalProps {
   customHeader?: boolean;
   buttonType?: 'none' | 'both' | 'outline' | 'default';
   handleClose?: () => void;
+  handleSecondButton?: () => void;
   buttonName?: string;
+  buttonName2?: string;
   size?: 'md' | 'full';
 }
 

@@ -17,7 +17,9 @@ function Modal({
   customHeader = false,
   buttonType = 'none',
   handleClose,
+  handleSecondButton,
   buttonName = '',
+  buttonName2 = '',
   size = 'md',
 }: ModalProps) {
   const { closeModal } = useModal();
@@ -50,11 +52,11 @@ function Modal({
       case 'both':
         return (
           <>
-            <Button onClick={() => handleClose?.()} disabled size="lg">
+            <Button onClick={() => handleClose?.()} color="outlined" size="md">
               {buttonName}
             </Button>
-            <Button onClick={() => handleClose?.()} color="r1" size="lg">
-              {buttonName}
+            <Button onClick={() => handleSecondButton?.()} color="r1" size="md">
+              {buttonName2}
             </Button>
           </>
         );
@@ -105,7 +107,9 @@ function Modal({
             <p dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         )}
-        {buttonType && buttonType !== 'none' && <div className="mt-[20px] flex gap-x-2">{renderButton()}</div>}
+        {buttonType && buttonType !== 'none' && (
+          <div className="mt-[20px] flex gap-x-2 items-center justify-center">{renderButton()}</div>
+        )}
       </div>
     </div>
   ) : (
