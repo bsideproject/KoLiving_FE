@@ -16,3 +16,9 @@ export const formatDate = (date: string) => {
 export const formatDateForAPI = (date: string) => {
   return format(new Date(date), 'yyyy-MM-dd');
 };
+
+export const parseJWT = (token: string) => {
+  const base64Payload = token.split('.')[1];
+  const payload = Buffer.from(base64Payload, 'base64').toString();
+  return JSON.parse(payload);
+};

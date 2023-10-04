@@ -6,6 +6,7 @@ import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import Providers from '@/context/Providers.tsx';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
@@ -32,12 +33,14 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <ModalProvider>
-        <AppLayout>
-          {getLayout(<Component {...pageProps} />)}
-          <ModalContainer />
-        </AppLayout>
-      </ModalProvider>
+      <Providers>
+        <ModalProvider>
+          <AppLayout>
+            {getLayout(<Component {...pageProps} />)}
+            <ModalContainer />
+          </AppLayout>
+        </ModalProvider>
+      </Providers>
       <Toaster
         toastOptions={{
           duration: 3000,

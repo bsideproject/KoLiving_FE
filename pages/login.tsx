@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { LoginLayout, Link, CustomImage, Chip, Button, Input, Space } from '@/components/index.tsx';
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validCheck.ts';
 import { login } from '@/api/signup';
+import { signIn } from 'next-auth/react';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -27,7 +28,16 @@ export default function Login() {
   const password = watch('password');
 
   const onSubmit = async () => {
-    await login({ email, password });
+    const response = await signIn('email-password-credential', {
+      email,
+      password,
+      // redirect: false,
+      callbackUrl: '/',
+    });
+    // if (!data) {
+    //   return;
+    // }
+    // window.localStorage.setItem('accessToken', data.accessToken);
   };
 
   return (
