@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Nav, Textarea } from '@/components/index.tsx';
+import { ModalBox, Nav, Textarea } from '@/components/index.tsx';
 import EditProfile from '@/pages/userInfo/editProfile';
 import MyPosting from '@/public/icons/myPosting.svg';
 import ChangePassword from '@/public/icons/Password.svg';
@@ -27,11 +27,16 @@ interface ListItemProps {
 
 export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCardProps) {
   const { register } = useForm({ mode: 'onChange' });
+  const [showModal, setShowModal] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const router = useRouter();
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const handleRouting = (route: string) => {
+    if (route === '/') {
+      setShowModal(true);
+      return;
+    }
     router.push(route);
   };
 
@@ -112,6 +117,18 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
           className="bg-r1 mb-[20px] h-[120px] text-[14px]"
           readonly
         />
+
+        {showModal && (
+          <ModalBox
+            title="Log out of Ko-Living?"
+            content="You can log back in at anytime."
+            buttonType="both"
+            buttonName="Cancel"
+            buttonName2="Log out"
+            handleClose={() => setShowModal(false)}
+            handleSecondButton={() => router.push('/')}
+          />
+        )}
       </div>
       <ListContainer />
       <hr className="mt-[345px]" />
