@@ -23,6 +23,7 @@ interface LayoutAppProps extends AppProps {
 
 function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
   const { token } = pageProps;
+  const [data, setData] = React.useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -40,13 +41,16 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
               Authorization: `Bearer ${token}`,
             },
             credentials: 'include',
+            // mode: 'cors',
           };
 
           const response = await originalFetch(resource, config);
 
           return response;
         };
+        setData(true);
       }
+      setData(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -67,10 +71,12 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
       <Providers>
         <SessionProvider>
           <ModalProvider>
-            <AppLayout>
-              {getLayout(<Component {...pageProps} />)}
-              <ModalContainer />
-            </AppLayout>
+            {data && (
+              <AppLayout>
+                {getLayout(<Component {...pageProps} />)}
+                <ModalContainer />
+              </AppLayout>
+            )}
           </ModalProvider>
         </SessionProvider>
       </Providers>
