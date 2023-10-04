@@ -28,7 +28,7 @@ export default NextAuth({
 
         const jwt = parseJWT(data.accessToken);
 
-        const user = { id: jwt.email, email: jwt.email, accessToken: data.accessToken };
+        const user = { id: jwt.email, email: jwt.email, accessToken: data.accessToken, token: data.accessToken };
 
         return user;
       },
@@ -36,5 +36,22 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/login',
+  },
+  callbacks: {
+    async session({ session, user, token }) {
+      if (session && session.user) {
+        session.user = token.user;
+        console.log(user);
+      }
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      // console.log(token)
+      return token;
+    },
   },
 });

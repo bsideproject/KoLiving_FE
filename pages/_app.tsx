@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../styles/tailwind.scss';
 import '../styles/globals.scss';
-import type { AppProps } from 'next/app';
+import type { AppContext, AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Providers from '@/context/Providers.tsx';
+import { SessionProvider } from 'next-auth/react';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
@@ -34,12 +35,14 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
       </Head>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <Providers>
-        <ModalProvider>
-          <AppLayout>
-            {getLayout(<Component {...pageProps} />)}
-            <ModalContainer />
-          </AppLayout>
-        </ModalProvider>
+        <SessionProvider>
+          <ModalProvider>
+            <AppLayout pageProps={pageProps}>
+              {getLayout(<Component {...pageProps} />)}
+              <ModalContainer />
+            </AppLayout>
+          </ModalProvider>
+        </SessionProvider>
       </Providers>
       <Toaster
         toastOptions={{
@@ -68,5 +71,21 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
     </>
   );
 }
+
+// MyApp.getInitialProps = async ({ Component, ctx, req }: any) => {
+//   let pageProps = {};
+//   if (Component.getInitialProps) {
+//     pageProps = await Component.getInitialProps(ctx);
+//   }
+
+//   pageProps = {
+//     ...pageProps,
+//     token: ctx.req?.cookies?.['next-auth.session-token'],
+//   };
+//   // props.session = await NextAuth.init({force: true, req: req})
+//   // const session = await getSession(AppContext);
+//   console.log('%c 🤩🤩🤩 영우의 로그 : ', 'font-size: x-large; color: #bada55;', '');
+//   return { pageProps };
+// };
 
 export default appWithTranslation(MyApp);

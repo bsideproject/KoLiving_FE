@@ -1,7 +1,5 @@
 import { fetchData } from '.';
 
-// FIXME: 원래는... auth 로직을 미들웨어에 놓는것이... 좋습니다..
-
 export const postSignup = async (email: string) => {
   return fetchData('/api/v1/auth/sign-up', {
     method: 'POST',
