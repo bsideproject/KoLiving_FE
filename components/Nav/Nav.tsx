@@ -40,6 +40,8 @@ export default function Nav({ initMenu }: NavProps) {
     setActiveMenu(index);
     if (index === 0) {
       router.push('/');
+    } else if (index === 2) {
+      router.push('/liked');
     } else if (index === 3) {
       router.push('userInfo');
     }
