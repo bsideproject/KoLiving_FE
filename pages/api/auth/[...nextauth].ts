@@ -1,4 +1,5 @@
 import { login } from '@/api/signup';
+import { CustomUser } from '@/pages/_app';
 import { parseJWT } from '@/utils/transform';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -36,5 +37,23 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/login',
+  },
+  callbacks: {
+    async session({ session, user, token }) {
+      if (session && session.user) {
+        // eslint-disable-next-line no-param-reassign
+        session.user = token.user as CustomUser;
+      }
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        // eslint-disable-next-line no-param-reassign
+        token.user = user;
+      }
+      // console.log(token)
+      return token;
+    },
   },
 });
