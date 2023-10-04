@@ -13,8 +13,8 @@ export default function Step2({ step1Data }: Step2Props) {
   const { register, handleSubmit, watch, setValue } = useForm({ mode: 'onChange' });
 
   const useButtonState = (initValue: string) => {
-    const [value, setValue] = useState(initValue);
-    const handleButtonClick = (newValue: string) => setValue(newValue);
+    const [value, setInitValue] = useState(initValue);
+    const handleButtonClick = (newValue: string) => setInitValue(newValue);
 
     return [value, handleButtonClick] as const;
   };
@@ -94,7 +94,7 @@ export default function Step2({ step1Data }: Step2Props) {
   };
 
   // + - 버튼 클릭 시 Count 값 콜백
-  const handleCountUpdate = (callbackCountUpdate: Function, count: number) => {
+  const handleCountUpdate = (callbackCountUpdate: (args: number) => void, count: number) => {
     callbackCountUpdate(count);
   };
 
@@ -146,7 +146,15 @@ export default function Step2({ step1Data }: Step2Props) {
               <Stepper2
                 register={register('bedRooms')}
                 disabled={['Studio', '1bed flat'].indexOf(typeButton) > -1}
-                initCount={typeButton === 'Studio' ? 0 : typeButton === 'Share house' ? 2 : 1}
+                initCount={(() => {
+                  if (typeButton === 'Studio') {
+                    return 0;
+                  }
+                  if (typeButton === 'Share house') {
+                    return 2;
+                  }
+                  return 1;
+                })()}
                 disabledLeft={typeButton === 'Share house' && bedroomCount <= 2}
                 disabledRight={typeButton === 'Share house' && bedroomCount >= 20}
                 callbackCount={(count) => handleCountUpdate(setBedroomCount, count)}

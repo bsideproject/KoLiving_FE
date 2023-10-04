@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable react/no-unused-prop-types */
 import { ROOM_TYPE, RoomDev } from '@/public/types/room';
 import React, { useState } from 'react';
 import { User } from '@/public/types/user';
@@ -28,7 +30,7 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
   const age = formatAge(userInfo.year);
 
   const handleUserClick = () => {
-    router.push('/profile');
+    router.push('/userInfo');
   };
 
   return (
