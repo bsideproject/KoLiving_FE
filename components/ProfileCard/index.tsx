@@ -23,7 +23,7 @@ interface ListItemProps {
   text: string;
   route: string;
   index: number;
-  onclick: () => void;
+  onclick?: () => void;
 }
 
 export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCardProps) {
@@ -48,7 +48,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
     });
   };
 
-  const handleClick = ({ route, onclick }: { route: string; onclick: () => void }) => {
+  const handleClick = ({ route, onclick }: { route: string; onclick?: () => void }) => {
     if (onclick) {
       onclick();
       return;

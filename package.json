@@ -9,7 +9,10 @@
     "lint": "eslint './**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './**/*.{ts,tsx,js,jsx}'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "ts": "tsc --noEmit --incremental",
+    "ts:watch": "yarn ts --watch",
+    "dev:ts": "yarn dev & yarn ts:watch"
   },
   "dependencies": {
     "next": "13.4.7",
