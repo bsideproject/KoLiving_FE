@@ -1,4 +1,4 @@
-import React, { ReactElement, ComponentType } from 'react';
+import React from 'react';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
 import Rectangle from '@/public/icons/rectangle.svg';
 import RectangleCamera from '@/public/icons/rectangleCamera.svg';
@@ -19,13 +19,7 @@ interface FileUploadProps {
   register: UseFormRegisterReturn;
 }
 
-export default function FileUpload({
-  callbackImageFn,
-  InitImageComponent,
-  multiImage,
-  style,
-  register,
-}: FileUploadProps) {
+export default function FileUpload({ callbackImageFn, InitImageComponent, multiImage, register }: FileUploadProps) {
   const [images, setImages] = React.useState<ImageListType>([]);
   const maxNumber = 5;
 
