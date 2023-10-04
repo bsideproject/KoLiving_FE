@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Providers from '@/context/Providers.tsx';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, getSession } from 'next-auth/react';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
@@ -21,6 +21,30 @@ interface LayoutAppProps extends AppProps {
 }
 
 function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
+  const { token } = pageProps;
+
+  if (typeof window !== 'undefined') {
+    const { fetch: originalFetch } = window;
+    if (token) {
+      window.fetch = async (...args) => {
+        // eslint-disable-next-line prefer-const
+        let [resource, config] = args;
+
+        config = {
+          ...config,
+          headers: {
+            ...config?.headers,
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await originalFetch(resource, config);
+
+        return response;
+      };
+    }
+  }
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
   const Toaster = dynamic(() => import('react-hot-toast').then((c) => c.Toaster), {
@@ -72,20 +96,20 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
   );
 }
 
-// MyApp.getInitialProps = async ({ Component, ctx, req }: any) => {
-//   let pageProps = {};
-//   if (Component.getInitialProps) {
-//     pageProps = await Component.getInitialProps(ctx);
-//   }
+MyApp.getInitialProps = async (appContext: any) => {
+  const { Component, ctx } = appContext;
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
 
-//   pageProps = {
-//     ...pageProps,
-//     token: ctx.req?.cookies?.['next-auth.session-token'],
-//   };
-//   // props.session = await NextAuth.init({force: true, req: req})
-//   // const session = await getSession(AppContext);
-//   console.log('%c 🤩🤩🤩 영우의 로그 : ', 'font-size: x-large; color: #bada55;', '');
-//   return { pageProps };
-// };
+  const session = await getSession(appContext);
+
+  pageProps = {
+    ...pageProps,
+    token: session?.user?.token,
+  };
+  return { pageProps };
+};
 
 export default appWithTranslation(MyApp);

@@ -28,20 +28,11 @@ export default function Login() {
   const password = watch('password');
 
   const onSubmit = async () => {
-    // const response = await login({
-    //   email,
-    //   password,
-    // });
-    const response = await signIn('email-password-credential', {
+    await signIn('email-password-credential', {
       email,
       password,
-      // redirect: false,
       callbackUrl: '/',
     });
-    // if (!data) {
-    //   return;
-    // }
-    // window.localStorage.setItem('accessToken', data.accessToken);
   };
 
   return (
