@@ -63,5 +63,9 @@ MyPosting.getLayout = function getLayout(page: React.ReactElement) {
   const handleGoBack = () => {
     window.history.back();
   };
-  return <DefaultLayout children={page} title="My postings" handleButtonClick={handleGoBack} />;
+  return (
+    <DefaultLayout title="My postings" handleButtonClick={handleGoBack}>
+      {page}
+    </DefaultLayout>
+  );
 };
