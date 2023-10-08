@@ -12,6 +12,9 @@ export const fetchData = async <T>(url: string, options?: RequestInit): Promise<
       const data = await response.json();
       return data;
     } catch (e) {
+      if (response.status === 200 || response.status === 201) {
+        return null;
+      }
       throw Error('에러 응답값이 없습니다');
     }
   } catch (error) {
