@@ -29,7 +29,12 @@ export default NextAuth({
 
         const jwt = parseJWT(data.accessToken);
 
-        const user = { id: jwt.email, email: jwt.email, accessToken: data.accessToken, token: data.accessToken };
+        const user = {
+          id: jwt.email,
+          email: jwt.email,
+          token: data.accessToken,
+          exp: jwt.exp,
+        };
 
         return user;
       },
@@ -51,8 +56,13 @@ export default NextAuth({
       if (user) {
         // eslint-disable-next-line no-param-reassign
         token.user = user;
+        console.log('%c 🤩🤩🤩 영우의 로그 User: ', 'font-size: x-large; color: #bada55;', '', user);
       }
-      return token;
+      return {
+        ...token,
+        // accessTokenExpires: Number((user as CustomUser)?.exp) * 1000,
+        // accessTokenExpires: Date.now() * 1000,
+      };
     },
   },
 });

@@ -110,6 +110,7 @@ export interface CustomUser {
   id: string;
   name: string;
   token: string;
+  exp: number;
 }
 
 export interface CustomSession extends Session {
