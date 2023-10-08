@@ -6,23 +6,17 @@ import MultiButton from '@/components/MultiButton/MultiButton';
 import { Option } from '@/components/Select/Select';
 import { fetchFurnishings } from '@/api/room';
 import { useRouter } from 'next/router';
+import { ROOM_TYPE } from '@/public/types/room';
 import styles from './add.module.scss';
 
 interface Step2Props {
   step1Data?: any;
 }
 
-const ROOM_TYPE = [
-  { label: 'Studio', value: 'STUDIO' },
-  { label: '1bed flat', value: 'ONE_BED_FLAT' },
-  { label: 'Share house', value: 'SHARE_HOUSE' },
-];
-
-const ROOM_TYPE_OPTION = {
-  STUDIO: 'STUDIO',
-  ONE_BED_FLAT: 'ONE_BED_FLAT',
-  SHARE_HOUSE: 'SHARE_HOUSE',
-};
+const ROOM_TYPE_OPTIONS = Object.entries(ROOM_TYPE).map(([label, value]) => ({
+  label,
+  value,
+}));
 
 const FURNISHIED = [
   {
@@ -98,9 +92,9 @@ export default function Step2({ step1Data }: Step2Props) {
     }
 
     switch (typeButton.value) {
-      case ROOM_TYPE_OPTION.STUDIO:
+      case ROOM_TYPE.STUDIO:
         return 0;
-      case ROOM_TYPE_OPTION.SHARE_HOUSE:
+      case ROOM_TYPE.SHARE:
         return 2;
       default:
         return 1;
@@ -126,7 +120,7 @@ export default function Step2({ step1Data }: Step2Props) {
         <div className={styles['sub-header']}>Type of housing</div>
       </div>
       <div className="mb-[32px]">
-        <MultiButton options={ROOM_TYPE} register={register('roomType')} />
+        <MultiButton options={ROOM_TYPE_OPTIONS} register={register('roomType')} />
       </div>
 
       <hr />
