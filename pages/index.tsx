@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import RoomCard from '@/components/RoomCard/RoomCard';
-import { fetchRooms } from '@/api/room-dev';
-import { RoomDev } from '@/public/types/room';
+import { RoomSearch } from '@/public/types/room';
 import { NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
 import FilterImg from '@/public/icons/filter.svg';
@@ -13,6 +12,7 @@ import useModal from '@/hooks/useModal.ts';
 import { FieldValues } from 'react-hook-form';
 import Filter from '@/components/Filter/Filter.tsx';
 import { useTranslation } from 'next-i18next';
+import { getRooms } from '@/api/room';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -20,7 +20,7 @@ type HomeProps = NextPage & {
 
 function Home() {
   const commonTranslation = useTranslation('common');
-  const [rooms, setRooms] = useState<RoomDev[]>([]);
+  const [rooms, setRooms] = useState<RoomSearch[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [clickedChip, setClickedChip] = useState('');
@@ -28,8 +28,8 @@ function Home() {
   const { openModal, closeModal } = useModal();
   const selectRooms = async () => {
     try {
-      const data = await fetchRooms();
-      setRooms(data);
+      const data = await getRooms();
+      setRooms(data?.content || []);
     } catch (error) {
       console.error(error);
     }

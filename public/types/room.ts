@@ -1,9 +1,9 @@
 import { User } from './user';
 
 export const ROOM_TYPE = {
-  STUDIO: 'studio',
-  ONE_ROOM: 'oneRoom',
-  SHARE: 'share',
+  STUDIO: 'STUDIO',
+  ONE_ROOM: 'ONE_BED_FLATS',
+  SHARE: 'SHARE_HOUSE',
 } as const;
 
 export interface RoomDev {
@@ -25,13 +25,10 @@ export interface RoomDev {
 
 export interface RoomPost {
   locationId: number;
-  roomType: 'STUDIO' | 'ONE_BED_FLATS' | 'SHARE_HOUSE';
-  // bedrooms: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX_OR_OVER";
+  roomType: keyof typeof ROOM_TYPE;
   bedrooms: string;
   bathrooms: string;
   roommates: string;
-  // bathrooms: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX" | "SIX_OR_OVER";
-  // roommates: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX" | "SIX_OR_OVER";
   deposit: number;
   monthlyRent: number;
   maintenanceFee: number;
@@ -77,4 +74,60 @@ export interface Room {
   availableDate: string;
   description: string;
   imageIds: number[];
+}
+
+interface Location {
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  name: string;
+  locationType: string;
+  upperLocation: Location | null;
+  upperLocationId: number | null;
+}
+
+interface RoomInfo {
+  roomType: (typeof ROOM_TYPE)[keyof typeof ROOM_TYPE];
+  bedrooms: number;
+  bathrooms: number;
+  roommates: number;
+}
+
+export interface ImageFile {
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  path: string;
+  size: number;
+}
+
+export interface RoomSearch {
+  deleted: boolean;
+  createdAt: boolean;
+  updatedAt: boolean;
+  id: 1;
+  location: Location;
+  deposit: {
+    amount: number;
+  };
+  monthlyRent: {
+    amount: number;
+  };
+  maintenance: {
+    maintenanceFee: {
+      amount: number;
+    };
+    gasIncluded: number;
+    waterIncluded: number;
+    electricityIncluded: number;
+    cleaningIncluded: number;
+  };
+  roomInfo: RoomInfo;
+  furnishings: number[];
+  availableDate: string;
+  description: string;
+  imageFiles: ImageFile[];
+  userId: null;
 }

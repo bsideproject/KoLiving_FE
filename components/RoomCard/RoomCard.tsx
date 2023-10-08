@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-unused-prop-types */
-import { ROOM_TYPE, RoomDev } from '@/public/types/room';
+import { ImageFile, ROOM_TYPE, RoomSearch } from '@/public/types/room';
 import React, { useState } from 'react';
 import { User } from '@/public/types/user';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import Card from '../Card/Card';
 
 interface CardProps {
-  room: RoomDev;
+  room: RoomSearch;
   onClick?: () => void;
 }
 
@@ -21,7 +21,7 @@ interface UserInfoProps {
 }
 
 interface PhotoProps {
-  photos: string[];
+  photos: ImageFile[];
   onClick?: () => void;
 }
 
@@ -49,18 +49,28 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 };
 
 const Photo = ({ photos, onClick }: PhotoProps) => {
-  return (
-    <div className="relative h-[190px] bg-cover" style={{ backgroundImage: `url(${photos[0]})` }} onClick={onClick}>
+  return photos.length ? (
+    <div
+      className="relative h-[190px] bg-cover"
+      style={{ backgroundImage: `url(${photos[0].path})` }}
+      onClick={onClick}
+    >
       <div className={`${styles.tag} flex items-center gap-[4px]`}>
         <Camera xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" />
         {`+${(photos || []).length}`}
       </div>
     </div>
+  ) : (
+    <div
+      className="relative h-[190px] bg-cover"
+      style={{ backgroundImage: `url(/images/thumb.png)` }}
+      onClick={onClick}
+    />
   );
 };
 
 const Footer = ({ room }: CardProps) => {
-  const roomType = room.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
+  const roomType = room.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLikeClick = () => {
@@ -76,10 +86,10 @@ const Footer = ({ room }: CardProps) => {
         onClick={handleLikeClick}
       />
       <div className="text-g6 text-[12px]">
-        {room.dong}, {room.gu}
+        {room.location.name}, {room.location.upperLocation?.name}
       </div>
       <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex gap-4">
-        &#8361;{formatPrice(room.deposit)}
+        &#8361;{formatPrice(room.deposit.amount)}
         <span className="font-pretendard text-[14px] font-medium">/ month </span>
         <span className="font-pretendard text-[14px] text-r1 font-bold bg-g1">
           {room.deposit ? 'Deposit required' : ''}
@@ -87,11 +97,11 @@ const Footer = ({ room }: CardProps) => {
       </div>
       <div className="text-[14px] font-medium">{roomType}</div>
       <div className="text-g5 text-[12px] pb-[12px] flex items-center gap-[6px]">
-        {room.bedCount} bedrooms
+        {room.roomInfo.bedrooms} bedrooms
         <Dot className="fill-g5 stroke-[1.5px]" />
-        {room.bathCount} bathrooms
+        {room.roomInfo.bathrooms} bathrooms
         <Dot className="fill-g5 stroke-[1.5px]" />
-        {room.housemateCount} housemates in total
+        {room.roomInfo.roommates} housemates in total
       </div>
       <hr />
       <p className="pt-[10px] font-medium text-[12px]">Available {formatDate(room.availableDate)}</p>
@@ -99,11 +109,19 @@ const Footer = ({ room }: CardProps) => {
   );
 };
 
+const mock = {
+  name: '임시이름이다..',
+  image: 'https://source.unsplash.com/random',
+  year: 1995,
+  gender: 'male',
+};
+
 export default function RoomCard({ room, onClick }: CardProps) {
   return (
     <Card
-      title={<UserInfo userInfo={room?.userInfo} />}
-      content={<Photo photos={room.images} onClick={onClick} />}
+      title={<UserInfo userInfo={mock} />}
+      // title={<UserInfo userInfo={room?.userInfo} />}
+      content={<Photo photos={room.imageFiles} onClick={onClick} />}
       footer={<Footer room={room} />}
     />
   );
