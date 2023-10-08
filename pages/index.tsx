@@ -222,7 +222,7 @@ function Home() {
       {rooms.map((room, idx) => (
         // Nav 영역 맨 마지막 부분 잘리는 문제로 추가!!
         <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
-          <RoomCard room={room} onClick={() => handleCardClick(idx)} />
+          <RoomCard room={room} onClick={() => handleCardClick(room.id)} />
         </div>
       ))}
       <div ref={target} />
