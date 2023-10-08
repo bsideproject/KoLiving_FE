@@ -52,7 +52,6 @@ export default NextAuth({
         // eslint-disable-next-line no-param-reassign
         token.user = user;
       }
-      // console.log(token)
       return token;
     },
   },

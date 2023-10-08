@@ -22,6 +22,14 @@ const nextConfig = {
     });
     return modifiedConfig;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/back-end-api/:path*',
+        destination: `http://koliving-backend.net/:path*`,
+      },
+    ];
+  },
 };
 
 module.exports = {

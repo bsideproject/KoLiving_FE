@@ -12,7 +12,6 @@ export const fetchData = async <T>(url: string, options?: RequestInit): Promise<
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log('%c 🤩🤩🤩 영우의 로그 : ', 'font-size: x-large; color: #bada55;', '', error);
     throw new Error('Failed to fetch data');
   }
 };

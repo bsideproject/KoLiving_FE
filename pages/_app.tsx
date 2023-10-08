@@ -41,7 +41,6 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
               Authorization: `Bearer ${token}`,
             },
             credentials: 'include',
-            // mode: 'cors',
           };
 
           const response = await originalFetch(resource, config);
