@@ -50,17 +50,20 @@ export default function FileUpload({ callbackImageFn, InitImageComponent, multiI
             // write your building UI
             <div className="flex">
               {!InitImageComponent ? (
-                <div className="relative w-[108px] h-[110px] mt-[8px]" {...dragProps}>
+                <div
+                  className="relative w-[108px] h-[110px] mt-[8px]"
+                  {...dragProps}
+                  onClick={() => {
+                    if ((imageList || []).length < 5) {
+                      onImageUpload();
+                    }
+                  }}
+                >
                   <Rectangle className="z-0" />
                   <RectangleCamera
                     className={`absolute z-10 top-[45px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer ${
                       isDragging ? 'bg-r1' : ''
                     }`}
-                    onClick={() => {
-                      if ((imageList || []).length < 5) {
-                        onImageUpload();
-                      }
-                    }}
                   />
                   <span
                     className={`absolute z-10 top-[67px] left-[55px] transform -translate-x-1/2 -translate-y-1/2 text-g4 semibold text-[12px] ${
