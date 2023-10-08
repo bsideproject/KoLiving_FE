@@ -6,6 +6,14 @@ export const ROOM_TYPE = {
   SHARE: 'SHARE_HOUSE',
 } as const;
 
+export type ROOM_TYPE_KEYS = keyof typeof ROOM_TYPE;
+
+export const ROOM_TYPE_LABEL = {
+  STUDIO: 'Studio',
+  ONE_ROOM: '1 bed flat',
+  SHARE: 'Share house',
+} as const;
+
 export interface RoomDev {
   userInfo: User;
   images: string[];

@@ -3,63 +3,16 @@ import { Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/inde
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import toast from 'react-hot-toast';
+import { fetchFurnishings } from '@/api/room';
+import { ROOM_TYPE, ROOM_TYPE_KEYS, ROOM_TYPE_LABEL } from '@/public/types/room';
 import styles from './Filter.module.scss';
 import { Option } from '../Select/Select';
 import Calendar from '../Calendar/Calendar';
 
-const TYPE_OF_HOUSING = [
-  {
-    value: 'studioChecked',
-    label: 'Studio',
-  },
-  {
-    value: 'bedFlatsChecked',
-    label: '1bed Flats',
-  },
-  {
-    value: 'shareHouseChecked',
-    label: 'Share House',
-  },
-];
-
-const FURNISHING = [
-  {
-    value: 'bedChecked',
-    label: 'Bed',
-  },
-  {
-    value: 'wardrobeChecked',
-    label: 'Wardrobe',
-  },
-  {
-    value: 'tvChecked',
-    label: 'TV',
-  },
-  {
-    value: 'airconditionerChecked',
-    label: 'Airconditioner',
-  },
-  {
-    value: 'heaterChecked',
-    label: 'Heater',
-  },
-  {
-    value: 'washingMachineChecked',
-    label: 'Washing Machine',
-  },
-  {
-    value: 'stoveChecked',
-    label: 'Stove',
-  },
-  {
-    value: 'refregeratorChecked',
-    label: 'Refregerator',
-  },
-  {
-    value: 'doorLockChecked',
-    label: 'Door Lock',
-  },
-];
+const ROOM_TYPE_OPTIONS = Object.entries(ROOM_TYPE).map(([label, value]) => ({
+  label: ROOM_TYPE_LABEL[label as ROOM_TYPE_KEYS],
+  value,
+}));
 
 interface GuDong {
   gu: Option;
@@ -112,6 +65,33 @@ export default function Filter({
     reset();
     // 다시 api 요청
   }, [reset]);
+
+  const [furnishings, setFurnishings] = useState<Option[] | null>([]);
+
+  const getFurnishings = async () => {
+    try {
+      const data = await fetchFurnishings();
+
+      if (!data) {
+        return;
+      }
+
+      const mappedFurnishing = data.map((item) => {
+        return {
+          value: item.id,
+          label: item.desc,
+        };
+      });
+
+      setFurnishings(mappedFurnishing);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getFurnishings();
+  }, []);
 
   useEffect(() => {
     if (!dong) return;
@@ -245,7 +225,7 @@ export default function Filter({
             <div className={styles['sub-header']}>Type of housing</div>
           </div>
           <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
-            {TYPE_OF_HOUSING.map((item) => {
+            {ROOM_TYPE_OPTIONS.map((item) => {
               return (
                 <Checkbox
                   type="outlined"
@@ -265,17 +245,17 @@ export default function Filter({
           <div className={styles['sub-header']}>Furnishing</div>
         </div>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px] mb-[166px]">
-          {FURNISHING.map((item) => {
-            return (
-              <Checkbox
-                type="outlined"
-                label={item.label}
-                register={register(item.value)}
-                checked={watch(item.value)}
-                key={item.value}
-              />
-            );
-          })}
+          {furnishings &&
+            furnishings.map((item) => {
+              return (
+                <Checkbox
+                  type="outlined"
+                  label={item.label}
+                  register={register(`furnishing-${item.value}`)}
+                  key={item.value}
+                />
+              );
+            })}
         </div>
         <div className="mt-[83px] fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">

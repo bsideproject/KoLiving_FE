@@ -6,7 +6,7 @@ import MultiButton from '@/components/MultiButton/MultiButton';
 import { Option } from '@/components/Select/Select';
 import { fetchFurnishings } from '@/api/room';
 import { useRouter } from 'next/router';
-import { ROOM_TYPE } from '@/public/types/room';
+import { ROOM_TYPE, ROOM_TYPE_KEYS, ROOM_TYPE_LABEL } from '@/public/types/room';
 import styles from './add.module.scss';
 
 interface Step2Props {
@@ -14,7 +14,7 @@ interface Step2Props {
 }
 
 const ROOM_TYPE_OPTIONS = Object.entries(ROOM_TYPE).map(([label, value]) => ({
-  label,
+  label: ROOM_TYPE_LABEL[label as ROOM_TYPE_KEYS],
   value,
 }));
 
