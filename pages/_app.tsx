@@ -40,7 +40,6 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
               ...configHeaders,
               Authorization: `Bearer ${token}`,
             },
-            credentials: 'include',
           };
 
           const response = await originalFetch(resource, config);

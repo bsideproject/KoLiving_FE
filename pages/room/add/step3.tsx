@@ -40,7 +40,7 @@ export default function Step3() {
     };
 
     try {
-      const roomData = await postRoom(params);
+      await postRoom(params);
 
       openModal({
         props: {
