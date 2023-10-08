@@ -18,5 +18,8 @@ export const postRoom = async (room: Room) => {
   return fetchData<Room>('/api/v1/rooms', {
     method: 'POST',
     body: JSON.stringify(room),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 };
