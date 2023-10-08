@@ -131,3 +131,7 @@ export interface RoomSearch {
   imageFiles: ImageFile[];
   userId: null;
 }
+
+export interface RoomSearchParams {
+  page: number;
+}

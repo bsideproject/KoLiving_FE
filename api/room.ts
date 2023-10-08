@@ -1,4 +1,4 @@
-import { Furnishing, Room, RoomFile, RoomSearch } from '@/public/types/room';
+import { Furnishing, Room, RoomFile, RoomSearch, RoomSearchParams } from '@/public/types/room';
 import { fetchData } from './index';
 
 export const fetchFurnishings = async () => {
@@ -24,8 +24,10 @@ export const postRoom = async (room: Room) => {
   });
 };
 
-export const getRooms = async () => {
-  return fetchData<ReturnData<RoomSearch[]>>('/api/v1/rooms/search', {
+export const getRooms = async (searchParams: RoomSearchParams) => {
+  const { page } = searchParams;
+
+  return fetchData<ReturnData<RoomSearch[]>>(`/api/v1/rooms/search?page=${page}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
