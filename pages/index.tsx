@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import RoomCard from '@/components/RoomCard/RoomCard';
 import { RoomSearch } from '@/public/types/room';
@@ -26,9 +26,13 @@ function Home() {
   const [clickedChip, setClickedChip] = useState('');
   const router = useRouter();
   const { openModal, closeModal } = useModal();
+  const [page, setPage] = useState(0);
+
+  // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
+
   const selectRooms = async () => {
     try {
-      const data = await getRooms();
+      const data = await getRooms({ page });
       setRooms(data?.content || []);
     } catch (error) {
       console.error(error);
@@ -43,6 +47,8 @@ function Home() {
     });
     setFilters(() => [...resultFilter]);
   };
+
+  const target = useRef(null);
 
   const makeSubmitParam = (data: FieldValues): FilterType => {
     const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
@@ -119,11 +125,41 @@ function Home() {
     });
   };
 
+  const options = {
+    threshold: 1.0,
+  };
+
+  const callback = async (entries: IntersectionObserverEntry[]) => {
+    const [{ isIntersecting }] = entries;
+    // target?.current?.innerText += '관측되었습니다';
+    if (isIntersecting) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (!page) {
+      return;
+    }
+
+    const fetchData = async () => {
+      const data = await getRooms({ page });
+      setRooms((prevRooms) => [...prevRooms, ...(data?.content || [])]);
+    };
+
+    fetchData();
+  }, [page]);
+
   // 최초 접근 시 Room 정보 조회
   useEffect(() => {
     (async () => {
       await selectRooms();
+      if (target?.current) {
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(target.current);
+      }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query]);
 
   const handleCardClick = (id: number) => {
@@ -189,6 +225,7 @@ function Home() {
           <RoomCard room={room} onClick={() => handleCardClick(idx)} />
         </div>
       ))}
+      <div ref={target} />
       <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
         <div className="w-full">
           <div className="mb-[13px] space-x-[8px] max-w-max">
