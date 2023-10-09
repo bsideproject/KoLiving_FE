@@ -9,20 +9,21 @@ interface ButtonProps {
   type?: 'button' | 'reset' | 'submit';
   color?: 'r1' | 'r4' | 'g2' | 'none' | 'noBg' | 'outlined';
   height?: string;
+  _className?: string;
 }
 
 /**
  * @param
  * @returns Button Component
  */
-function Button({ type = 'button', size, children, onClick, disabled, color, height }: ButtonProps) {
+function Button({ type = 'button', size, children, onClick, disabled, color, height, _className }: ButtonProps) {
   const disabledCss = disabled ? styles.disabled : '';
   const styleSize = (size || '').indexOf('px') > -1 ? `w-[${size}]` : styles[`${size}`];
   const heightStyle = height ? `h-[${height}]` : 'h-[54px]';
 
   return (
     <button
-      className={`${styles.button} ${styleSize} ${styles[`${color}`]} ${disabledCss} ${heightStyle}`}
+      className={`${styles.button} ${styleSize} ${styles[`${color}`]} ${disabledCss} ${heightStyle} ${_className}`}
       onClick={onClick}
       disabled={disabled}
       type={type}

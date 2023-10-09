@@ -22,6 +22,7 @@ export default function RoomDetail() {
   const { id } = router.query;
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [showReport, setShowReport] = React.useState(false);
   const [room, setRoom] = React.useState<RoomDev | undefined>();
   const age = room ? formatAge(room.userInfo.year) : 0;
   const [isShowDetail, setIsShowDetail] = React.useState(false);
@@ -43,6 +44,15 @@ export default function RoomDetail() {
 
   const toggleShowDetail = () => {
     setIsShowDetail((value) => !value);
+  };
+
+  const showReporting = () => {
+    setShowReport(true);
+  };
+
+  const handleReport = () => {
+    alert('Report Click');
+    setShowReport(false);
   };
 
   return (
@@ -144,7 +154,9 @@ export default function RoomDetail() {
             <div className="py-[20px] flex items-center bg-g1 mx-[-20px]">
               <div className="px-[20px]">
                 <span className="text-[14px] text-g6 mr-[8px]">Do you want to report this post?</span>
-                <span className="text-[16px] text-r1 underline font-semibold">Report</span>
+                <span className="text-[16px] text-r1 underline font-semibold" onClick={showReporting}>
+                  Report
+                </span>
               </div>
             </div>
           </div>
@@ -159,6 +171,17 @@ export default function RoomDetail() {
             </div>
           </div>
         </>
+      )}
+      {showReport && (
+        <ModalBox
+          title="Why are you reporting?"
+          content="This wan't be shared with the reported user"
+          buttonType="wrapper"
+          buttonName=""
+          buttonNames={['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer']}
+          handleClose={() => setShowReport(false)}
+          handleReport={handleReport}
+        />
       )}
     </div>
   );
