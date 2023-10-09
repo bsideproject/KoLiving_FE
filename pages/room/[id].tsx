@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Header, Space } from '@/components/index.tsx';
+import { Button, Header, Space, ModalBox } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { fetchRoom } from '@/api/room-dev';
@@ -17,7 +17,7 @@ import Like from '@/public/icons/like.svg';
 import MyImageSvg from '@/components/ImageSvg/ImageSvg';
 import styles from './room.module.scss';
 
-export default function Login() {
+export default function RoomDetail() {
   const router = useRouter();
   const { id } = router.query;
 
@@ -164,17 +164,45 @@ export default function Login() {
   );
 }
 
-Login.getLayout = function getLayout(page: React.ReactElement) {
+RoomDetail.getLayout = function getLayout(page: React.ReactElement) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [showModal, setShowModal] = React.useState(false);
   const handleButtonClick = () => {
     window.history.back();
   };
 
+  const showDeleteModal = () => {
+    setShowModal(true);
+  };
+
+  const handleDeleteRoom = () => {
+    alert('삭제 레츠고,,,,');
+    setShowModal(false);
+  };
+
   return (
     <>
-      <Header type="back" bgColor="white" handleButtonClick={handleButtonClick} />
+      <Header
+        type="back"
+        bgColor="white"
+        handleButtonClick={handleButtonClick}
+        right="delete"
+        handleSecondButtonClick={showDeleteModal}
+      />
       {/* TODO: 기획 시안이 달라서 일단 둔다. 오른쪽에 펜 버튼이 있어야 하면 다시 살리자 */}
       {/* <Header type="back" bgColor="white" handleButtonClick={handleButtonClick} right="pencil" /> */}
       <div className="mx-auto mt-[54px]">{page}</div>
+      {showModal && (
+        <ModalBox
+          title="Delete this post?"
+          content="You will not be able to restore this post."
+          buttonType="both"
+          buttonName="Cancel"
+          buttonName2="Delete"
+          handleClose={() => setShowModal(false)}
+          handleSecondButton={handleDeleteRoom}
+        />
+      )}
     </>
   );
 };
