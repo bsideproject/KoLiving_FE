@@ -17,7 +17,48 @@ import Like from '@/public/icons/like.svg';
 import MyImageSvg from '@/components/ImageSvg/ImageSvg';
 import styles from './room.module.scss';
 
-export default function RoomDetail() {
+const RoomDetailLayout = ({ children }: any) => {
+  const [showModal, setShowModal] = React.useState(false);
+
+  const handleButtonClick = () => {
+    window.history.back();
+  };
+
+  const showDeleteModal = () => {
+    setShowModal(true);
+  };
+
+  const handleDeleteRoom = () => {
+    alert('삭제 레츠고,,,,');
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <Header
+        type="back"
+        bgColor="white"
+        handleButtonClick={handleButtonClick}
+        right="delete"
+        handleSecondButtonClick={showDeleteModal}
+      />
+      <div className="mx-auto mt-[54px]">{children}</div>
+      {showModal && (
+        <ModalBox
+          title="Delete this post?"
+          content="You will not be able to restore this post."
+          buttonType="both"
+          buttonName="Cancel"
+          buttonName2="Delete"
+          handleClose={() => setShowModal(false)}
+          handleSecondButton={handleDeleteRoom}
+        />
+      )}
+    </>
+  );
+};
+
+const Page = () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -25,7 +66,7 @@ export default function RoomDetail() {
   const [room, setRoom] = React.useState<RoomDev | undefined>();
   const age = room ? formatAge(room.userInfo.year) : 0;
   const [isShowDetail, setIsShowDetail] = React.useState(false);
-
+  const [showReport, setShowReport] = React.useState(false);
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
   };
@@ -43,6 +84,15 @@ export default function RoomDetail() {
 
   const toggleShowDetail = () => {
     setIsShowDetail((value) => !value);
+  };
+
+  const showReporting = () => {
+    setShowReport(true);
+  };
+
+  const handleReport = () => {
+    alert('Report Click');
+    setShowReport(false);
   };
 
   return (
@@ -144,7 +194,9 @@ export default function RoomDetail() {
             <div className="py-[20px] flex items-center bg-g1 mx-[-20px]">
               <div className="px-[20px]">
                 <span className="text-[14px] text-g6 mr-[8px]">Do you want to report this post?</span>
-                <span className="text-[16px] text-r1 underline font-semibold">Report</span>
+                <span className="text-[16px] text-r1 underline font-semibold" onClick={showReporting}>
+                  Report
+                </span>
               </div>
             </div>
           </div>
@@ -160,49 +212,25 @@ export default function RoomDetail() {
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-RoomDetail.getLayout = function getLayout(page: React.ReactElement) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [showModal, setShowModal] = React.useState(false);
-  const handleButtonClick = () => {
-    window.history.back();
-  };
-
-  const showDeleteModal = () => {
-    setShowModal(true);
-  };
-
-  const handleDeleteRoom = () => {
-    alert('삭제 레츠고,,,,');
-    setShowModal(false);
-  };
-
-  return (
-    <>
-      <Header
-        type="back"
-        bgColor="white"
-        handleButtonClick={handleButtonClick}
-        right="delete"
-        handleSecondButtonClick={showDeleteModal}
-      />
-      {/* TODO: 기획 시안이 달라서 일단 둔다. 오른쪽에 펜 버튼이 있어야 하면 다시 살리자 */}
-      {/* <Header type="back" bgColor="white" handleButtonClick={handleButtonClick} right="pencil" /> */}
-      <div className="mx-auto mt-[54px]">{page}</div>
-      {showModal && (
+      {showReport && (
         <ModalBox
-          title="Delete this post?"
-          content="You will not be able to restore this post."
-          buttonType="both"
-          buttonName="Cancel"
-          buttonName2="Delete"
-          handleClose={() => setShowModal(false)}
-          handleSecondButton={handleDeleteRoom}
+          title="Why are you reporting?"
+          content="This wan't be shared with the reported user"
+          buttonType="wrapper"
+          buttonName=""
+          buttonNames={['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer']}
+          handleClose={() => setShowReport(false)}
+          handleReport={handleReport}
         />
       )}
-    </>
+    </div>
   );
 };
+
+export default function RoomDetail() {
+  return (
+    <RoomDetailLayout>
+      <Page />
+    </RoomDetailLayout>
+  );
+}

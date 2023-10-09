@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Close from '@/public/icons/close.svg';
+import Check2 from '@/public/icons/Check2.svg';
 import styles from './Modal.module.scss';
 import { ModalProps } from './ModalContainer.tsx';
 import useModal from '../../hooks/useModal.ts';
@@ -18,12 +19,14 @@ function Modal({
   buttonType = 'none',
   handleClose,
   handleSecondButton,
+  handleReport,
   buttonName = '',
   buttonName2 = '',
+  buttonNames = [],
   size = 'md',
 }: ModalProps) {
   const { closeModal } = useModal();
-
+  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(-1);
   const modalRef = useRef(null);
 
   const onClose = () => {
@@ -44,6 +47,10 @@ function Modal({
       body.style.overflow = overflow;
     };
   }, []);
+
+  const handleButtonClick = (index: number) => {
+    setSelectedButtonIndex(index);
+  };
 
   const renderButton = () => {
     switch (buttonType) {
@@ -72,12 +79,18 @@ function Modal({
             {buttonName}
           </Button>
         );
-      case 'disabled':
-        return (
-          <Button disabled size="lg">
-            {buttonName}
-          </Button>
-        );
+      case 'wrapper':
+        return buttonNames.map((_buttonName, index) => {
+          const isSelected = index === selectedButtonIndex;
+          return (
+            <Button onClick={() => handleButtonClick(index)} color={isSelected ? 'noBg' : 'outlined'} size="lg">
+              <div className={`flex items-center justify-between `}>
+                <span>{_buttonName}</span>
+                {isSelected && <Check2 className="ml-auto" />}
+              </div>
+            </Button>
+          );
+        });
       default:
         return null;
     }
@@ -110,11 +123,18 @@ function Modal({
         ) : (
           <div>
             <h2>{title}</h2>
-            <p dangerouslySetInnerHTML={{ __html: content }} />
+            <p className={`${buttonType === 'wrapper' && 'text-r1'}`} dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         )}
-        {buttonType && buttonType !== 'none' && (
+        {buttonType && buttonType !== 'none' && buttonType !== 'wrapper' ? (
           <div className="mt-[20px] flex gap-x-2 items-center justify-center">{renderButton()}</div>
+        ) : (
+          <>
+            <div className="mt-[10] flex flex-col items-center justify-center space-y-[10px]">{renderButton()}</div>
+            <Button onClick={handleReport} color="r1" size="lg" _className="mt-[20px]">
+              Report
+            </Button>
+          </>
         )}
       </div>
     </div>
