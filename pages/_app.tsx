@@ -42,7 +42,8 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
             },
           };
 
-          const response = await originalFetch(resource, config);
+          // const response = await originalFetch(resource, config);
+          const response = await originalFetch(resource as globalThis.Request, config);
 
           return response;
         };
