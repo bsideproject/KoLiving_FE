@@ -1,26 +1,34 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import NotFound from '@/public/icons/404_bg.svg';
-import LinkLine from '@/public/icons/linkLine.svg';
-import Typography from '@/components/Typography/Typography';
+import ErrorPage from '@/public/icons/errorPageImage.svg';
+import { useRouter } from 'next/router';
 
-const NotFoundPage = () => {
+export default function NoPostings() {
+  const router = useRouter();
+  const noPostingStyle = 'text-[20px] font-bold mt-[29px] text-center';
+  const containerStyle = 'flex flex-col items-center justify-start mt-[135px]'; // 'justify-start'로 변경
+
   return (
-    <div className="flex items-center justify-center h-screen bg-g2">
-      <div className="w-[271px] h-[142px] relative">
-        <NotFound className="absolute inset-0" />
-        <div className="absolute inset-0 bg-g0 flex flex-col justify-end">
-          <span className="text-white text-2xl font-bold mb-2">
-            <Typography variant="header" customClassName="text-center">
-              Something&apos;s missing.
-            </Typography>
-            <Typography variant="label" customClassName="text-center">
-              This page is missing or you assembled <br /> the link incorrectly
-            </Typography>
-          </span>
+    <div className={containerStyle}>
+      <ErrorPage />
+      <div className={noPostingStyle}>{`Something's missing.`}</div>
+      <div className="text-[16px] text-g5 font-pretendard">This page is missing or you assembled</div>
+      <div className="text-[16px] text-g5 font-pretendard">the link incorrectly</div>
+      <div className="fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+        <div className="w-full">
+          <hr />
+          <div className="mb-[13px] space-x-[8px] max-w-max">
+            <button
+              className="font-pretendard text-[16px] font-semibold bg-r1 border border-solid border-r1 rounded-[2px] text-g0 w-full h-[48px] items-center "
+              onClick={() => window.history.back()}
+              type="button"
+              data-size="md"
+            >
+              Go back
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default NotFoundPage;
+}

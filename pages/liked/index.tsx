@@ -4,26 +4,14 @@ import NoLiked from '@/public/icons/noLiked.svg';
 import useModal from '@/hooks/useModal';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import { Nav } from '@/components/index.tsx';
-
+import { useRouter } from 'next/router';
 // TODO 데이터가 구체화되면 바꿔줘야함
 interface MyPostingProps {
   roomInfo: any | null;
 }
 
 export default function Liked({ roomInfo }: MyPostingProps) {
-  const { openModal } = useModal();
-  const handleAddPosting = () => {
-    // openModal({
-    //   props: {
-    //     title: 'Add Rooms',
-    //     size: 'full',
-    //     custom: true,
-    //     customHeader: true,
-    //   },
-    //   children: <Step1 />,
-    // });
-  };
-
+  const router = useRouter();
   /**
    *  좋아요 없을 때 보여주는 Component
    */
@@ -40,7 +28,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
         <div className="mt-[29px]">
           <button
             className="font-pretendard text-[16px] font-semibold bg-g0 border border-solid border-r1 rounded-[2px] text-r1 w-[120px] h-[48px]"
-            onClick={() => handleAddPosting()}
+            onClick={() => router.push('/')}
             type="button"
             data-size="md"
           >
