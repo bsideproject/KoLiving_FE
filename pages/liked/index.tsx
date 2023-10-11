@@ -73,7 +73,13 @@ Liked.getLayout = function getLayout(page: React.ReactElement) {
     window.history.back();
   };
   return (
-    <DefaultLayout title="Liked" handleButtonClick={handleGoBack}>
+    <DefaultLayout
+      type="title"
+      title="Liked"
+      handleButtonClick={handleGoBack}
+      titleStyle="pt-[14.5px] font-pretendard font-medium text-[18px]"
+      titleCenter
+    >
       {page}
     </DefaultLayout>
   );

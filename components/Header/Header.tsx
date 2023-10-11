@@ -16,6 +16,8 @@ interface HeaderProps {
   logoColor?: 'black' | 'white';
   bgColor?: 'white' | 'transparent';
   hasButton?: boolean;
+  titleStyle?: string;
+  titleCenter?: boolean;
   handleButtonClick?: () => void;
   handleSecondButtonClick?: () => void;
 }
@@ -49,6 +51,8 @@ export default function Header({
   handleButtonClick,
   handleSecondButtonClick,
   hasButton = true,
+  titleStyle,
+  titleCenter,
 }: HeaderProps) {
   const strokeColor = bgColor === 'white' ? 'stroke-g7' : 'stroke-g0';
   const Logo = LOGOS[`logo-${logoColor}`];
@@ -88,7 +92,8 @@ export default function Header({
         </div>
       )}
       {type === 'title' && (
-        <div className="flex w-full">
+        <div className={`flex w-full ${titleStyle}`}>
+          {titleCenter && <Space />}
           <div className="text-g7 text-[18px] mt-[12.5px]">{title}</div>
           <Space />
           <div className="pt-[13px]">
