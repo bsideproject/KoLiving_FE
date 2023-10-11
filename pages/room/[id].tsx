@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Header, Space, ModalBox } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { fetchRoom } from '@/api/room-dev';
 import { useRouter } from 'next/router';
-import { ROOM_TYPE, RoomDev } from '@/public/types/room';
+import { ROOM_TYPE, RoomSearch } from '@/public/types/room';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import ArrowDown from '@/public/icons/arrow-down.svg';
 import Pin from '@/public/icons/pin.svg';
@@ -15,6 +14,8 @@ import ReceiptBadge from '@/public/icons/receipt-badge.svg';
 import Badge from '@/components/Badge/Badge';
 import Like from '@/public/icons/like.svg';
 import MyImageSvg from '@/components/ImageSvg/ImageSvg';
+import { fetchFurnishings, getRoom } from '@/api/room';
+import { Option } from '@/components/Select/Select';
 import styles from './room.module.scss';
 
 const RoomDetailLayout = ({ children }: any) => {
@@ -63,24 +64,52 @@ const Page = () => {
   const { id } = router.query;
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  const [room, setRoom] = React.useState<RoomDev | undefined>();
-  const age = room ? formatAge(room.userInfo.year) : 0;
+  const [room, setRoom] = React.useState<RoomSearch | null>();
+  const age = room ? formatAge(room.user.birthDate) : 0;
   const [isShowDetail, setIsShowDetail] = React.useState(false);
   const [showReport, setShowReport] = React.useState(false);
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
   };
 
-  const roomType = room?.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
+  const roomType = room?.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
+
+  const fetchRoom = async () => {
+    if (id && typeof id === 'string') {
+      const data = await getRoom(id);
+      setRoom(data);
+    }
+  };
+
+  const [furnishings, setFurnishings] = useState<Option[] | null>([]);
+
+  const getFurnishings = async () => {
+    try {
+      const data = await fetchFurnishings();
+
+      if (!data) {
+        return;
+      }
+
+      const mappedFurnishing = data.map((item) => {
+        return {
+          value: item.id,
+          label: item.desc,
+        };
+      });
+
+      setFurnishings(mappedFurnishing);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     (async () => {
-      if (id && typeof id === 'string') {
-        const data = await fetchRoom(id);
-        setRoom(data);
-      }
+      Promise.all([fetchRoom(), getFurnishings()]);
     })();
-  }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleShowDetail = () => {
     setIsShowDetail((value) => !value);
@@ -95,6 +124,15 @@ const Page = () => {
     setShowReport(false);
   };
 
+  const includeServices = useMemo(() => {
+    return (
+      room?.maintenance &&
+      Object.keys(room.maintenance)
+        .filter((key) => key.endsWith('Included') && (room.maintenance as Record<string, any>)[key] === true)
+        .map((key) => key.replace('Included', ''))
+    );
+  }, [room?.maintenance]);
+
   return (
     <div>
       {room && (
@@ -107,23 +145,23 @@ const Page = () => {
               className="mySwiper !mx-[-20px] h-[240px] relative"
               onSlideChangeTransitionEnd={(event) => handleSlideChange(event.realIndex)}
             >
-              {room.images.map((image, idx) => (
+              {room.imageFiles.map((image, idx) => (
                 <SwiperSlide className={styles['swiper-slide']} key={`room-image-${idx}`}>
-                  <img src={image} alt={`room-${idx}`} />
+                  <img src={image.path} alt={`room-${idx}`} />
                 </SwiperSlide>
               ))}
               <div className={styles.tag}>
-                {currentSlide + 1}/{room.images.length}
+                {currentSlide + 1}/{room.imageFiles.length}
               </div>
             </Swiper>
             <div className="flex py-[20px]" onClick={toggleShowDetail}>
-              <MyImageSvg imageUrl={room.userInfo.image} />
+              <MyImageSvg imageUrl={room.user.imageUrl || '/images/thumb.png'} />
               <div className="ml-[12px]">
-                <div className="text-[16px] text-g7 font-semibold">{room.userInfo.name}</div>
+                <div className="text-[16px] text-g7 font-semibold">{room.user.firstName}</div>
                 <div className="text-a2 text-[12px]">
                   {age} years old
                   <span className="text-g3">&nbsp;|&nbsp;</span>
-                  {room.userInfo.gender}
+                  {room.user.gender}
                 </div>
               </div>
               <Space />
@@ -131,12 +169,12 @@ const Page = () => {
                 <ArrowDown />
               </div>
             </div>
-            {isShowDetail && <div className="pb-[20px] text-g6">{room.userInfo.description}</div>}
+            {isShowDetail && <div className="pb-[20px] text-g6">{room.user.description}</div>}
             <hr />
             <div className="font-pretendard text-[14px] text-g6 py-[20px]">
               <div className="flex items-center">
                 <Pin className="mr-[12px]" />
-                {room.dong}, {room.gu}
+                {room.location.name}, {room.location.upperLocation?.name}
               </div>
               <div className="flex items-center">
                 <Calendar className="mr-[12px]" />
@@ -148,11 +186,11 @@ const Page = () => {
               <HomeBadge />
               <p className="font-semibold text-g7 pt-[12px]">{roomType}</p>
               <div className="text-g5 text-[14px] flex items-center gap-[6px]">
-                {room.bedCount} bedrooms
+                {room.roomInfo.bedrooms} bedrooms
                 <Dot className="fill-g5 stroke-[1.5px]" />
-                {room.bathCount} bathrooms
+                {room.roomInfo.bathrooms} bathrooms
                 <Dot className="fill-g5 stroke-[1.5px]" />
-                {room.housemateCount} housemates in total
+                {room.roomInfo.roommates} housemates in total
               </div>
             </div>
             <hr />
@@ -162,28 +200,29 @@ const Page = () => {
                 <div className="flex">
                   Deposit
                   <Space />
-                  <span className="font-semibold">&#8361; {formatPrice(room.deposit)} / month</span>
+                  <span className="font-semibold">&#8361; {formatPrice(room.deposit.amount)} / month</span>
                 </div>
                 <div className="flex">
                   Maintenance fee
                   <Space />
                   <span className="font-semibold">
-                    &#8361; {room.maintenanceFee ? formatPrice(room.maintenanceFee) : 0} / month
+                    {room.maintenance.maintenanceFee.amount ? formatPrice(room.maintenance.maintenanceFee.amount) : 0} /
+                    month
                   </span>
                 </div>
               </div>
               <p className="test-[14px] text-a2">Included</p>
               <div className="flex pt-[8px] gap-[4px]">
-                {room.maintenanceFeeItems &&
-                  room.maintenanceFeeItems.map((item, idx) => <Badge text={item} key={`maintenance-fee-${idx}`} />)}
+                {includeServices &&
+                  includeServices.map((item, idx) => <Badge text={item} key={`maintenance-fee-${idx}`} />)}
               </div>
             </div>
             <hr />
             <div className="py-[20px]">
               <p className="text-g7 font-semibold text-[18px]">Furnishing</p>
-              <div className="flex pt-[8px] gap-[4px]">
-                {room.furnishings &&
-                  room.furnishings.map((item, idx) => <Badge text={item} type="flat" key={`furnishing-${idx}`} />)}
+              <div className="flex pt-[8px] gap-[4px] whitespace-nowrap overflow-x-auto">
+                {furnishings &&
+                  furnishings.map((item, idx) => <Badge text={item.label} type="flat" key={`furnishing-${idx}`} />)}
               </div>
             </div>
             <hr />
@@ -203,7 +242,7 @@ const Page = () => {
           <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max bg-g0 h-[71px] flex justify-center border-t-[1px] border-g2">
             <div className="flex items-center">
               <Like className="stroke-g7 stroke-[1.5px] m-[8px]" />
-              <span className="text-[20px] font-semibold">&#8361; {formatPrice(room.deposit)}&nbsp;</span>
+              <span className="text-[20px] font-semibold">&#8361; {formatPrice(room.deposit.amount)}&nbsp;</span>
               <span>/ month</span>
               <div className="h-[40px] font-medium text-[14px] ml-[12px]">
                 <Button height="40px">Start a chat</Button>

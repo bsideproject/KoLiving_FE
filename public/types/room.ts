@@ -137,7 +137,7 @@ export interface RoomSearch {
   availableDate: string;
   description: string;
   imageFiles: ImageFile[];
-  userId: null;
+  user: User;
 }
 
 export interface RoomSearchParams {

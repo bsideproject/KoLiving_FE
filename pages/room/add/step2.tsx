@@ -9,10 +9,6 @@ import { useRouter } from 'next/router';
 import { ROOM_TYPE, ROOM_TYPE_KEYS, ROOM_TYPE_LABEL } from '@/public/types/room';
 import styles from './add.module.scss';
 
-interface Step2Props {
-  step1Data?: any;
-}
-
 const ROOM_TYPE_OPTIONS = Object.entries(ROOM_TYPE).map(([label, value]) => ({
   label: ROOM_TYPE_LABEL[label as ROOM_TYPE_KEYS],
   value,
@@ -29,8 +25,8 @@ const FURNISHIED = [
   },
 ];
 
-export default function Step2({ step1Data }: Step2Props) {
-  const { register, handleSubmit, watch, setValue } = useForm({ mode: 'onChange' });
+export default function Step2() {
+  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
   const router = useRouter();
   const { query } = router;
   const step1Params = query.data ? JSON.parse(query.data as string) : {};

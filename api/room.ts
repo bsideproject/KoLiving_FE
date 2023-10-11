@@ -34,3 +34,11 @@ export const getRooms = async (searchParams: RoomSearchParams) => {
     },
   });
 };
+
+export const getRoom = async (id: string) => {
+  return fetchData<RoomSearch>(`/api/v1/rooms/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};

@@ -27,7 +27,7 @@ interface PhotoProps {
 
 const UserInfo = ({ userInfo }: UserInfoProps) => {
   const router = useRouter();
-  const age = formatAge(userInfo.year);
+  const age = formatAge(userInfo.birthDate);
 
   const handleUserClick = () => {
     router.push('/userInfo');
@@ -35,9 +35,14 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 
   return (
     <div className="flex">
-      <img className="rounded-[40px] w-[40px] h-[40px]" src={userInfo.image} alt="user" onClick={handleUserClick} />
+      <img
+        className="rounded-[40px] w-[40px] h-[40px]"
+        src={userInfo.imageUrl || '/images/thumb.png'}
+        alt="user"
+        onClick={handleUserClick}
+      />
       <div className="ml-[12px]">
-        <div className="text-[16px] text-g7 font-semibold">{userInfo.name}</div>
+        <div className="text-[16px] text-g7 font-semibold">{userInfo.firstName}</div>
         <div className="text-a2 text-[12px]">
           {age} years old
           <span className="text-g3">&nbsp;|&nbsp;</span>
@@ -88,7 +93,7 @@ const Footer = ({ room }: CardProps) => {
       <div className="text-g6 text-[12px]">
         {room.location.name}, {room.location.upperLocation?.name}
       </div>
-      <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex gap-4">
+      <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex">
         &#8361;{formatPrice(room.deposit.amount)}
         <span className="font-pretendard text-[14px] font-medium">/ month </span>
         <span className="font-pretendard text-[14px] text-r1 font-bold bg-g1">
@@ -109,18 +114,10 @@ const Footer = ({ room }: CardProps) => {
   );
 };
 
-const mock = {
-  name: '임시이름이다..',
-  image: 'https://source.unsplash.com/random',
-  year: 1995,
-  gender: 'male',
-};
-
 export default function RoomCard({ room, onClick }: CardProps) {
   return (
     <Card
-      title={<UserInfo userInfo={mock} />}
-      // title={<UserInfo userInfo={room?.userInfo} />}
+      title={<UserInfo userInfo={room?.user} />}
       content={<Photo photos={room.imageFiles} onClick={onClick} />}
       footer={<Footer room={room} />}
     />

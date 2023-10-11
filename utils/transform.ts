@@ -4,9 +4,17 @@ export const formatPrice = (price: number) => {
   return price.toLocaleString();
 };
 
-export const formatAge = (year: number) => {
-  const now = new Date().getFullYear();
-  return now - year;
+export const formatAge = (date: string) => {
+  const today = new Date();
+  const birthDate = new Date(date);
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const month = today.getMonth() - birthDate.getMonth();
+  const day = today.getDate() - birthDate.getDate();
+
+  if (month < 0 || (month === 0 && day < 0)) {
+    return age - 1;
+  }
+  return age;
 };
 
 export const formatDate = (date: string) => {
