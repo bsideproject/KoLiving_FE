@@ -3,7 +3,7 @@ import { Button, Header, Space, ModalBox } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useRouter } from 'next/router';
-import { ROOM_TYPE, RoomSearch } from '@/public/types/room';
+import { Furnishing, ROOM_TYPE, RoomSearch } from '@/public/types/room';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import ArrowDown from '@/public/icons/arrow-down.svg';
 import Pin from '@/public/icons/pin.svg';
@@ -81,7 +81,7 @@ const Page = () => {
     }
   };
 
-  const [furnishings, setFurnishings] = useState<Option[] | null>([]);
+  const [furnishings, setFurnishings] = useState<Furnishing[]>([]);
 
   const getFurnishings = async () => {
     try {
@@ -91,14 +91,7 @@ const Page = () => {
         return;
       }
 
-      const mappedFurnishing = data.map((item) => {
-        return {
-          value: item.id,
-          label: item.desc,
-        };
-      });
-
-      setFurnishings(mappedFurnishing);
+      setFurnishings(data);
     } catch (error) {
       console.error(error);
     }
@@ -106,10 +99,37 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      Promise.all([fetchRoom(), getFurnishings()]);
+      await getFurnishings();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getRoom(id as string);
+
+      if (!data) {
+        return;
+      }
+
+      const roomsFurnishings = data.furnishings.map((furnishing) => {
+        const roomFurnishing = furnishings.find((item) => item.id === furnishing);
+
+        if (!roomFurnishing) {
+          return null;
+        }
+
+        return roomFurnishing.desc;
+      });
+
+      const dataRoom: RoomSearch = {
+        ...data,
+        furnishingsData: roomsFurnishings as string[],
+      };
+      setRoom(dataRoom);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [furnishings]);
 
   const toggleShowDetail = () => {
     setIsShowDetail((value) => !value);
@@ -218,13 +238,16 @@ const Page = () => {
               </div>
             </div>
             <hr />
-            <div className="py-[20px]">
-              <p className="text-g7 font-semibold text-[18px]">Furnishing</p>
-              <div className="flex pt-[8px] gap-[4px] whitespace-nowrap overflow-x-auto">
-                {furnishings &&
-                  furnishings.map((item, idx) => <Badge text={item.label} type="flat" key={`furnishing-${idx}`} />)}
+            {room.furnishingsData?.length > 0 && (
+              <div className="py-[20px]">
+                <p className="text-g7 font-semibold text-[18px]">Furnishing</p>
+                <div className="flex pt-[8px] gap-[4px] whitespace-nowrap overflow-x-auto">
+                  {room.furnishingsData.map((item, idx) => (
+                    <Badge text={item} type="flat" key={`furnishing-${idx}`} />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             <hr />
             <div className="py-[20px]">
               <p className="text-g7 font-semibold text-[18px]">About the house</p>

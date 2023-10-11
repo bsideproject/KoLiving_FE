@@ -138,6 +138,7 @@ export interface RoomSearch {
   description: string;
   imageFiles: ImageFile[];
   user: User;
+  furnishingsData?: string[];
 }
 
 export interface RoomSearchParams {
