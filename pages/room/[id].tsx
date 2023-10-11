@@ -238,7 +238,7 @@ const Page = () => {
               </div>
             </div>
             <hr />
-            {room.furnishingsData?.length > 0 && (
+            {room.furnishingsData && room.furnishingsData?.length > 0 && (
               <div className="py-[20px]">
                 <p className="text-g7 font-semibold text-[18px]">Furnishing</p>
                 <div className="flex pt-[8px] gap-[4px] whitespace-nowrap overflow-x-auto">
