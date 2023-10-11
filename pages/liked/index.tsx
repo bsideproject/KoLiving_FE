@@ -14,15 +14,15 @@ interface MyPostingProps {
 export default function Liked({ roomInfo }: MyPostingProps) {
   const { openModal } = useModal();
   const handleAddPosting = () => {
-    openModal({
-      props: {
-        title: 'Add Rooms',
-        size: 'full',
-        custom: true,
-        customHeader: true,
-      },
-      children: <Step1 />,
-    });
+    // openModal({
+    //   props: {
+    //     title: 'Add Rooms',
+    //     size: 'full',
+    //     custom: true,
+    //     customHeader: true,
+    //   },
+    //   children: <Step1 />,
+    // });
   };
 
   /**
@@ -66,7 +66,7 @@ Liked.getLayout = function getLayout(page: React.ReactElement) {
     window.history.back();
   };
   return (
-    <DefaultLayout title="My postings" handleButtonClick={handleGoBack}>
+    <DefaultLayout title="Liked" handleButtonClick={handleGoBack}>
       {page}
     </DefaultLayout>
   );
