@@ -30,7 +30,13 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
   const age = formatAge(userInfo.birthDate);
 
   const handleUserClick = () => {
-    router.push('/userInfo');
+    router.push(
+      {
+        pathname: '/userInfo',
+        query: { data: JSON.stringify(userInfo) },
+      },
+      '/userInfo'
+    );
   };
 
   return (

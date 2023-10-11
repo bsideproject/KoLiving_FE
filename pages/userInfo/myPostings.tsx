@@ -4,6 +4,7 @@ import NoPosting from '@/public/icons/noPosting.svg';
 import Step1 from '@/pages/room/addRoom/step1.tsx';
 import useModal from '@/hooks/useModal';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
+import { Nav } from '@/components/index.tsx';
 // import { useRouter } from 'next/router';
 
 // TODO 데이터가 구체화되면 바꿔줘야함
@@ -30,7 +31,7 @@ export default function MyPosting({ roomInfo }: MyPostingProps) {
    */
   const NoPostings = () => {
     const noPostingStyle = 'text-[20px] font-bold mt-[29px] text-center';
-    const containerStyle = 'h-screen flex flex-col items-center justify-start mt-[135px]'; // 'justify-start'로 변경
+    const containerStyle = 'flex flex-col items-center justify-start mt-[135px]'; // 'justify-start'로 변경
 
     return (
       <div className={containerStyle}>
@@ -45,6 +46,14 @@ export default function MyPosting({ roomInfo }: MyPostingProps) {
           >
             + Add post
           </button>
+        </div>
+        <div className="fixed bottom-[0px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+          <div className="w-full">
+            <hr />
+            <div className="mb-[13px] space-x-[8px] max-w-max">
+              <Nav />
+            </div>
+          </div>
         </div>
       </div>
     );
