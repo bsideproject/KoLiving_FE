@@ -83,6 +83,10 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
   );
 
   const handleLogout = () => {
+    setShowModal(true);
+  };
+
+  const doLogout = () => {
     signOut({
       callbackUrl: '/',
     });
@@ -143,7 +147,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
             buttonName="Cancel"
             buttonName2="Log out"
             handleClose={() => setShowModal(false)}
-            handleSecondButton={() => router.push('/')}
+            handleSecondButton={() => doLogout()}
           />
         )}
       </div>
