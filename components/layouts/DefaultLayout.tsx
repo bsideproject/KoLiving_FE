@@ -5,12 +5,22 @@ interface AppLayoutProps {
   children: ReactNode;
   title: string;
   handleButtonClick?: () => void;
+  type?: 'back' | 'title' | 'logo';
+  titleStyle?: string;
+  titleCenter?: boolean;
 }
 
-function DefaultLayout({ children, title, handleButtonClick }: AppLayoutProps) {
+function DefaultLayout({ children, title, handleButtonClick, type, titleStyle, titleCenter }: AppLayoutProps) {
   return (
     <>
-      <Header type="back" bgColor="white" title={title} handleButtonClick={handleButtonClick} />
+      <Header
+        type={type || 'back'}
+        bgColor="white"
+        title={title}
+        handleButtonClick={handleButtonClick}
+        titleStyle={titleStyle}
+        titleCenter={titleCenter || false}
+      />
       <div className="mx-auto mt-[54px]">{children}</div>
     </>
   );
