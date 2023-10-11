@@ -113,7 +113,7 @@ const Page = () => {
       }
 
       const roomsFurnishings = data.furnishings.map((furnishing) => {
-        const roomFurnishing = furnishings.find((item) => item.id === furnishing);
+        const roomFurnishing = furnishings.find((item) => item.id === furnishing.id);
 
         if (!roomFurnishing) {
           return null;
@@ -158,22 +158,29 @@ const Page = () => {
       {room && (
         <>
           <div className="font-pretendard w-full mb-[71px]">
-            <Swiper
-              effect="coverflow"
-              slidesPerView={1}
-              loop
-              className="mySwiper !mx-[-20px] h-[240px] relative"
-              onSlideChangeTransitionEnd={(event) => handleSlideChange(event.realIndex)}
-            >
-              {room.imageFiles.map((image, idx) => (
-                <SwiperSlide className={styles['swiper-slide']} key={`room-image-${idx}`}>
-                  <img src={image.path} alt={`room-${idx}`} />
-                </SwiperSlide>
-              ))}
-              <div className={styles.tag}>
-                {currentSlide + 1}/{room.imageFiles.length}
-              </div>
-            </Swiper>
+            {room.imageFiles.length > 0 ? (
+              <Swiper
+                effect="coverflow"
+                slidesPerView={1}
+                loop
+                className="mySwiper !mx-[-20px] h-[240px] relative"
+                onSlideChangeTransitionEnd={(event) => handleSlideChange(event.realIndex)}
+              >
+                {room.imageFiles.map((image, idx) => (
+                  <SwiperSlide className={styles['swiper-slide']} key={`room-image-${idx}`}>
+                    <img src={image.path} alt={`room-${idx}`} />
+                  </SwiperSlide>
+                ))}
+                <div className={styles.tag}>
+                  {currentSlide + 1}/{room.imageFiles.length}
+                </div>
+              </Swiper>
+            ) : (
+              <div
+                className="!mx-[-20px] h-[240px] relative bg-cover"
+                style={{ backgroundImage: `url(/images/thumb.png)` }}
+              />
+            )}
             <div className="flex py-[20px]" onClick={toggleShowDetail}>
               <MyImageSvg imageUrl={room.user.imageUrl || '/images/thumb.png'} />
               <div className="ml-[12px]">

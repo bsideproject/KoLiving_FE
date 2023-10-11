@@ -56,6 +56,14 @@ export interface Furnishing {
   desc: string;
 }
 
+export interface FurnishingData {
+  createdAt: string;
+  deleted: boolean;
+  id: number;
+  type: string;
+  updatedAt: string;
+}
+
 export interface RoomFile {
   createdAt: string;
   deleted: boolean;
@@ -133,7 +141,7 @@ export interface RoomSearch {
     cleaningIncluded: number;
   };
   roomInfo: RoomInfo;
-  furnishings: number[];
+  furnishings: FurnishingData[];
   availableDate: string;
   description: string;
   imageFiles: ImageFile[];

@@ -56,7 +56,7 @@ export default function AddRoom() {
       locationId: data.dong.value,
       monthlyRent: data.monthPrice,
       deposit: data.depositPrice,
-      maintananceFee: data.maintananceFee,
+      maintenanceFee: data.maintananceFee,
       availableDate: formatDateForAPI(data.dateAvailable),
       gasIncluded: data.gasChecked,
       waterIncluded: data.waterChecked,

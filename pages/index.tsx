@@ -27,6 +27,7 @@ function Home() {
   const router = useRouter();
   const { openModal, closeModal } = useModal();
   const [page, setPage] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
 
@@ -34,6 +35,7 @@ function Home() {
     try {
       const data = await getRooms({ page });
       setRooms(data?.content || []);
+      setTotalElements(data?.totalElements || 0);
     } catch (error) {
       console.error(error);
     }
@@ -217,7 +219,7 @@ function Home() {
         })}
       </div>
       <Typography variant="body" customClassName="text-left font-bold text-[16px] text-g7">
-        There are <span className="text-r1">{`${rooms.length} rooms`}</span> in total!
+        There are <span className="text-r1">{`${totalElements} rooms`}</span> in total!
       </Typography>
       {rooms.map((room, idx) => (
         // Nav 영역 맨 마지막 부분 잘리는 문제로 추가!!
