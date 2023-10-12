@@ -99,7 +99,7 @@ const Footer = ({ room }: CardProps) => {
       <div className="text-g6 text-[12px]">
         {room.location.name}, {room.location.upperLocation?.name}
       </div>
-      <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex">
+      <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex items-center">
         &#8361;{formatPrice(room.deposit.amount)}
         <span className="font-pretendard text-[14px] font-medium">/ month </span>
         <span className="font-pretendard text-[14px] text-r1 font-bold bg-g1">
