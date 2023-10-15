@@ -3,7 +3,7 @@ import React from 'react';
 import NoLiked from '@/public/icons/noLiked.svg';
 import useModal from '@/hooks/useModal';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
-import { Nav } from '@/components/index.tsx';
+import { Nav, Typography } from '@/components/index.tsx';
 import { useRouter } from 'next/router';
 // TODO 데이터가 구체화되면 바꿔줘야함
 interface MyPostingProps {
@@ -47,13 +47,33 @@ export default function Liked({ roomInfo }: MyPostingProps) {
     );
   };
 
+  const LikedComponent = () => {
+    return (
+      <div>
+        <Typography variant="body" customClassName="text-left font-bold text-[16px] text-g7">
+          There are <span className="text-r1">{`${(roomInfo || []).length} rooms`}</span> in total!
+        </Typography>
+        {/* {rooms.map((room, idx) => (
+          <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
+            <RoomCard room={room} onClick={() => handleCardClick(room.id)} />
+          </div>
+        ))} */}
+        {/* <div ref={target} /> */}
+        <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+          <div className="w-full">
+            <div className="mb-[13px] space-x-[8px] max-w-max">
+              <Nav />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   /**
    * 좋아요 있을 때 보여주는 Component (TODO : 구체화 해줘야함)
    */
-  const MyLiked = () => {
-    return <div>호이호이</div>;
-  };
-  return (roomInfo || []).length === 0 ? <NoPostings /> : <MyLiked />;
+  return (roomInfo || []).length === 0 ? <NoPostings /> : <LikedComponent />;
 }
 
 Liked.getLayout = function getLayout(page: React.ReactElement) {
