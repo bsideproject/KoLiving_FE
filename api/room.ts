@@ -25,9 +25,9 @@ export const postRoom = async (room: Room) => {
 };
 
 export const getRooms = async (searchParams: RoomSearchParams) => {
-  const { page } = searchParams;
+  const params = new URLSearchParams(searchParams as Record<string, string>).toString();
 
-  return fetchData<ReturnData<RoomSearch[]>>(`/api/v1/rooms/search?page=${page}`, {
+  return fetchData<ReturnData<RoomSearch[]>>(`/api/v1/rooms/search?${params}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

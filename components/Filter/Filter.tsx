@@ -3,8 +3,9 @@ import { Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/inde
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import toast from 'react-hot-toast';
-import { fetchFurnishings } from '@/api/room';
+import { fetchFurnishings, getRooms } from '@/api/room';
 import { ROOM_TYPE, ROOM_TYPE_KEYS, ROOM_TYPE_LABEL } from '@/public/types/room';
+import { formatDateForAPI } from '@/utils/transform';
 import styles from './Filter.module.scss';
 import { Option } from '../Select/Select';
 import Calendar from '../Calendar/Calendar';
@@ -22,14 +23,13 @@ interface GuDong {
 export default function Filter({
   getChildData,
   closeModal,
-  roomsLength,
 }: {
   getChildData: (data: any) => void;
   closeModal: () => void;
-  roomsLength: number;
 }) {
   const { register, handleSubmit, watch, reset } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
+  const [count, setCount] = useState(0);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     getChildData(data);
@@ -122,6 +122,31 @@ export default function Filter({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dong]);
+
+  const minDeposit = watch('depositMin');
+  const maxDeposit = watch('depositMax');
+  const minMonthlyRent = watch('monthMin');
+  const maxMonthlyRent = watch('monthMax');
+  const dateAvailable = watch('dateAvailable');
+
+  useEffect(() => {
+    const formattedSelectedLocation = selectedLocations.map((item) => item.dong.value);
+    const fetchData = async () => {
+      const data = await getRooms({
+        locationIds: formattedSelectedLocation.join(', '),
+        minDeposit,
+        maxDeposit,
+        minMonthlyRent,
+        maxMonthlyRent,
+        ...(dateAvailable ? { availableDate: formatDateForAPI(dateAvailable) } : {}),
+      });
+      if (data) {
+        setCount(data.totalElements);
+      }
+    };
+
+    fetchData();
+  }, [selectedLocations, minDeposit, maxDeposit, minMonthlyRent, maxMonthlyRent, dateAvailable]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -267,7 +292,7 @@ export default function Filter({
               </div>
               <div className="w-[70%]">
                 <Button type="submit" size="lg">
-                  Apply {`(${roomsLength} Rooms)`}
+                  Apply {`(${count} Rooms)`}
                 </Button>
               </div>
             </div>

@@ -150,5 +150,11 @@ export interface RoomSearch {
 }
 
 export interface RoomSearchParams {
-  page: number;
+  page?: number;
+  locationIds?: string;
+  minDeposit?: string;
+  maxDeposit?: string;
+  minMonthlyRent?: string;
+  maxMonthlyRent?: string;
+  availableDate?: string;
 }

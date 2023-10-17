@@ -123,7 +123,7 @@ function Home() {
         custom: true,
         customHeader: false,
       },
-      children: <Filter closeModal={closeModal} getChildData={getChildData} roomsLength={(rooms || []).length} />,
+      children: <Filter closeModal={closeModal} getChildData={getChildData} />,
     });
   };
 
