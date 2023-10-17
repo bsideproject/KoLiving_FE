@@ -42,3 +42,12 @@ export const getRoom = async (id: string) => {
     },
   });
 };
+
+export const deleteRoom = async (id: string) => {
+  return fetchData<RoomSearch>(`/api/v1/rooms/${id}?id=${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
