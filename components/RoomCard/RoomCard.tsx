@@ -60,7 +60,7 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 };
 
 const Photo = ({ photos, onClick }: PhotoProps) => {
-  return photos.length ? (
+  return (photos || []).length ? (
     <div
       className="relative h-[190px] bg-cover"
       style={{ backgroundImage: `url(${photos[0].path})` }}
