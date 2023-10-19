@@ -158,4 +158,6 @@ export interface RoomSearchParams {
   minMonthlyRent?: string;
   maxMonthlyRent?: string;
   availableDate?: string;
+  types?: string;
+  furnishingTypes?: string;
 }

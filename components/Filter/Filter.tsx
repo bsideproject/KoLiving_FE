@@ -30,9 +30,10 @@ export default function Filter({
   const { register, handleSubmit, watch, reset } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const [count, setCount] = useState(0);
+  const [searchParams, setSearchParams] = useState({});
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    getChildData(data);
+  const onSubmit: SubmitHandler<FieldValues> = () => {
+    getChildData(searchParams);
     closeModal();
   };
 
@@ -123,6 +124,24 @@ export default function Filter({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dong]);
 
+  const [housingChecked, setHousingChecked] = useState<string[]>([]);
+  const handleHousingCheck = (value: string, isChecked: boolean) => {
+    if (isChecked) {
+      setHousingChecked((prev) => [...prev, value]);
+    } else {
+      setHousingChecked((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
+  const [furnishingChecked, setFurnishingChecked] = useState<(string | number)[]>([]);
+  const handleFurnishingCheck = (value: string | number, isChecked: boolean) => {
+    if (isChecked) {
+      setFurnishingChecked((prev) => [...prev, value]);
+    } else {
+      setFurnishingChecked((prev) => prev.filter((item) => item !== value));
+    }
+  };
+
   const minDeposit = watch('depositMin');
   const maxDeposit = watch('depositMax');
   const minMonthlyRent = watch('monthMin');
@@ -138,18 +157,32 @@ export default function Filter({
       !maxDeposit &&
       !minMonthlyRent &&
       !maxMonthlyRent &&
-      !dateAvailable
+      !dateAvailable &&
+      !housingChecked.length &&
+      !furnishingChecked.length
     ) {
       return;
     }
 
     const fetchData = async () => {
+      setSearchParams({
+        locationIds: formattedSelectedLocation.join(', '),
+        minDeposit,
+        maxDeposit,
+        minMonthlyRent,
+        maxMonthlyRent,
+        types: housingChecked.join(', '),
+        furnishingTypes: furnishingChecked.join(', '),
+        ...(dateAvailable ? { availableDate: formatDateForAPI(dateAvailable) } : {}),
+      });
       const data = await getRooms({
         locationIds: formattedSelectedLocation.join(', '),
         minDeposit,
         maxDeposit,
         minMonthlyRent,
         maxMonthlyRent,
+        types: housingChecked.join(', '),
+        furnishingTypes: furnishingChecked.join(', '),
         ...(dateAvailable ? { availableDate: formatDateForAPI(dateAvailable) } : {}),
       });
       if (data) {
@@ -158,7 +191,16 @@ export default function Filter({
     };
 
     fetchData();
-  }, [selectedLocations, minDeposit, maxDeposit, minMonthlyRent, maxMonthlyRent, dateAvailable]);
+  }, [
+    selectedLocations,
+    minDeposit,
+    maxDeposit,
+    minMonthlyRent,
+    maxMonthlyRent,
+    dateAvailable,
+    housingChecked,
+    furnishingChecked,
+  ]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -269,6 +311,7 @@ export default function Filter({
                   label={item.label}
                   register={register(item.value)}
                   checked={watch(item.value)}
+                  onChange={(e) => handleHousingCheck(item.value, e)}
                   key={item.value}
                 />
               );
@@ -289,6 +332,7 @@ export default function Filter({
                   type="outlined"
                   label={item.label}
                   register={register(`furnishing-${item.value}`)}
+                  onChange={(e) => handleFurnishingCheck(item.value, e)}
                   key={item.value}
                 />
               );

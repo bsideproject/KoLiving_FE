@@ -9,9 +9,10 @@ interface InputProps {
   error?: FieldError;
   maxLength?: number;
   disabled?: boolean;
+  fixedWord?: string;
 }
 
-function Input({ placeholder, register, type, error, maxLength, disabled }: InputProps) {
+function Input({ placeholder, register, type, error, maxLength, disabled, fixedWord }: InputProps) {
   const hasError = error && error.message;
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const inputType = useMemo(() => {

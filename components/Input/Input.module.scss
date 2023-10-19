@@ -9,6 +9,14 @@
   }
 }
 
+.input::before {
+  content: '$';
+  position: absolute;
+  left: 10px; /* 원하는 위치로 조절 */
+  top: 50%; /* 수직 가운데 정렬 */
+  transform: translateY(-50%);
+}
+
 .eye {
   @apply w-[24px] h-[24px];
 }

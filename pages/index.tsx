@@ -11,29 +11,40 @@ import { FilterType } from '@/public/types/filter';
 import useModal from '@/hooks/useModal.ts';
 import { FieldValues } from 'react-hook-form';
 import Filter from '@/components/Filter/Filter.tsx';
-import { useTranslation } from 'next-i18next';
 import { getRooms } from '@/api/room';
+import isEmpty from 'lodash-es/isEmpty';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
 };
 
+const FILTER_LABEL: Record<string, string> = {
+  locationIds: 'Location',
+  maxDeposit: 'Deposit',
+  maxMonthlyRent: 'Monthly rent',
+  availableDate: 'Date available',
+  types: 'Type of housing',
+  furnishingTypes: 'Furnishing',
+};
+
 function Home() {
-  const commonTranslation = useTranslation('common');
   const [rooms, setRooms] = useState<RoomSearch[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
-  // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [clickedChip, setClickedChip] = useState('');
   const router = useRouter();
   const { openModal, closeModal } = useModal();
   const [page, setPage] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
+  const [searchParams, setSearchParams] = useState<Record<string, string>>({});
 
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
 
   const selectRooms = async () => {
     try {
-      const data = await getRooms({ page });
+      const data = await getRooms({
+        ...searchParams,
+        page,
+      });
       setRooms(data?.content || []);
       setTotalElements(data?.totalElements || 0);
     } catch (error) {
@@ -41,78 +52,23 @@ function Home() {
     }
   };
 
-  const makeFilters = (filterParams: FilterType) => {
+  const makeFilters = (filterParams: Record<string, string>) => {
     const resultFilter: string[] = [];
     Object.keys(filterParams).forEach((key) => {
-      // eslint-disable-next-line no-unused-expressions
-      filterParams[`${key}`] && resultFilter.push(commonTranslation.t(`${key}`));
+      if (!isEmpty(filterParams[key])) {
+        resultFilter.push(FILTER_LABEL[key]);
+      }
     });
     setFilters(() => [...resultFilter]);
   };
 
   const target = useRef(null);
 
-  const makeSubmitParam = (data: FieldValues): FilterType => {
-    const typeOfHousings = ['studioChecked', 'bedFlatsChecked', 'shareHouseChecked'];
-    const furnishings = [
-      'bedChecked',
-      'inductionChecked',
-      'airconditionerChecked',
-      'stoveChecked',
-      'refregeratorChecked',
-      'wardrobeChecked',
-      'washingMachineChecked',
-      'doorLockChecked',
-      'tvChecked',
-      'kitchenetteChecked',
-      'heaterChecked',
-    ];
-
-    let typeOfHousing = false;
-    let furnishing = false;
-    let monthRent = false;
-    let deposit = false;
-    let location = false;
-    let dateAvailable = false;
-
-    // typeOfHousing 중 하나라도 체크되면 true
-    typeOfHousings.forEach((key) => {
-      if (data[`${key}`]) {
-        typeOfHousing = true;
-      }
-    });
-
-    // furnishing 중 하나라도 체크되면 true
-    furnishings.forEach((key) => {
-      if (data[`${key}`]) {
-        furnishing = true;
-      }
-    });
-
-    // monthRent 비용 체크
-    if ((data[`${'monthMax'}`] || '') !== '' || (data[`${'monthMin'}`] || '') !== '') {
-      monthRent = true;
-    }
-
-    // deposit 비용 체크
-    if ((data[`${'depositMax'}`] || '') !== '' || (data[`${'depositMin'}`] || '') !== '') {
-      deposit = true;
-    }
-
-    if ((data.gu || '') !== '') {
-      location = true;
-    }
-
-    if ((data.dateAvailable || '') !== '') {
-      dateAvailable = true;
-    }
-    return { typeOfHousing, furnishing, monthRent, deposit, location, dateAvailable };
-  };
-
-  const getChildData = async (childData: any) => {
-    const filteredChips = makeSubmitParam(childData);
-    makeFilters(filteredChips);
-    await selectRooms();
+  const getChildData = async (childData: Record<string, string>) => {
+    makeFilters(childData);
+    setPage(0);
+    setSearchParams(childData);
+    setRooms([]);
   };
 
   const openFilterPopup = () => {
@@ -133,7 +89,6 @@ function Home() {
 
   const callback = async (entries: IntersectionObserverEntry[]) => {
     const [{ isIntersecting }] = entries;
-    // target?.current?.innerText += '관측되었습니다';
     if (isIntersecting) {
       setPage((prev) => prev + 1);
     }
@@ -145,12 +100,13 @@ function Home() {
     }
 
     const fetchData = async () => {
-      const data = await getRooms({ page });
+      const data = await getRooms({ ...searchParams, page });
       setRooms((prevRooms) => [...prevRooms, ...(data?.content || [])]);
+      setTotalElements(data?.totalElements || 0);
     };
 
     fetchData();
-  }, [page]);
+  }, [page, searchParams]);
 
   // 최초 접근 시 Room 정보 조회
   useEffect(() => {
@@ -188,8 +144,19 @@ function Home() {
     const resultFilters = filters.filter((item) => item !== option);
     setFilters(() => [...resultFilters]);
 
+    const selectedOption = Object.keys(FILTER_LABEL).find((key) => {
+      return FILTER_LABEL[key] === option;
+    });
+    setPage(0);
+    setRooms([]);
+    setSearchParams((prev) => {
+      return {
+        ...prev,
+        [selectedOption as string]: '',
+      };
+    });
+
     // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
-    // if ((clickedChip || '' )  === '' ||  selectedOptions.length !== filters.length) {
     if ((clickedChip || '') === '') {
       setClickedChip(filters?.[0]);
     }
@@ -204,9 +171,8 @@ function Home() {
           style={{ alignSelf: 'flex-start' }}
         />
         {filters.map((label, index) => {
-          console.log('label >>', label);
           return (
-            <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }}>
+            <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }} key={index}>
               <Chip
                 key={`${label}-${index}`}
                 label={label}
