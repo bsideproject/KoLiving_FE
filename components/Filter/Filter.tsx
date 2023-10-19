@@ -131,6 +131,18 @@ export default function Filter({
 
   useEffect(() => {
     const formattedSelectedLocation = selectedLocations.map((item) => item.dong.value);
+
+    if (
+      !selectedLocations.length &&
+      !minDeposit &&
+      !maxDeposit &&
+      !minMonthlyRent &&
+      !maxMonthlyRent &&
+      !dateAvailable
+    ) {
+      return;
+    }
+
     const fetchData = async () => {
       const data = await getRooms({
         locationIds: formattedSelectedLocation.join(', '),

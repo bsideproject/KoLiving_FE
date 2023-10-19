@@ -144,7 +144,7 @@ export interface RoomSearch {
   furnishings: FurnishingData[];
   availableDate: string;
   description: string;
-  imageFiles: ImageFile[];
+  images: ImageFile[];
   user: User;
   furnishingsData?: string[];
 }
