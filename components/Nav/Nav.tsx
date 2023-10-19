@@ -31,12 +31,10 @@ const menus = [
 ];
 
 export default function Nav({ initMenu }: NavProps) {
-  const [activeMenu, setActiveMenu] = useState(initMenu || 0); // 초기 활성 메뉴 인덱스
   const [hoverMenu, setHoverMenu] = useState(-1); // 초기화
   const router = useRouter();
 
   const handleNavClicked = (index: number) => {
-    setActiveMenu(index);
     router.push(menus[index].router);
   };
 
@@ -55,12 +53,14 @@ export default function Nav({ initMenu }: NavProps) {
           >
             <div className="grid justify-center">
               <IconComponent
-                className={`${index === activeMenu ? activeStrokeColor : defaultStrokeColor} ${
+                className={`${menu.router === router.pathname ? activeStrokeColor : defaultStrokeColor} ${
                   hoverMenu === index ? 'cursor-pointer' : ''
                 }`}
               />
             </div>
-            <div className={styles[`${index === activeMenu ? 'nav-activeText' : 'nav-text'}`]}>{menu.name}</div>
+            <div className={styles[`${menu.router === router.pathname ? 'nav-activeText' : 'nav-text'}`]}>
+              {menu.name}
+            </div>
           </div>
         );
       })}
