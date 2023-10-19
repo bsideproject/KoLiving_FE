@@ -124,7 +124,7 @@ export default function RoomCard({ room, onClick }: CardProps) {
   return (
     <Card
       title={<UserInfo userInfo={room?.user} />}
-      content={<Photo photos={room.images} onClick={onClick} />}
+      content={<Photo photos={room.images || []} onClick={onClick} />}
       footer={<Footer room={room} />}
     />
   );

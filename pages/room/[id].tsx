@@ -206,7 +206,7 @@ export default function RoomDetail() {
         {room && (
           <>
             <div className="font-pretendard w-full mb-[71px]">
-              {room.images.length > 0 ? (
+              {(room.imageFiles || []).length > 0 ? (
                 <Swiper
                   effect="coverflow"
                   slidesPerView={1}
@@ -214,13 +214,13 @@ export default function RoomDetail() {
                   className="mySwiper !mx-[-20px] h-[240px] relative"
                   onSlideChangeTransitionEnd={(event) => handleSlideChange(event.realIndex)}
                 >
-                  {room.images.map((image, idx) => (
+                  {(room.imageFiles || []).map((image, idx) => (
                     <SwiperSlide className={styles['swiper-slide']} key={`room-image-${idx}`}>
                       <img src={image.path} alt={`room-${idx}`} />
                     </SwiperSlide>
                   ))}
                   <div className={styles.tag}>
-                    {currentSlide + 1}/{room.images.length}
+                    {currentSlide + 1}/{(room.imageFiles || []).length}
                   </div>
                 </Swiper>
               ) : (
