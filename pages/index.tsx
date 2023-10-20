@@ -38,7 +38,7 @@ function Home() {
   const [searchParams, setSearchParams] = useState<Record<string, string>>({});
 
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
-
+  // TODO : ModalLayer 로 로그인한 사용자의 Context 생성 필요
   const selectRooms = async () => {
     try {
       const data = await getRooms({
