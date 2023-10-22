@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic';
 import Providers from '@/context/Providers.tsx';
 import { SessionProvider, getSession } from 'next-auth/react';
 import { Session } from 'next-auth';
+import UserInfoProvider from '@/context/UserInfoProvider.tsx';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
@@ -70,12 +71,14 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
       <Providers>
         <SessionProvider>
           <ModalProvider>
-            {data && (
-              <AppLayout>
-                {getLayout(<Component {...pageProps} />)}
-                <ModalContainer />
-              </AppLayout>
-            )}
+            <UserInfoProvider>
+              {data && (
+                <AppLayout>
+                  {getLayout(<Component {...pageProps} />)}
+                  <ModalContainer />
+                </AppLayout>
+              )}
+            </UserInfoProvider>
           </ModalProvider>
         </SessionProvider>
       </Providers>

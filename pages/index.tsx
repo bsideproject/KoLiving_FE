@@ -13,6 +13,9 @@ import { FieldValues } from 'react-hook-form';
 import Filter from '@/components/Filter/Filter.tsx';
 import { getRooms } from '@/api/room';
 import isEmpty from 'lodash-es/isEmpty';
+import useUserInfo from '@/hooks/useUserInfo.ts';
+import { getProfile } from '@/api/userInfo';
+import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -29,6 +32,7 @@ const FILTER_LABEL: Record<string, string> = {
 
 function Home() {
   const [rooms, setRooms] = useState<RoomSearch[]>([]);
+  const [profile, setProfile] = useState<UserInfoProps>();
   const [filters, setFilters] = useState<string[]>([]);
   const [clickedChip, setClickedChip] = useState('');
   const router = useRouter();
@@ -36,7 +40,7 @@ function Home() {
   const [page, setPage] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useState<Record<string, string>>({});
-
+  const { setUserInfoData, userInfoState } = useUserInfo();
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
   // TODO : ModalLayer 로 로그인한 사용자의 Context 생성 필요
   const selectRooms = async () => {
@@ -70,7 +74,17 @@ function Home() {
     setSearchParams(childData);
     setRooms([]);
   };
-
+  const selectProfile = async () => {
+    try {
+      const data = await getProfile();
+      if (data != null) {
+        console.log('data info userProfile', data);
+        setProfile(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const openFilterPopup = () => {
     openModal({
       props: {
@@ -112,6 +126,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       await selectRooms();
+      await selectProfile();
       if (target?.current) {
         const observer = new IntersectionObserver(callback, options);
         observer.observe(target.current);
@@ -197,7 +212,7 @@ function Home() {
       <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">
         <div className="w-full">
           <div className="mb-[13px] space-x-[8px] max-w-max">
-            <Nav />
+            <Nav profile={profile} />
           </div>
         </div>
       </div>

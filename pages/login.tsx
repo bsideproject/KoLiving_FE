@@ -8,6 +8,8 @@ import { LoginLayout, Link, CustomImage, Chip, Button, Input, Space } from '@/co
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validCheck.ts';
 import { login } from '@/api/signup';
 import { signIn } from 'next-auth/react';
+import { getProfile } from '@/api/userInfo';
+import useUserInfo from '@/hooks/useUserInfo.ts';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -17,6 +19,7 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function Login() {
   const { t } = useTranslation('common');
+  const { setUserInfoData, userInfoState } = useUserInfo();
   const {
     handleSubmit,
     register,
@@ -27,7 +30,20 @@ export default function Login() {
   const email = watch('email');
   const password = watch('password');
 
+  const selectProfile = async () => {
+    try {
+      const data = await getProfile();
+      if (data != null) {
+        console.log('data info userProfile', data);
+        setUserInfoData(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const onSubmit = async () => {
+    await selectProfile();
     await signIn('email-password-credential', {
       email,
       password,
