@@ -113,7 +113,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
       <div className="w-full h-auto border border-gray-300 flex flex-col bg-r1 text-g0 mt-[50px]">
         <div className="flex w-full">
           <div className="ml-[20px] w-[52px] h-[72px] flex items-center justify-center mt-[20px]">
-            <img src={imageSrc} alt={`${name}'s profile`} />
+            <img src={imageSrc} alt={' '} />
           </div>
           <div className="flex flex-col justify-center pl-5 h-[72px] mt-[17px]">
             <div className="text-lg font-bold">{name}</div>

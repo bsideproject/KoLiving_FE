@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Like from '@/public/icons/like.svg';
 import Home from '@/public/icons/home.svg';
 import Me from '@/public/icons/me.svg';
 import { useRouter } from 'next/router';
+import useUserInfo from '@/hooks/useUserInfo.ts';
+import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import styles from './Nav.module.scss';
 
 const defaultStrokeColor = 'stroke-g4 stroke-[1.5px]';
@@ -10,8 +12,8 @@ const activeStrokeColor = 'stroke-r1 stroke-[1.5px]';
 
 interface NavProps {
   initMenu?: number;
+  profile?: UserInfoProps;
 }
-
 const menus = [
   {
     name: 'Rooms',
@@ -30,13 +32,23 @@ const menus = [
   },
 ];
 
-export default function Nav({ initMenu }: NavProps) {
+export default function Nav({ initMenu, profile }: NavProps) {
   const [hoverMenu, setHoverMenu] = useState(-1); // 초기화
   const router = useRouter();
-
+  const { setUserInfoData, userInfoState } = useUserInfo();
   const handleNavClicked = (index: number) => {
-    router.push(menus[index].router);
+    router.push(
+      {
+        pathname: menus[index].router,
+        query: { data: profile && JSON.stringify(profile) },
+      },
+      `${menus[index].router}`
+    );
   };
+
+  useEffect(() => {
+    console.log('userInfoData in Nav', profile);
+  }, [profile]);
 
   return (
     <div className={`${styles.container} grid grid-cols-${menus.length} bg-g0 w-full h-[66px] text-center`}>
