@@ -25,4 +25,5 @@ interface ReturnData<T> {
   sort: Sort;
   totalElements: number;
   totalPages: number;
+  error?: string;
 }

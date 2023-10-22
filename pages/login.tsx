@@ -34,7 +34,6 @@ export default function Login() {
     try {
       const data = await getProfile();
       if (data != null) {
-        console.log('data info userProfile', data);
         setUserInfoData(data);
       }
     } catch (error) {

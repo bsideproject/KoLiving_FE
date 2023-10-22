@@ -78,7 +78,6 @@ function Home() {
     try {
       const data = await getProfile();
       if (data != null) {
-        console.log('data info userProfile', data);
         setProfile(data);
       }
     } catch (error) {
