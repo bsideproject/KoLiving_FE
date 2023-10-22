@@ -46,10 +46,6 @@ export default function Nav({ initMenu, profile }: NavProps) {
     );
   };
 
-  useEffect(() => {
-    console.log('userInfoData in Nav', profile);
-  }, [profile]);
-
   return (
     <div className={`${styles.container} grid grid-cols-${menus.length} bg-g0 w-full h-[66px] text-center`}>
       {menus.map((menu, index) => {
