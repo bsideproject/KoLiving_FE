@@ -10,6 +10,7 @@ import Camera from '@/public/icons/camera.svg';
 import styles from '@/pages/room/room.module.scss';
 import { useRouter } from 'next/router';
 import Card from '../Card/Card';
+import { makeLikedRooms } from '@/api/userInfo';
 
 interface CardProps {
   room: RoomSearch;
@@ -83,9 +84,13 @@ const Photo = ({ photos, onClick }: PhotoProps) => {
 const Footer = ({ room }: CardProps) => {
   const roomType = room.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
   const [isLiked, setIsLiked] = useState(false);
-
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
+  const handleLikeClick = async () => {
+    try {
+      await makeLikedRooms(room?.id);
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error('[ERROR] in Liked Clicked', error);
+    }
   };
 
   return (

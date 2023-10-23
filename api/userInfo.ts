@@ -14,7 +14,7 @@ export const getProfile = async () => {
 export const getLikedRooms = async (page: number) => {
   let result;
   try {
-    result = await fetchData<ReturnData<RoomSearch[]>>(`/api/v1/my/rooms/like/${page}`, {
+    result = await fetchData<ReturnData<RoomSearch[]>>(`/api/v1/my/rooms/like/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -26,3 +26,12 @@ export const getLikedRooms = async (page: number) => {
   }
   return result;
 };
+
+export const makeLikedRooms = async (id: number) => {
+    return await fetchData(`/api/v1/rooms/${id}/liked`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+}
