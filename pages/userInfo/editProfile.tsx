@@ -2,23 +2,18 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/style-prop-object */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
 import useModal from '@/hooks/useModal.ts';
-import { isValidEmail } from '@/utils/validCheck.ts';
+import { isValidEmail, isRequired } from '@/utils/validCheck.ts';
 import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.tsx';
 import ProfileCamera from '@/public/icons/profileCamera.svg';
+import { User } from '@/public/types/user';
+import isEmpty from 'lodash-es/isEmpty';
 
-/*
-interface ProfileProps {
-  name?: string;
-  age?: number;
-  gender?: 'Male' | 'Female';
-  _imageSrc: string;
-}
-*/
 interface ProfileProps {
   _imageSrc: string;
+  userInfo: User
 }
 
 interface ImageComponentClickProps {
@@ -26,17 +21,23 @@ interface ImageComponentClickProps {
   onClick?: () => void;
 }
 
-export default function EditProfile({ _imageSrc }: ProfileProps) {
+export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   const { openModal } = useModal();
   const [imageSrc, setImageSrc] = useState(_imageSrc);
   const subHeader = 'font-pretendard font-semibold text-[16px]';
   const {
     register,
     watch,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
-  const [buttonState, setButtonState] = useState('Male');
+  
+  const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
+  const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender));
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     openModal({
@@ -98,7 +99,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
       </div>
     );
   };
-
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="h-screen overflow-y-scroll font-pretendard">
@@ -124,10 +125,12 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
             placeholder="Your email"
             register={register('email', {
               validate: (value) => {
-                return isValidEmail(value, `Invalid email`);
+                return isRequired(value, '필수 항목') || isValidEmail(value, `Invalid email`);
+                // return true;
               },
             })}
             error={errors.email as FieldError}
+            fixedWord={userInfo?.email || ''}
           />
         </div>
         <div className="py-[28px]">
@@ -138,22 +141,16 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
             <Input
               placeholder="First Name"
               type="text"
-              register={register('firstName', {
-                validate: () => {
-                  return true;
-                },
-              })}
+              register={register('firstName')}
+              fixedWord={userInfo?.firstName || ''}
             />
           </div>
           <div className="mb-[8px]">
             <Input
               placeholder="Last Name"
               type="text"
-              register={register('lastName', {
-                validate: () => {
-                  return true;
-                },
-              })}
+              register={register('lastName')}
+              fixedWord={userInfo?.lastName || ''}
             />
           </div>
         </div>
@@ -180,7 +177,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
           <div className={subHeader}>Date of birth</div>
         </div>
         <section className="mb-[8px]">
-          <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateOfBirth')} />
+          <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateOfBirth')} value={userInfo?.birthDate}/>
         </section>
         <div className="mb-[12px] mt-[32px]">
           <div className={subHeader}>About you</div>
@@ -191,6 +188,7 @@ export default function EditProfile({ _imageSrc }: ProfileProps) {
             register={register('describe')}
             maxByte={250}
             className="h-[172px] text-g7 border-g4 border-[1px]"
+            initValue={userInfo?.description || ''}
           />
         </div>
         <div className="mt-[255px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">

@@ -205,10 +205,9 @@ export default function Liked({ roomInfo }: MyPostingProps) {
         </Typography>
         {rooms.map((room, idx) => (
           <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
-            <RoomCard room={room} onClick={() => handleCardClick(room.id)} />
+            <RoomCard room={room} onClick={() => handleCardClick(room.id)} isLikedRooms />
           </div>
         ))} 
-         <div ref={target} /> 
         <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
             <div className="mb-[13px] space-x-[8px] max-w-max">
@@ -220,10 +219,6 @@ export default function Liked({ roomInfo }: MyPostingProps) {
       </div>
     );
   };
-
-  /**
-   * 좋아요 있을 때 보여주는 Component (TODO : 구체화 해줘야함)
-   */
   return (rooms || []).length === 0 ? <NoPostings /> : <LikedComponent />;
 }
 
