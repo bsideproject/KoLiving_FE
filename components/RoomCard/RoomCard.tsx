@@ -10,11 +10,12 @@ import Camera from '@/public/icons/camera.svg';
 import styles from '@/pages/room/room.module.scss';
 import { useRouter } from 'next/router';
 import Card from '../Card/Card';
-import { makeLikedRooms } from '@/api/userInfo';
+import { makeLikedRooms, makeDisLikedRooms } from '@/api/userInfo';
 
 interface CardProps {
   room: RoomSearch;
   onClick?: () => void;
+  isLikedRooms?: boolean;
 }
 
 interface UserInfoProps {
@@ -81,12 +82,12 @@ const Photo = ({ photos, onClick }: PhotoProps) => {
   );
 };
 
-const Footer = ({ room }: CardProps) => {
+const Footer = ({ room, isLikedRooms }: CardProps) => {
   const roomType = room.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false || isLikedRooms);
   const handleLikeClick = async () => {
     try {
-      await makeLikedRooms(room?.id);
+      !isLiked ? await makeLikedRooms(room?.id) : await makeDisLikedRooms(room?.id);
       setIsLiked(!isLiked);
     } catch (error) {
       console.error('[ERROR] in Liked Clicked', error);
@@ -125,12 +126,12 @@ const Footer = ({ room }: CardProps) => {
   );
 };
 
-export default function RoomCard({ room, onClick }: CardProps) {
+export default function RoomCard({ room, onClick, isLikedRooms }: CardProps) {
   return (
     <Card
       title={<UserInfo userInfo={room?.user} />}
       content={<Photo photos={room.images || []} onClick={onClick} />}
-      footer={<Footer room={room} />}
+      footer={<Footer room={room} isLikedRooms={isLikedRooms} />}
     />
   );
 }

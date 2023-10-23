@@ -35,3 +35,12 @@ export const makeLikedRooms = async (id: number) => {
       },
     });
 }
+
+export const makeDisLikedRooms = async (id: number) => {
+  return await fetchData(`/api/v1/rooms/${id}/disLiked`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+}

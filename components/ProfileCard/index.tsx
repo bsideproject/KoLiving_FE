@@ -11,12 +11,14 @@ import Vector from '@/public/icons/Vector 115.svg';
 import { useRouter } from 'next/router';
 import useModal from '@/hooks/useModal.ts';
 import { signOut } from 'next-auth/react';
+import { User } from '@/public/types/user';
 
 interface ProfileCardProps {
   name: string;
   age: number;
   gender: 'Male' | 'Female';
   imageSrc: string;
+  userInfo: User
 }
 
 interface ListItemProps {
@@ -25,9 +27,10 @@ interface ListItemProps {
   route: string;
   index: number;
   onclick?: () => void;
+  
 }
 
-export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCardProps) {
+export default function ProfileCard({ name, age, gender, imageSrc,  userInfo }: ProfileCardProps) {
   const { register } = useForm({ mode: 'onChange' });
   const [showModal, setShowModal] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -39,6 +42,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
       setShowModal(true);
       return;
     }
+    debugger;
     router.push(route);
   };
 
@@ -50,7 +54,7 @@ export default function ProfileCard({ name, age, gender, imageSrc }: ProfileCard
         custom: true,
         customHeader: true,
       },
-      children: <EditProfile _imageSrc={`${imageSrc}`} />,
+      children: <EditProfile _imageSrc={`${imageSrc}`} userInfo={userInfo} />,
     });
   };
 
