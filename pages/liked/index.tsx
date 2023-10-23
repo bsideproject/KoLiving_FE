@@ -10,6 +10,7 @@ import { getLikedRooms } from '@/api/userInfo';
 import FilterImg from '@/public/icons/filter.svg';
 import Filter from '@/components/Filter/Filter.tsx';
 import isEmpty from 'lodash-es/isEmpty';
+import RoomCard from '@/components/RoomCard/RoomCard';
 // TODO 데이터가 구체화되면 바꿔줘야함
 interface MyPostingProps {
   roomInfo: any | null;
@@ -63,13 +64,15 @@ export default function Liked({ roomInfo }: MyPostingProps) {
       try {
         const result = await getLikedRooms(page);
         if (result?.error) {
-          // 비동기 함수 내부에서 에러를 처리하고 적절한 값을 반환하도록 구현되었을 때
           setRooms([]);
+        } else {
+           setRooms((prevRooms) => [...prevRooms, ...(result?.content || [])]);
+           setTotalElements(result?.totalElements || 0);
         }
-        if (target?.current) {
-          const observer = new IntersectionObserver(callback, options);
-          observer.observe(target.current);
-        }
+        // if (target?.current) {
+        //   const observer = new IntersectionObserver(callback, options);
+        //   observer.observe(target.current);
+        // }
       } catch (error) {
         setRooms([]);
       }
@@ -126,8 +129,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
     const getChildData = async (childData: Record<string, string>) => {
       makeFilters(childData);
       setPage(0);
-      setSearchParams(childData);
-      setRooms([]);
+      //setRooms([]);
     };
     const openFilterPopup = () => {
       openModal({
@@ -142,6 +144,9 @@ export default function Liked({ roomInfo }: MyPostingProps) {
     };
     const handleChipClick = (label: React.SetStateAction<string>) => {
       setClickedChip(label);
+    };
+    const handleCardClick = (id: number) => {
+      router.push(`/room/${id}`);
     };
     const handleOptionRemove = (option: string, index: number) => {
       const resultFilters = filters.filter((item) => item !== option);
@@ -198,12 +203,12 @@ export default function Liked({ roomInfo }: MyPostingProps) {
         <Typography variant="body" customClassName="text-left font-bold text-[16px] text-g7">
           There are <span className="text-r1">{`${totalElements} rooms`}</span> in total!
         </Typography>
-        {/* {rooms.map((room, idx) => (
+        {rooms.map((room, idx) => (
           <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
             <RoomCard room={room} onClick={() => handleCardClick(room.id)} />
           </div>
-        ))} */}
-        {/* <div ref={target} /> */}
+        ))} 
+         <div ref={target} /> 
         <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
             <div className="mb-[13px] space-x-[8px] max-w-max">
