@@ -14,6 +14,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import useUserInfo from '@/hooks/useUserInfo.ts';
 import { getProfile } from '@/api/userInfo';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
+import { lte } from 'lodash-es';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -28,11 +29,18 @@ const FILTER_LABEL: Record<string, string> = {
   furnishingTypes: 'Furnishing',
 };
 
+const defaultFilters = Object.values(FILTER_LABEL).map((value) => {
+  return {
+    selected: false,
+    value,
+  };
+});
+
 function Home() {
   const [rooms, setRooms] = useState<RoomSearch[]>([]);
   const [profile, setProfile] = useState<UserInfoProps>();
-  const [filters, setFilters] = useState<string[]>([]);
-  const [clickedChip, setClickedChip] = useState('');
+  const [filters, setFilters] = useState<{ selected: boolean; value: string }[]>(defaultFilters);
+  const [clickedChip, setClickedChip] = useState(-1);
   const router = useRouter();
   const { openModal, closeModal } = useModal();
   const [page, setPage] = useState(0);
@@ -54,20 +62,26 @@ function Home() {
     }
   };
 
-  const makeFilters = (filterParams: Record<string, string>) => {
-    const resultFilter: string[] = [];
+  const formatFilters = (filterParams: Record<string, string>) => {
+    let resultFilter = [...defaultFilters];
+
     Object.keys(filterParams).forEach((key) => {
       if (!isEmpty(filterParams[key])) {
-        resultFilter.push(FILTER_LABEL[key]);
+        resultFilter = resultFilter.filter((item) => item.value !== FILTER_LABEL[key]);
+        resultFilter.unshift({
+          selected: true,
+          value: FILTER_LABEL[key],
+        });
       }
     });
+
     setFilters(() => [...resultFilter]);
   };
 
   const target = useRef(null);
 
   const getChildData = async (childData: Record<string, string>) => {
-    makeFilters(childData);
+    formatFilters(childData);
     setPage(0);
     setSearchParams(childData);
     setRooms([]);
@@ -90,7 +104,7 @@ function Home() {
         custom: true,
         customHeader: false,
       },
-      children: <Filter closeModal={closeModal} getChildData={getChildData} />,
+      children: <Filter closeModal={closeModal} getChildData={getChildData} focus={clickedChip} />,
     });
   };
 
@@ -106,10 +120,6 @@ function Home() {
   };
 
   useEffect(() => {
-    if (!page) {
-      return;
-    }
-
     const fetchData = async () => {
       const data = await getRooms({ ...searchParams, page });
       setRooms((prevRooms) => [...prevRooms, ...(data?.content || [])]);
@@ -137,28 +147,43 @@ function Home() {
   };
 
   // Chip 클릭 했을 때 이벤트
-  const handleChipClick = (label: React.SetStateAction<string>) => {
-    setClickedChip(label);
+  const handleChipClick = (index: number) => {
+    setClickedChip(index);
   };
 
-  // 맨 처음 Filter 에서 불러올 때 첫번째 항목이 선택되어 있도록 수정
-  const handlePropsClick = (option: string, index: number) => {
-    let result = false;
-    if ((clickedChip || '') !== '' && filters.length > 1) {
-      result = filters[0] === option;
-    } else if (filters.length === 1) {
-      result = option === filters[0];
+  useEffect(() => {
+    if (clickedChip > -1) {
+      openFilterPopup();
+      setClickedChip(-1);
     }
-    return result;
-  };
-  // 옵션 제거 시 실행될 함수
-  const handleOptionRemove = (option: string, index: number) => {
-    const resultFilters = filters.filter((item) => item !== option);
-    setFilters(() => [...resultFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clickedChip]);
+
+  // // 맨 처음 Filter 에서 불러올 때 첫번째 항목이 선택되어 있도록 수정
+  // const handlePropsClick = (option: string, index: number) => {
+  //   let result = false;
+  //   if ((clickedChip || '') !== '' && filters.length > 1) {
+  //     result = filters[0] === option;
+  //   } else if (filters.length === 1) {
+  //     result = option === filters[0];
+  //   }
+  //   return result;
+  // };
+  // // 옵션 제거 시 실행될 함수
+  const handleOptionRemove = (option: { selected: boolean; value: string }, index: number) => {
+    let result = [...filters];
+    result = result.filter((item) => item.value !== option.value);
+    result.push({
+      selected: false,
+      value: option.value,
+    });
+
+    setFilters(() => [...result]);
 
     const selectedOption = Object.keys(FILTER_LABEL).find((key) => {
-      return FILTER_LABEL[key] === option;
+      return FILTER_LABEL[key] === option.value;
     });
+
     setPage(0);
     setRooms([]);
     setSearchParams((prev) => {
@@ -168,33 +193,31 @@ function Home() {
       };
     });
 
-    // 선택된 칩이 없거나 클릭된 칩이 삭제된 칩인 경우에 맨 처음 칩을 clickedChip으로 설정
-    if ((clickedChip || '') === '') {
-      setClickedChip(filters?.[0]);
-    }
+    // if ((clickedChip || '') === '') {
+    //   setFilters(() => [...defaultFilters]);
+    // }
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }} className="mb-[8px]">
-        <FilterImg
-          className="stroke-g7 stroke-[2] cursor-pointer "
-          onClick={openFilterPopup}
-          style={{ alignSelf: 'flex-start' }}
-        />
-        {filters.map((label, index) => {
-          return (
-            <div style={{ marginLeft: index === 0 ? '4px' : '0', marginRight: '-4px' }} key={index}>
+    <>
+      <div className="mb-[8px] flex">
+        <div className="mr-[4px]" onClick={openFilterPopup}>
+          <FilterImg className="stroke-g7 stroke-[2] cursor-pointer " style={{ alignSelf: 'flex-start' }} />
+        </div>
+        <div className="whitespace-nowrap overflow-x-auto">
+          {filters.map((filter, index) => {
+            return (
               <Chip
-                key={`${label}-${index}`}
-                label={label}
-                onDelete={() => handleOptionRemove?.(label, index)}
-                onChipClick={() => handleChipClick?.(label)}
-                clicked={handlePropsClick?.(label, index)}
+                key={`${filter.value}-${index}`}
+                label={filter.value}
+                onlyText={!filter.selected}
+                onDelete={() => handleOptionRemove?.(filter, index)}
+                onChipClick={() => handleChipClick?.(index)}
+                clicked={filter.selected}
               />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
       <Typography variant="body" customClassName="text-left font-bold text-[16px] text-g7">
         There are <span className="text-r1">{`${totalElements} rooms`}</span> in total!
@@ -213,7 +236,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -7,10 +7,11 @@ interface ChipProps {
   onDelete?: () => void;
   clicked?: boolean;
   onChipClick?: (label: string) => void;
+  onlyText?: boolean;
 }
 
 /** Chip Component 1차 개발 */
-export default function Chip({ label, onDelete, clicked, onChipClick }: ChipProps) {
+export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }: ChipProps) {
   const [fillStroke, setFillStroke] = useState('');
   const [fillText, setFillText] = useState('');
   useEffect(() => {
@@ -31,13 +32,15 @@ export default function Chip({ label, onDelete, clicked, onChipClick }: ChipProp
 
   return (
     <div
-      className={`pl-[12px] pr-[3.75px] inline-flex items-center mr-2 mb-2 bg-opacity-10 py-1 font-semibold ${fillText}`}
+      className={`pl-[12px] pr-[3.75px] inline-flex items-center mr-2 bg-opacity-10 py-1 font-semibold ${fillText} ${
+        onlyText ? 'border-g3 border-[1px] rounded-[2px] pr-[12px]' : ''
+      }`}
       onClick={onDivClick}
     >
       <Typography variant="label" fontStyle="semiBold" font="pretendard" color={clicked ? 'r1' : 'g5'}>
         {label}
       </Typography>
-      {onDelete && (
+      {!onlyText && (
         <button className="focus:outline-none" onClick={handleDelete} aria-label="Delete">
           <Close width={10.5} height={10.5} className="m-[7px] stroke-r1 stroke-[2]" />
         </button>

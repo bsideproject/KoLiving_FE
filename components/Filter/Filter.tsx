@@ -23,9 +23,11 @@ interface GuDong {
 export default function Filter({
   getChildData,
   closeModal,
+  focus,
 }: {
   getChildData: (data: any) => void;
   closeModal: () => void;
+  focus?: number;
 }) {
   const { register, handleSubmit, watch, reset } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
@@ -151,16 +153,7 @@ export default function Filter({
   useEffect(() => {
     const formattedSelectedLocation = selectedLocations.map((item) => item.dong.value);
 
-    if (
-      !selectedLocations.length &&
-      !minDeposit &&
-      !maxDeposit &&
-      !minMonthlyRent &&
-      !maxMonthlyRent &&
-      !dateAvailable &&
-      !housingChecked.length &&
-      !furnishingChecked.length
-    ) {
+    if (minDeposit === undefined) {
       return;
     }
 
