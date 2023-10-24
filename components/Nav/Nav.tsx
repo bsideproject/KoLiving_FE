@@ -33,17 +33,19 @@ const menus = [
 ];
 
 export default function Nav({ initMenu, profile }: NavProps) {
+  // const { setUserInfoData, userInfoState } = useUserInfo();
   const [hoverMenu, setHoverMenu] = useState(-1); // 초기화
   const router = useRouter();
-  const { setUserInfoData, userInfoState } = useUserInfo();
   const handleNavClicked = (index: number) => {
-    router.push(
-      {
-        pathname: menus[index].router,
-        query: { data: profile && JSON.stringify(profile) },
-      },
-      `${menus[index].router}`
-    );
+    if (menus[index].router || '' !== '' )  {
+      router.push(
+        {
+          pathname: menus[index].router,
+          query: { data: profile && JSON.stringify(profile) },
+        },
+        `${menus[index].router}`
+      );
+    }
   };
 
   return (
