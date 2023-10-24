@@ -25,3 +25,12 @@ export interface User {
   accountNonLocked: boolean;
   enabled: boolean;
 }
+
+export interface Profile {
+  profileId : number;
+  gender: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  description: string;
+}

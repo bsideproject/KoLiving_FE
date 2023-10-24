@@ -8,7 +8,8 @@ import useModal from '@/hooks/useModal.ts';
 import { isValidEmail, isRequired } from '@/utils/validCheck.ts';
 import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.tsx';
 import ProfileCamera from '@/public/icons/profileCamera.svg';
-import { User } from '@/public/types/user';
+import { User, Profile } from '@/public/types/user';
+import { modifyProfile } from '@/api/userInfo';
 import isEmpty from 'lodash-es/isEmpty';
 
 interface ProfileProps {
@@ -34,21 +35,31 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   } = UseForm({ mode: 'onChange' });
   
   const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    return (str || '').charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
 
   const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender));
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    openModal({
-      props: {
-        title: 'My Postings',
-        size: 'full',
-        custom: true,
-        customHeader: true,
-      },
-      children: <>hi</>,
-    });
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const profileData = data as Profile;
+      profileData.profileId = userInfo.id || 0;
+      const result = await modifyProfile(profileData);
+      console.log("result in editprofile", result);
+      alert('수정되었습니다');
+      
+      // openModal({
+      //   props: {
+      //     title: 'My Postings',
+      //     size: 'full',
+      //     custom: true,
+      //     customHeader: true,
+      //   },
+      //   children: <>hi</>,
+      // });
+    } catch (error) {
+      console.error('[ERROR] EDIT PROFILE', error);
+    }
   };
 
   const isPostingComplete = () => {
@@ -194,7 +205,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
         <div className="mt-[255px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
             <div className="mb-[13px]">
-              <Button size="lg" type="submit" disabled={isPostingComplete()} onClick={() => alert('완성!')}>
+              <Button size="lg" type="submit" disabled={isPostingComplete()}>
                 Complete
               </Button>
             </div>
