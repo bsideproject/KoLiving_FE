@@ -66,8 +66,8 @@ export default function Liked({ roomInfo }: MyPostingProps) {
         if (result?.error) {
           setRooms([]);
         } else {
-           setRooms((prevRooms) => [...prevRooms, ...(result?.content || [])]);
-           setTotalElements(result?.totalElements || 0);
+          setRooms((prevRooms) => [...prevRooms, ...(result?.content || [])]);
+          setTotalElements(result?.totalElements || 0);
         }
         // if (target?.current) {
         //   const observer = new IntersectionObserver(callback, options);
@@ -129,7 +129,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
     const getChildData = async (childData: Record<string, string>) => {
       makeFilters(childData);
       setPage(0);
-      //setRooms([]);
+      // setRooms([]);
     };
     const openFilterPopup = () => {
       openModal({
@@ -207,7 +207,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
           <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
             <RoomCard room={room} onClick={() => handleCardClick(room.id)} isLikedRooms />
           </div>
-        ))} 
+        ))}
         <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
             <div className="mb-[13px] space-x-[8px] max-w-max">
