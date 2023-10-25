@@ -35,7 +35,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   } = UseForm({ mode: 'onChange' });
   
   const capitalizeFirstLetter = (str: string) => {
-    return (str || '').charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    return (str || '').charAt(0).toUpperCase() + (str || '').slice(1).toLowerCase();
   }
 
   const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender));
