@@ -1,10 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import ErrorPage from '@/public/icons/errorPageImage.svg';
-import { useRouter } from 'next/router';
 
 export default function NoPostings() {
-  const router = useRouter();
   const noPostingStyle = 'text-[20px] font-bold mt-[29px] text-center';
   const containerStyle = 'flex flex-col items-center justify-start mt-[135px]'; // 'justify-start'로 변경
 

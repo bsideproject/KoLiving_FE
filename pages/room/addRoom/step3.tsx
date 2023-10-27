@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import { ImageListType } from 'react-images-uploading';
 import ModalBox from '@/components/Modal/ModalBox.tsx';
