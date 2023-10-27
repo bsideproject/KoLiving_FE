@@ -19,18 +19,32 @@ export interface User {
   authorities: [
     {
       authority: 'ROLE_USER';
-    }
+    },
   ];
   username: string;
   accountNonLocked: boolean;
   enabled: boolean;
 }
 
+export interface ImageFile {
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  path: string;
+  size: number;
+}
+
 export interface Profile {
-  profileId : number;
+  profileId: number;
   gender: string;
   firstName: string;
   lastName: string;
   birthDate: string;
   description: string;
+  email: string;
+  id: number;
+  imageFile: ImageFile;
+  userRole: string;
+  signUpStatus: string;
 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-self-compare */
+import React, { useState } from 'react';
 import Like from '@/public/icons/like.svg';
 import Home from '@/public/icons/home.svg';
 import Me from '@/public/icons/me.svg';
 import { useRouter } from 'next/router';
-import useUserInfo from '@/hooks/useUserInfo.ts';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import styles from './Nav.module.scss';
 
@@ -37,13 +37,13 @@ export default function Nav({ initMenu, profile }: NavProps) {
   const [hoverMenu, setHoverMenu] = useState(-1); // 초기화
   const router = useRouter();
   const handleNavClicked = (index: number) => {
-    if (menus[index].router || '' !== '' )  {
+    if (menus[index].router || '' !== '') {
       router.push(
         {
           pathname: menus[index].router,
           query: { data: profile && JSON.stringify(profile) },
         },
-        `${menus[index].router}`
+        `${menus[index].router}`,
       );
     }
   };
