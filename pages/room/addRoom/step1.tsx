@@ -72,7 +72,7 @@ export default function Step1() {
       // 선택된 value와 label 값을 이용하여 원하는 작업 수행
       setDongValue({ ...option, gu: guValue.value, guLabel: guValue.label });
     },
-    [guValue?.label, guValue?.value]
+    [guValue?.label, guValue?.value],
   );
 
   const handleGuChange = useCallback((option: Option) => {

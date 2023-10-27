@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/style-prop-object */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
 import useModal from '@/hooks/useModal.ts';
 import { isValidEmail, isRequired } from '@/utils/validCheck.ts';
@@ -10,11 +10,10 @@ import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.ts
 import ProfileCamera from '@/public/icons/profileCamera.svg';
 import { User, Profile } from '@/public/types/user';
 import { modifyProfile } from '@/api/userInfo';
-import isEmpty from 'lodash-es/isEmpty';
 
 interface ProfileProps {
   _imageSrc: string;
-  userInfo: User
+  userInfo: User;
 }
 
 interface ImageComponentClickProps {
@@ -33,10 +32,9 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     handleSubmit,
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
-  
   const capitalizeFirstLetter = (str: string) => {
     return (str || '').charAt(0).toUpperCase() + (str || '').slice(1).toLowerCase();
-  }
+  };
 
   const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender));
 
@@ -45,9 +43,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       const profileData = data as Profile;
       profileData.profileId = userInfo.id || 0;
       const result = await modifyProfile(profileData);
-      console.log("result in editprofile", result);
       alert('수정되었습니다');
-      
       // openModal({
       //   props: {
       //     title: 'My Postings',
@@ -110,7 +106,6 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       </div>
     );
   };
-  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="h-screen overflow-y-scroll font-pretendard">
@@ -188,7 +183,12 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
           <div className={subHeader}>Date of birth</div>
         </div>
         <section className="mb-[8px]">
-          <Calendar placeholder="MM-DD-YYYY" type="text" register={register('dateOfBirth')} value={userInfo?.birthDate}/>
+          <Calendar
+            placeholder="MM-DD-YYYY"
+            type="text"
+            register={register('dateOfBirth')}
+            value={userInfo?.birthDate}
+          />
         </section>
         <div className="mb-[12px] mt-[32px]">
           <div className={subHeader}>About you</div>
