@@ -2,9 +2,9 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/style-prop-object */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
-import useModal from '@/hooks/useModal.ts';
+import DefaultImage from '@/public/icons/def_img.svg';
 import { isValidEmail, isRequired } from '@/utils/validCheck.ts';
 import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.tsx';
 import ProfileCamera from '@/public/icons/profileCamera.svg';
@@ -13,25 +13,28 @@ import { modifyProfile } from '@/api/userInfo';
 
 interface ProfileProps {
   _imageSrc: string;
-  userInfo: User;
+  userInfo: Profile;
 }
 
 interface ImageComponentClickProps {
-  imageSrc: string;
   onClick?: () => void;
 }
 
 export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
-  const { openModal } = useModal();
+  useEffect(() => {
+    console.log('_imageSrc', _imageSrc);
+    console.log('userInfo in editprofile', userInfo);
+    debugger;
+  }, []);
   const [imageSrc, setImageSrc] = useState(_imageSrc);
   const subHeader = 'font-pretendard font-semibold text-[16px]';
   const {
     register,
     watch,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
+  // Backend 에서 보내주는 문자열 형식이랑 맞추기 위해 추가
   const capitalizeFirstLetter = (str: string) => {
     return (str || '').charAt(0).toUpperCase() + (str || '').slice(1).toLowerCase();
   };
@@ -60,7 +63,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const isPostingComplete = () => {
     return (
-      (imageSrc || _imageSrc || '') === '' ||
+      (imageSrc || '') === '' ||
       !watch('email') ||
       !!errors.email?.message ||
       !watch('firstName') ||
@@ -80,7 +83,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const genderButtons = [{ label: 'Male' }, { label: 'Female' }, { label: 'Others' }];
 
-  const ProfileImage = ({ imageSrc, onClick }: ImageComponentClickProps) => {
+  const ProfileImage = ({ onClick }: ImageComponentClickProps) => {
     return (
       <div className="flex justify-center items-center h-[90px] mt-[20px] mb-[36px]" onClick={onClick}>
         <div style={{ position: 'relative', width: 90, height: 90 }} className="flex items-center justify-center">
@@ -94,7 +97,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
               alignItems: 'center',
             }}
           >
-            <img src={imageSrc || _imageSrc} className="object-cover w-full h-full" />
+            {(imageSrc || '') !== '' ? <img src={imageSrc} className="object-cover w-full h-full" /> : <DefaultImage />}
           </div>
           <div
             className="absolute border-g2 border-[1px] bottom-0 right-0 bg-g0 flex items-center justify-center"

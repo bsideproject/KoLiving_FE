@@ -11,15 +11,8 @@ import Vector from '@/public/icons/Vector 115.svg';
 import { useRouter } from 'next/router';
 import useModal from '@/hooks/useModal.ts';
 import { signOut } from 'next-auth/react';
-import { User } from '@/public/types/user';
-
-interface ProfileCardProps {
-  name: string;
-  age: number;
-  gender: 'Male' | 'Female';
-  imageSrc: string;
-  userInfo: User
-}
+import { Profile } from '@/public/types/user';
+import { formatAge } from '@/utils/transform';
 
 interface ListItemProps {
   IconComponent: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -27,13 +20,18 @@ interface ListItemProps {
   route: string;
   index: number;
   onclick?: () => void;
-  
 }
 
-export default function ProfileCard({ name, age, gender, imageSrc,  userInfo }: ProfileCardProps) {
+interface ProfileCard {
+  userInfo: Profile;
+  imageSrc: string;
+}
+
+export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
   const { register } = useForm({ mode: 'onChange' });
   const [showModal, setShowModal] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const age = formatAge(userInfo.birthDate);
   const router = useRouter();
   const { openModal } = useModal();
 
@@ -42,7 +40,6 @@ export default function ProfileCard({ name, age, gender, imageSrc,  userInfo }: 
       setShowModal(true);
       return;
     }
-    debugger;
     router.push(route);
   };
 
@@ -117,12 +114,12 @@ export default function ProfileCard({ name, age, gender, imageSrc,  userInfo }: 
       <div className="w-full h-auto border border-gray-300 flex flex-col bg-r1 text-g0 mt-[50px]">
         <div className="flex w-full">
           <div className="ml-[20px] w-[52px] h-[72px] flex items-center justify-center mt-[20px]">
-            <img src={imageSrc} alt={' '} />
+            <img src={imageSrc || ''} alt={' '} />
           </div>
           <div className="flex flex-col justify-center pl-5 h-[72px] mt-[17px]">
-            <div className="text-lg font-bold">{name}</div>
+            <div className="text-lg font-bold">{userInfo?.firstName}</div>
             <div className="text-base">
-              {age} years old | {gender}
+              {age} years old | {userInfo?.gender}
             </div>
           </div>
           <div className="ml-auto flex items-center pr-4">
