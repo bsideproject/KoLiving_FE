@@ -1,5 +1,6 @@
+/* eslint-disable react/no-danger */
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Header, Space, ModalBox } from '@/components/index.tsx';
+import { Button, Input, Header, Textarea, Space, ModalBox } from '@/components/index.tsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useRouter } from 'next/router';
@@ -17,8 +18,9 @@ import MyImageSvg from '@/components/ImageSvg/ImageSvg';
 import { deleteRoom, fetchFurnishings, getRoom } from '@/api/room';
 import useModal from '@/hooks/useModal';
 import { useSession } from 'next-auth/react';
+import { FieldError, useForm } from 'react-hook-form';
+import { isRequired, isValidEmail } from '@/utils/validCheck.ts';
 import styles from './room.module.scss';
-
 // const RoomDetailLayout = ({ children }: any) => {
 //   const router = useRouter();
 //   const { id } = router.query;
@@ -79,10 +81,17 @@ export default function RoomDetail() {
   const age = room ? formatAge(room.user.birthDate) : 0;
   const [isShowDetail, setIsShowDetail] = React.useState(false);
   const [showReport, setShowReport] = React.useState(false);
+  const [showContact, setShowContact] = React.useState(false);
+  const [contactDisabled, setContactDisabled] = React.useState(false);
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
   };
-
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({ mode: 'onChange' });
   const roomType = room?.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
 
   const [furnishings, setFurnishings] = useState<Furnishing[]>([]);
@@ -144,7 +153,6 @@ export default function RoomDetail() {
   };
 
   const handleReport = () => {
-    alert('Report Click');
     setShowReport(false);
   };
 
@@ -192,6 +200,27 @@ export default function RoomDetail() {
       },
     });
   };
+
+  /** Contact  Button Click 시 팝업 오픈 */
+  const handleContactPopup = () => {
+    setShowContact(true);
+  };
+
+  /** Contact Click Event */
+  const handleContact = () => {
+    // Email 발송 기능 추가 필요
+    setShowContact(false);
+    setValue('email', '');
+    setValue('description', '');
+  };
+
+  useEffect(() => {
+    if (!!errors?.email || !watch('description')) {
+      setContactDisabled(true);
+    } else {
+      setContactDisabled(false);
+    }
+  }, [watch, errors]);
 
   return (
     <>
@@ -323,7 +352,9 @@ export default function RoomDetail() {
                 <span className="text-[20px] font-semibold">&#8361; {formatPrice(room.deposit.amount)}&nbsp;</span>
                 <span>/ month</span>
                 <div className="h-[40px] font-medium text-[14px] ml-[12px]">
-                  <Button height="40px">Start a chat</Button>
+                  <Button height="40px" onClick={handleContactPopup}>
+                    Contact
+                  </Button>
                 </div>
               </div>
             </div>
@@ -334,11 +365,50 @@ export default function RoomDetail() {
             title="Why are you reporting?"
             content="This wan't be shared with the reported user"
             buttonType="wrapper"
-            buttonName=""
+            buttonName="Report"
             buttonNames={['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer']}
             handleClose={() => setShowReport(false)}
-            handleReport={handleReport}
+            handleCustomEvent={handleReport}
           />
+        )}
+        {showContact && (
+          <ModalBox
+            size="md"
+            buttonType="default"
+            custom
+            handleClose={() => setShowContact(false)}
+            handleCustomEvent={handleContact}
+            buttonName="Contact"
+            disabledBtn={contactDisabled}
+          >
+            <div>
+              <h2>Do you like this room?</h2>
+              <p
+                className="mt-[4px] text-g5 text-[16px]"
+                dangerouslySetInnerHTML={{
+                  __html: 'Leave your contact info and a message so that the user can reach you back!',
+                }}
+              />
+              <h3 className="text-g7 font-pretendard text-[16px] mb-[17px]">Contact info</h3>
+              <Input
+                type="email"
+                placeholder="Email"
+                register={register('email', {
+                  validate: (value) => {
+                    const isValid = isRequired(value, '필수 항목') || isValidEmail(value, `isValidEmail`);
+                    return isValid;
+                  },
+                })}
+                error={errors.email as FieldError}
+              />
+              <h3 className="mt-[12px] mb-[17px]">Message</h3>
+              <Textarea
+                placeholder="What do you want to tell the user?"
+                register={register('description')}
+                maxByte={500}
+              />
+            </div>
+          </ModalBox>
         )}
       </div>
     </>

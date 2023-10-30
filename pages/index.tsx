@@ -11,10 +11,8 @@ import useModal from '@/hooks/useModal.ts';
 import Filter from '@/components/Filter/Filter.tsx';
 import { getRooms } from '@/api/room';
 import isEmpty from 'lodash-es/isEmpty';
-import useUserInfo from '@/hooks/useUserInfo.ts';
 import { getProfile } from '@/api/userInfo';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
-import { lte } from 'lodash-es';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -46,7 +44,6 @@ function Home() {
   const [page, setPage] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useState<Record<string, string>>({});
-  const { setUserInfoData, userInfoState } = useUserInfo();
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
   // TODO : ModalLayer 로 로그인한 사용자의 Context 생성 필요
   const selectRooms = async () => {

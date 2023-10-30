@@ -13,10 +13,12 @@ export interface ModalProps {
   content?: string;
   custom?: boolean;
   customHeader?: boolean;
+  customButtonName?: string;
+  disabledBtn?: boolean;
   buttonType?: 'none' | 'both' | 'outline' | 'default' | 'wrapper' | 'disabled';
   handleClose?: () => void;
   handleSecondButton?: () => void;
-  handleReport?: () => void;
+  handleCustomEvent?: () => void;
   buttonName?: string;
   buttonName2?: string;
   buttonNames?: Array<string>;
