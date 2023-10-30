@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-unused-prop-types */
 import { ImageFile, ROOM_TYPE, RoomSearch } from '@/public/types/room';
@@ -9,8 +10,8 @@ import Like from '@/public/icons/like.svg';
 import Camera from '@/public/icons/camera.svg';
 import styles from '@/pages/room/room.module.scss';
 import { useRouter } from 'next/router';
-import Card from '../Card/Card';
 import { makeLikedRooms, makeDisLikedRooms } from '@/api/userInfo';
+import Card from '../Card/Card';
 
 interface CardProps {
   room: RoomSearch;

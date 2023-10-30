@@ -11,6 +11,7 @@ import Header from '../Header/Header.tsx';
 function Modal({
   children,
   hasCloseButton,
+  disabledBtn = false,
   overlayClose,
   title = '',
   content = '',
@@ -19,7 +20,8 @@ function Modal({
   buttonType = 'none',
   handleClose,
   handleSecondButton,
-  handleReport,
+  handleCustomEvent,
+  customButtonName,
   buttonName = '',
   buttonName2 = '',
   buttonNames = [],
@@ -75,7 +77,7 @@ function Modal({
         );
       case 'default':
         return (
-          <Button onClick={() => handleClose?.()} color="r1" size="lg">
+          <Button onClick={() => handleClose?.()} color="r1" size="lg" disabled={disabledBtn}>
             {buttonName}
           </Button>
         );
@@ -131,8 +133,8 @@ function Modal({
         ) : (
           <>
             <div className="mt-[10] flex flex-col items-center justify-center space-y-[10px]">{renderButton()}</div>
-            <Button onClick={handleReport} color="r1" size="lg" _className="mt-[20px]">
-              Report
+            <Button onClick={handleCustomEvent} color="r1" size="lg" _className="mt-[20px]">
+              {customButtonName}
             </Button>
           </>
         )}
