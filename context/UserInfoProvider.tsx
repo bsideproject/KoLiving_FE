@@ -6,6 +6,7 @@ interface ComponentProps {
 
 export interface UserInfoProps {
   id?: number;
+  profileId?: number;
   email?: string;
   firstName?: string;
   lastName?: string;

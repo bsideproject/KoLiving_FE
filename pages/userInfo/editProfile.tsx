@@ -10,10 +10,11 @@ import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.ts
 import ProfileCamera from '@/public/icons/profileCamera.svg';
 import { User, Profile } from '@/public/types/user';
 import { modifyProfile } from '@/api/userInfo';
+import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 
 interface ProfileProps {
   _imageSrc: string;
-  userInfo: Profile;
+  userInfo: UserInfoProps;
 }
 
 interface ImageComponentClickProps {
@@ -21,11 +22,6 @@ interface ImageComponentClickProps {
 }
 
 export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
-  useEffect(() => {
-    console.log('_imageSrc', _imageSrc);
-    console.log('userInfo in editprofile', userInfo);
-    debugger;
-  }, []);
   const [imageSrc, setImageSrc] = useState(_imageSrc);
   const subHeader = 'font-pretendard font-semibold text-[16px]';
   const {
@@ -39,7 +35,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     return (str || '').charAt(0).toUpperCase() + (str || '').slice(1).toLowerCase();
   };
 
-  const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender));
+  const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender || ''));
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
