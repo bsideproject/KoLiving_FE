@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Like from '@/public/icons/like.svg';
 import Home from '@/public/icons/home.svg';
 import Me from '@/public/icons/me.svg';
-import HugeIcon from '@/public/icons/alarm.svg';
+import HugeIcon from '@/public/icons/huge-icon.svg';
 import { useRouter } from 'next/router';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import styles from './Nav.module.scss';
