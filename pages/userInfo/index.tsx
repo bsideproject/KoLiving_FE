@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Nav, ProfileCard } from '@/components/index.tsx';
-import { useRouter } from 'next/router';
 import { getProfile } from '@/api/userInfo';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 
