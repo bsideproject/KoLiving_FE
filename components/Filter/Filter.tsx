@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { fetchFurnishings, getRooms } from '@/api/room';
 import { ROOM_TYPE, ROOM_TYPE_KEYS, ROOM_TYPE_LABEL } from '@/public/types/room';
 import { formatDateForAPI } from '@/utils/transform';
+import { isEmpty } from 'lodash-es';
 import styles from './Filter.module.scss';
 import { Option } from '../Select/Select';
 import Calendar from '../Calendar/Calendar';
@@ -24,12 +25,14 @@ export default function Filter({
   getChildData,
   closeModal,
   focus,
+  initialData,
 }: {
   getChildData: (data: any) => void;
   closeModal: () => void;
   focus?: number;
+  initialData?: any;
 }) {
-  const { register, handleSubmit, watch, reset } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch, reset, setValue } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useState({});
@@ -91,10 +94,6 @@ export default function Filter({
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    getFurnishings();
-  }, []);
 
   useEffect(() => {
     if (!dong) return;
@@ -160,11 +159,14 @@ export default function Filter({
     const fetchData = async () => {
       setSearchParams({
         locationIds: formattedSelectedLocation.join(', '),
+        locations: selectedLocations,
         minDeposit,
         maxDeposit,
         minMonthlyRent,
         maxMonthlyRent,
         types: housingChecked.join(', '),
+        housingChecked,
+        furnishingChecked,
         furnishingTypes: furnishingChecked.join(', '),
         ...(dateAvailable ? { availableDate: formatDateForAPI(dateAvailable) } : {}),
       });
@@ -194,6 +196,30 @@ export default function Filter({
     housingChecked,
     furnishingChecked,
   ]);
+
+  const resetSearchParams = () => {
+    if (!isEmpty(initialData)) {
+      setSelectedLocations(initialData.locations);
+      setValue('depositMin', initialData.minDeposit);
+      setValue('depositMax', initialData.maxDeposit);
+      setValue('monthMin', initialData.minMonthlyRent);
+      setValue('monthMax', initialData.maxMonthlyRent);
+      setValue('dateAvailable', initialData.availableDate);
+      initialData.housingChecked.forEach((item: string) => {
+        setValue(`${item}`, true);
+        setHousingChecked((prev) => [...prev, item]);
+      });
+      initialData.furnishingChecked.forEach((item: string) => {
+        setValue(`${item}`, true);
+        setFurnishingChecked((prev) => [...prev, item]);
+      });
+    }
+  };
+
+  useEffect(() => {
+    resetSearchParams();
+    getFurnishings();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -233,7 +259,7 @@ export default function Filter({
             <div className={styles['sub-header']}>Deposit</div>
           </div>
           <div className="flex justify-between items-center mb-[20px]">
-            <div className="text-g5 font-normal">View rooms without deposit</div>
+            <div className="font-normal text-g5">View rooms without deposit</div>
             <Toggle className="ml-2" register={register('depositToggle')} />
           </div>
           {!toggleDeposit && (
@@ -255,7 +281,7 @@ export default function Filter({
             <div className={styles['sub-header']}>Month rent</div>
           </div>
           <div className="flex justify-between items-center mb-[20px]">
-            <div className="text-g5 font-normal">Include maintenance fee</div>
+            <div className="font-normal text-g5">Include maintenance fee</div>
             <Toggle className="ml-2" register={register('monthToggle')} />
           </div>
           {!toggleMonthRent && (
@@ -279,7 +305,7 @@ export default function Filter({
             <div className={styles['sub-header']}>Date available</div>
           </div>
           <div className="flex justify-between items-center mb-[20px]">
-            <div className="text-g5 font-normal">View rooms available now</div>
+            <div className="font-normal text-g5">View rooms available now</div>
             <Toggle className="ml-2" register={register('dateAvailableToggle')} />
           </div>
           {!dateAvailableToggle && (
@@ -324,7 +350,8 @@ export default function Filter({
                 <Checkbox
                   type="outlined"
                   label={item.label}
-                  register={register(`furnishing-${item.value}`)}
+                  register={register(`${item.value}`)}
+                  checked={watch(`${item.value}`)}
                   onChange={(e) => handleFurnishingCheck(item.value, e)}
                   key={item.value}
                 />

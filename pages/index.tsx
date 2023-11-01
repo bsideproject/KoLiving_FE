@@ -27,6 +27,8 @@ const FILTER_LABEL: Record<string, string> = {
   furnishingTypes: 'Furnishing',
 };
 
+const EXCLUDE_FILTERS = ['locations', 'housingChecked', 'furnishingChecked'];
+
 const defaultFilters = Object.values(FILTER_LABEL).map((value) => {
   return {
     selected: false,
@@ -64,11 +66,15 @@ function Home() {
 
     Object.keys(filterParams).forEach((key) => {
       if (!isEmpty(filterParams[key])) {
-        resultFilter = resultFilter.filter((item) => item.value !== FILTER_LABEL[key]);
-        resultFilter.unshift({
-          selected: true,
-          value: FILTER_LABEL[key],
-        });
+        if (!EXCLUDE_FILTERS.includes(key)) {
+          resultFilter = resultFilter.filter((item) => {
+            return item.value !== FILTER_LABEL[key];
+          });
+          resultFilter.unshift({
+            selected: true,
+            value: FILTER_LABEL[key],
+          });
+        }
       }
     });
 
@@ -101,7 +107,9 @@ function Home() {
         custom: true,
         customHeader: false,
       },
-      children: <Filter closeModal={closeModal} getChildData={getChildData} focus={clickedChip} />,
+      children: (
+        <Filter closeModal={closeModal} getChildData={getChildData} focus={clickedChip} initialData={searchParams} />
+      ),
     });
   };
 
@@ -201,7 +209,7 @@ function Home() {
         <div className="mr-[4px]" onClick={openFilterPopup}>
           <FilterImg className="stroke-g7 stroke-[2] cursor-pointer " style={{ alignSelf: 'flex-start' }} />
         </div>
-        <div className="whitespace-nowrap overflow-x-auto">
+        <div className="overflow-x-auto whitespace-nowrap">
           {filters.map((filter, index) => {
             return (
               <Chip
