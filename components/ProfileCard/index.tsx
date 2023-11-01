@@ -11,7 +11,8 @@ import Vector from '@/public/icons/Vector 115.svg';
 import { useRouter } from 'next/router';
 import useModal from '@/hooks/useModal.ts';
 import { signOut } from 'next-auth/react';
-import { Profile } from '@/public/types/user';
+import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
+// import { Profile } from '@/public/types/user';
 import { formatAge } from '@/utils/transform';
 
 interface ListItemProps {
@@ -23,7 +24,7 @@ interface ListItemProps {
 }
 
 interface ProfileCard {
-  userInfo: Profile;
+  userInfo: UserInfoProps;
   imageSrc: string;
 }
 
@@ -31,7 +32,7 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
   const { register } = useForm({ mode: 'onChange' });
   const [showModal, setShowModal] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const age = formatAge(userInfo.birthDate);
+  const age = formatAge(userInfo?.birthDate || '');
   const router = useRouter();
   const { openModal } = useModal();
 
