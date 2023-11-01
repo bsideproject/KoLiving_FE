@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Like from '@/public/icons/like.svg';
 import Home from '@/public/icons/home.svg';
 import Me from '@/public/icons/me.svg';
+import HugeIcon from '@/public/icons/alarm.svg';
 import { useRouter } from 'next/router';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import styles from './Nav.module.scss';
@@ -19,6 +20,11 @@ const menus = [
     name: 'Rooms',
     icon: Home,
     router: '/',
+  },
+  {
+    name: 'Notice',
+    icon: HugeIcon,
+    router: '/notice',
   },
   {
     name: 'Liked',
@@ -43,13 +49,13 @@ export default function Nav({ initMenu, profile }: NavProps) {
           pathname: menus[index].router,
           query: { data: profile && JSON.stringify(profile) },
         },
-        `${menus[index].router}`,
+        `${menus[index].router}`
       );
     }
   };
 
   return (
-    <div className={`${styles.container} grid grid-cols-${menus.length} bg-g0 w-full h-[66px] text-center`}>
+    <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center`}>
       {menus.map((menu, index) => {
         const IconComponent = menu.icon;
 
