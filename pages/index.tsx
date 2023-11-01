@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import RoomCard from '@/components/RoomCard/RoomCard';
@@ -11,6 +12,7 @@ import useModal from '@/hooks/useModal.ts';
 import Filter from '@/components/Filter/Filter.tsx';
 import { getRooms } from '@/api/room';
 import isEmpty from 'lodash-es/isEmpty';
+import { getLikedRooms } from '@/api/userInfo';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -41,8 +43,10 @@ function Home() {
   const [page, setPage] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useState<Record<string, string>>({});
+  const [likedRoom, setLikedRoom] = useState([]);
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
   // TODO : ModalLayer 로 로그인한 사용자의 Context 생성 필요
+  // eslint-disable-next-line consistent-return
   const selectRooms = async () => {
     try {
       const data = await getRooms({
@@ -51,6 +55,8 @@ function Home() {
       });
       setRooms(data?.content || []);
       setTotalElements(data?.totalElements || 0);
+
+      return data?.content;
     } catch (error) {
       console.error(error);
     }
@@ -116,7 +122,17 @@ function Home() {
   // 최초 접근 시 Room 정보 조회
   useEffect(() => {
     (async () => {
-      await selectRooms();
+      const resultRooms = await selectRooms();
+      const resultLikedRooms = (await getLikedRooms(page))?.content;
+      const roomIds = [];
+      if (resultRooms) {
+        for (const room of resultRooms) {
+          const roomId = room?.id;
+          if (resultLikedRooms && resultLikedRooms.some((likedRoom) => likedRoom?.id === roomId)) {
+            roomIds.push(roomId);
+          }
+        }
+      }
       // await selectProfile();
       if (target?.current) {
         const observer = new IntersectionObserver(callback, options);
