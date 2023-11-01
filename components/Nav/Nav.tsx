@@ -55,7 +55,7 @@ export default function Nav({ initMenu, profile }: NavProps) {
   };
 
   return (
-    <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center`}>
+    <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center relative`}>
       {menus.map((menu, index) => {
         const IconComponent = menu.icon;
 
@@ -68,11 +68,14 @@ export default function Nav({ initMenu, profile }: NavProps) {
             onMouseLeave={() => setHoverMenu(-1)}
           >
             <div className="grid justify-center">
-              <IconComponent
-                className={`${menu.router === router.pathname ? activeStrokeColor : defaultStrokeColor} ${
-                  hoverMenu === index ? 'cursor-pointer' : ''
-                }`}
-              />
+              <div className="relative">
+                <IconComponent
+                  className={`${menu.router === router.pathname ? activeStrokeColor : defaultStrokeColor} ${
+                    hoverMenu === index ? 'cursor-pointer' : ''
+                  }`}
+                />
+                <div className="w-[15px] h-[15px] bg-r1 absolute top-0 left-[20px] rounded-[20px]" />
+              </div>
             </div>
             <div className={styles[`${menu.router === router.pathname ? 'nav-activeText' : 'nav-text'}`]}>
               {menu.name}
