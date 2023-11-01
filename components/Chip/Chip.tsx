@@ -33,7 +33,7 @@ export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }
   return (
     <div
       className={`pl-[12px] pr-[3.75px] inline-flex items-center mr-2 bg-opacity-10 py-1 font-semibold ${fillText} ${
-        onlyText ? 'border-g3 border-[1px] rounded-[2px] pr-[12px]' : ''
+        onlyText ? 'border-g3 border-[1px] rounded-[2px] !pr-[12px]' : ''
       }`}
       onClick={onDivClick}
     >

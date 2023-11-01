@@ -6,6 +6,7 @@ import { RoomSearch } from '@/public/types/room';
 import { NextPage, NextPageContext } from 'next';
 import RoomListLayout from '@/components/layouts/RoomListLayout.tsx';
 import FilterImg from '@/public/icons/filter.svg';
+import Set from '@/public/icons/set.svg';
 import { useRouter } from 'next/router';
 import { Chip, Typography, Nav } from '@/components/index.tsx';
 import useModal from '@/hooks/useModal.ts';
@@ -210,7 +211,10 @@ function Home() {
     <>
       <div className="mb-[8px] flex">
         <div className="mr-[4px]" onClick={openFilterPopup}>
-          <FilterImg className="stroke-g7 stroke-[2] cursor-pointer " style={{ alignSelf: 'flex-start' }} />
+          {/* <FilterImg className="stroke-g7 stroke-[2] cursor-pointer " style={{ alignSelf: 'flex-start' }} /> */}
+          <div className="rounded-[2px] border-g3 border-[1px] py-[3px] px-[8px]">
+            <Set />
+          </div>
         </div>
         <div className="overflow-x-auto whitespace-nowrap">
           {filters.map((filter, index) => {
