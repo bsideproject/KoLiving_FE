@@ -20,7 +20,7 @@ export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }
   }, [clicked]);
 
   const handleDelete = (e: MouseEvent) => {
-    e.preventDefault();
+    e.stopPropagation();
     if (onDelete) {
       onDelete();
     }
@@ -42,7 +42,7 @@ export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }
       </Typography>
       {!onlyText && (
         <button className="focus:outline-none" onClick={handleDelete} aria-label="Delete">
-          <Close width={10.5} height={10.5} className="m-[7px] stroke-r1 stroke-[2]" />
+          <Close width={10.5} height={10.5} className="m-[7px] stroke-r1 stroke-[2] z-20" />
         </button>
       )}
     </div>
