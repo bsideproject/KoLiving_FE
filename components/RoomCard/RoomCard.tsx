@@ -33,6 +33,7 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
   const age = formatAge(userInfo.birthDate);
 
   const handleUserClick = () => {
+    /*
     router.push(
       {
         pathname: '/userInfo',
@@ -40,6 +41,7 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
       },
       '/userInfo'
     );
+    */
   };
 
   return (
@@ -88,7 +90,8 @@ const Footer = ({ room, isLikedRooms }: CardProps) => {
   const [isLiked, setIsLiked] = useState(false || isLikedRooms);
   const handleLikeClick = async () => {
     try {
-      !isLiked ? await makeLikedRooms(room?.id) : await makeDisLikedRooms(room?.id);
+      // !isLiked ? await makeLikedRooms(room?.id) : await makeDisLikedRooms(room?.id);
+      await makeLikedRooms(room?.id);
       setIsLiked(!isLiked);
     } catch (error) {
       console.error('[ERROR] in Liked Clicked', error);
