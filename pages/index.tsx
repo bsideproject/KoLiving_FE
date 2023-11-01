@@ -11,8 +11,6 @@ import useModal from '@/hooks/useModal.ts';
 import Filter from '@/components/Filter/Filter.tsx';
 import { getRooms } from '@/api/room';
 import isEmpty from 'lodash-es/isEmpty';
-import { getProfile } from '@/api/userInfo';
-import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -36,7 +34,6 @@ const defaultFilters = Object.values(FILTER_LABEL).map((value) => {
 
 function Home() {
   const [rooms, setRooms] = useState<RoomSearch[]>([]);
-  const [profile, setProfile] = useState<UserInfoProps>();
   const [filters, setFilters] = useState<{ selected: boolean; value: string }[]>(defaultFilters);
   const [clickedChip, setClickedChip] = useState(-1);
   const router = useRouter();
@@ -83,16 +80,6 @@ function Home() {
     setSearchParams(childData);
     setRooms([]);
   };
-  const selectProfile = async () => {
-    try {
-      const data = await getProfile();
-      if (data != null) {
-        setProfile(data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
   const openFilterPopup = () => {
     openModal({
       props: {
@@ -130,7 +117,7 @@ function Home() {
   useEffect(() => {
     (async () => {
       await selectRooms();
-      await selectProfile();
+      // await selectProfile();
       if (target?.current) {
         const observer = new IntersectionObserver(callback, options);
         observer.observe(target.current);
@@ -229,7 +216,7 @@ function Home() {
       <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">
         <div className="w-full">
           <div className="mb-[13px] space-x-[8px] max-w-max">
-            <Nav profile={profile} />
+            <Nav />
           </div>
         </div>
       </div>
