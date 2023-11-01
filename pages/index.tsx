@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { useEffect, useRef, useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import RoomCard from '@/components/RoomCard/RoomCard';
@@ -11,8 +12,7 @@ import useModal from '@/hooks/useModal.ts';
 import Filter from '@/components/Filter/Filter.tsx';
 import { getRooms } from '@/api/room';
 import isEmpty from 'lodash-es/isEmpty';
-import { getProfile } from '@/api/userInfo';
-import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
+import { getLikedRooms } from '@/api/userInfo';
 
 type HomeProps = NextPage & {
   getLayout: (page: React.ReactElement, ctx: NextPageContext) => React.ReactNode;
@@ -38,7 +38,6 @@ const defaultFilters = Object.values(FILTER_LABEL).map((value) => {
 
 function Home() {
   const [rooms, setRooms] = useState<RoomSearch[]>([]);
-  const [profile, setProfile] = useState<UserInfoProps>();
   const [filters, setFilters] = useState<{ selected: boolean; value: string }[]>(defaultFilters);
   const [clickedChip, setClickedChip] = useState(-1);
   const router = useRouter();
@@ -46,8 +45,10 @@ function Home() {
   const [page, setPage] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useState<Record<string, string>>({});
+  const [likedRoom, setLikedRoom] = useState([]);
   // TODO: 전체 페이지보다 크면 페이징 처리 안되도록 수정
   // TODO : ModalLayer 로 로그인한 사용자의 Context 생성 필요
+  // eslint-disable-next-line consistent-return
   const selectRooms = async () => {
     try {
       const data = await getRooms({
@@ -56,6 +57,8 @@ function Home() {
       });
       setRooms(data?.content || []);
       setTotalElements(data?.totalElements || 0);
+
+      return data?.content;
     } catch (error) {
       console.error(error);
     }
@@ -88,16 +91,6 @@ function Home() {
     setPage(0);
     setSearchParams(childData);
     setRooms([]);
-  };
-  const selectProfile = async () => {
-    try {
-      const data = await getProfile();
-      if (data != null) {
-        setProfile(data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
   };
   const openFilterPopup = () => {
     openModal({
@@ -137,8 +130,18 @@ function Home() {
   // 최초 접근 시 Room 정보 조회
   useEffect(() => {
     (async () => {
-      await selectRooms();
-      await selectProfile();
+      const resultRooms = await selectRooms();
+      const resultLikedRooms = (await getLikedRooms(page))?.content;
+      const roomIds = [];
+      if (resultRooms) {
+        for (const room of resultRooms) {
+          const roomId = room?.id;
+          if (resultLikedRooms && resultLikedRooms.some((likedRoom) => likedRoom?.id === roomId)) {
+            roomIds.push(roomId);
+          }
+        }
+      }
+      // await selectProfile();
       if (target?.current) {
         const observer = new IntersectionObserver(callback, options);
         observer.observe(target.current);
@@ -237,7 +240,7 @@ function Home() {
       <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">
         <div className="w-full">
           <div className="mb-[13px] space-x-[8px] max-w-max">
-            <Nav profile={profile} />
+            <Nav />
           </div>
         </div>
       </div>
