@@ -137,7 +137,7 @@ function Home() {
       if (resultRooms) {
         for (const room of resultRooms) {
           const roomId = room?.id;
-          if (resultLikedRooms && resultLikedRooms.some((likedRoom) => likedRoom?.id === roomId)) {
+          if (resultLikedRooms && resultLikedRooms.some((_likedRoom) => _likedRoom?.id === roomId)) {
             roomIds.push(roomId);
           }
         }
