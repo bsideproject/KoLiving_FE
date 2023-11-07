@@ -21,7 +21,7 @@ function Input({ placeholder, register, type, error, maxLength, disabled, fixedW
     }
     return type;
   }, [type, isPasswordShow]);
-  const [inputValue, setInputValue] = useState(fixedWord || '' as string);
+  const [inputValue, setInputValue] = useState(fixedWord || ('' as string));
 
   const togglePasswordVisibility = () => {
     setIsPasswordShow((state) => !state);

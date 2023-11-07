@@ -125,7 +125,10 @@ function Modal({
         ) : (
           <div>
             <h2>{title}</h2>
-            <p className={`${buttonType === 'wrapper' && 'text-r1'}`} dangerouslySetInnerHTML={{ __html: content }} />
+            <p
+              className={`${buttonType === 'wrapper' && 'text-r1'} mt-[4px]`}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
           </div>
         )}
         {buttonType && buttonType !== 'none' && buttonType !== 'wrapper' ? (
@@ -133,7 +136,7 @@ function Modal({
         ) : (
           <>
             <div className="mt-[10] flex flex-col items-center justify-center space-y-[10px]">{renderButton()}</div>
-            <Button onClick={handleCustomEvent} color="r1" size="lg" _className="mt-[20px]">
+            <Button onClick={handleCustomEvent} color="r1" size="lg" _className="mt-[20px] font-semibold">
               {customButtonName}
             </Button>
           </>

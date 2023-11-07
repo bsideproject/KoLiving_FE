@@ -37,7 +37,7 @@ const customStyles: StylesConfig<Option, boolean, GroupBase<Option>> = {
   }),
   placeholder: (provided) => ({
     ...provided,
-    color: '#777777',
+    color: '#bdbdbd',
   }),
   menu: (provided) => ({
     ...provided,

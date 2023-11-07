@@ -45,11 +45,11 @@ function Radio({ options, selectedOption, onChange, register }: RadioProps) {
                 type="radio"
                 value={option.value}
                 defaultChecked={index === 0}
-                className="form-radio text-indigo-600 h-4 w-4 hidden"
+                className="hidden w-4 h-4 text-indigo-600 form-radio"
                 {...register}
                 onChange={handleChange}
               />
-              <span>{option.label}</span>
+              <span className="font-[500]">{option.label}</span>
             </label>
           ))}
         </fieldset>

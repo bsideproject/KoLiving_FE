@@ -103,7 +103,7 @@ export default function SignUp() {
       openModal({
         props: {
           title: 'Check Your Mail Box',
-          content: `A verification has just been sent to<br/> <b>${data.email}<b>`,
+          content: `A verification has just been sent to<br/> <b class="font-semibold">${data.email}<b>`,
           buttonType: 'outline',
           buttonName: 'Resend link',
           handleClose: async () => {
@@ -223,7 +223,7 @@ export default function SignUp() {
             <div className="flex mb-[6px] justify-center mr-[41px]">
               <p className="text-[14px]">{signUpTranslation.t('checkMember')}</p>
               <button
-                className="text-[16px] text-r1 ml-1 underline"
+                className="text-[16px] text-r1 ml-1 underline font-semibold"
                 onClick={() => {
                   Router.push('/login');
                 }}

@@ -29,11 +29,11 @@
   }
 
   &.disabled {
-    @apply bg-g2 text-g3;
+    @apply bg-g2 text-g4;
   }
 
   &.noBg {
-    @apply bg-g0 border border-solid border-r1 rounded-[2px] text-r1 font-bold;
+    @apply bg-g0 border border-solid border-r1 rounded-[2px] text-r1 font-semibold;
   }
 
   &.none {

@@ -24,15 +24,15 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 const options = [
   {
-    label: 'male',
+    label: 'Male',
     value: 'male',
   },
   {
-    label: 'female',
+    label: 'Female',
     value: 'female',
   },
   {
-    label: 'other',
+    label: 'Other',
     value: 'other',
   },
 ];
@@ -44,7 +44,7 @@ const monthList = Array.from({ length: 12 }, (_, index) => ({
 
 // Year List
 const currentYear = new Date().getFullYear();
-const yearList = Array.from({ length: 10 }, (_, index) => ({
+const yearList = Array.from({ length: 80 }, (_, index) => ({
   value: currentYear - index,
   label: `${currentYear - index}`,
 }));
@@ -119,7 +119,7 @@ export default function SignUp() {
           {signUpTranslation.t('step3Title')}
         </Typography>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-[30px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-[30px] mb-[80px]">
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('name')}</p>
           <div className="mb-[8px]">
@@ -150,6 +150,7 @@ export default function SignUp() {
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('aboutYou')}</p>
           <Textarea placeholder={signUpTranslation.t('introduce') as string} register={register('introduce')} />
+          <div className="text-right text-[14px] text-g5 mt-[4px]">{watch('introduce')?.length} / 1000 byte</div>
         </section>
         <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
