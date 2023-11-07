@@ -220,7 +220,7 @@ export default function SignUp() {
                 {commonTranslation.t('next')}
               </Button>
             </div>
-            <div className="flex mb-[6px] justify-center">
+            <div className="flex mb-[6px] justify-center mr-[41px]">
               <p className="text-[14px]">{signUpTranslation.t('checkMember')}</p>
               <button
                 className="text-[16px] text-r1 ml-1 underline"
