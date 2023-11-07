@@ -209,14 +209,14 @@ function Home() {
 
   return (
     <>
-      <div className="mb-[8px] flex">
+      <div className="mb-[8px] flex pt-[12px]">
         <div className="mr-[4px]" onClick={openFilterPopup}>
           {/* <FilterImg className="stroke-g7 stroke-[2] cursor-pointer " style={{ alignSelf: 'flex-start' }} /> */}
           <div className="rounded-[2px] border-g3 border-[1px] py-[3px] px-[8px]">
             <Set />
           </div>
         </div>
-        <div className="overflow-x-auto whitespace-nowrap">
+        <div className="overflow-x-scroll whitespace-nowrap no-scrollbar">
           {filters.map((filter, index) => {
             return (
               <Chip

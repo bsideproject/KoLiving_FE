@@ -64,7 +64,9 @@ export default function Header({
   };
 
   return (
-    <div className={`${backGroundColor} w-full h-[54px] text-center z-[999] fixed max-w-max ${styles.container}`}>
+    <div
+      className={`${backGroundColor} w-full h-[54px] text-center z-[999] fixed max-w-max ${styles.container} border-b-[1px]`}
+    >
       {type === 'logo' && (
         <div className="flex w-full">
           <div className={styles.logo}>{Logo()}</div>
