@@ -109,23 +109,23 @@ const Footer = ({ room, isLikedRooms }: CardProps) => {
       <div className="text-g6 text-[12px]">
         {room.location.name}, {room.location.upperLocation?.name}
       </div>
-      <div className="font-poppins text-[20px] font-semibold text-g7 gap-[12px] flex items-center">
-        &#8361;{formatPrice(room.deposit.amount)}
-        <span className="font-pretendard text-[14px] font-medium">/ month </span>
-        <span className="font-pretendard text-[14px] text-r1 font-bold bg-g1">
+      <div className="font-poppins text-[20px] font-semibold text-g7 flex items-center">
+        <div>&#8361;{formatPrice(room.deposit.amount)}&nbsp;</div>
+        <span className="font-pretendard text-[14px] font-medium mr-[12px]">/ month </span>
+        <span className="font-pretendard text-[14px] text-r1 font-[500] bg-g1 px-[4px] py-[2px] rounded-[2px]">
           {room.deposit ? 'Deposit required' : ''}
         </span>
       </div>
-      <div className="text-[14px] font-medium">{roomType}</div>
+      <div className="text-[14px] font-medium text-g6">{roomType}</div>
       <div className="text-g5 text-[12px] pb-[12px] flex items-center gap-[6px]">
         {room.roomInfo.bedrooms} bedrooms
-        <Dot className="fill-g5 stroke-[1.5px]" />
+        <Dot className="fill-g3 stroke-[1.5px]" />
         {room.roomInfo.bathrooms} bathrooms
-        <Dot className="fill-g5 stroke-[1.5px]" />
+        <Dot className="fill-g3 stroke-[1.5px]" />
         {room.roomInfo.roommates} housemates in total
       </div>
       <hr />
-      <p className="pt-[10px] font-medium text-[12px]">Available {formatDate(room.availableDate)}</p>
+      <p className="pt-[10px] font-medium text-[12px] text-a2">Available {formatDate(room.availableDate)}</p>
     </div>
   );
 };

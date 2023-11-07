@@ -231,15 +231,17 @@ function Home() {
           })}
         </div>
       </div>
-      <Typography variant="body" customClassName="text-left font-bold text-[16px] text-g7">
+      <Typography variant="body" customClassName="text-left font-semibold text-[16px] text-g7">
         There are <span className="text-r1">{`${totalElements} rooms`}</span> in total!
       </Typography>
-      {rooms.map((room, idx) => (
-        // Nav 영역 맨 마지막 부분 잘리는 문제로 추가!!
-        <div className={`mt-[20px] ${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
-          <RoomCard room={room} onClick={() => handleCardClick(room.id)} />
-        </div>
-      ))}
+      <div className="mt-[12px] grid grid-flow-row gap-[20px]">
+        {rooms.map((room, idx) => (
+          // Nav 영역 맨 마지막 부분 잘리는 문제로 추가!!
+          <div className={`${rooms.length - 1 === idx ? 'mb-[83px]' : ''}`} key={`room-${idx}`}>
+            <RoomCard room={room} onClick={() => handleCardClick(room.id)} />
+          </div>
+        ))}
+      </div>
       <div ref={target} />
       <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">
         <div className="w-full">
