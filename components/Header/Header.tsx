@@ -1,7 +1,7 @@
 import React from 'react';
 import LogoBlack from '@/public/icons/logo-black.svg';
 import LogoWhite from '@/public/icons/logo-white.svg';
-import Plus from '@/public/icons/plus2.svg';
+import Plus from '@/public/icons/plus.svg';
 import Back from '@/public/icons/back.svg';
 import Close from '@/public/icons/close.svg';
 import Pencil from '@/public/icons/pencil.svg';
@@ -30,7 +30,14 @@ const LOGOS = {
 const renderHandler = (type: string | undefined, color: string) => {
   switch (type) {
     case 'plus':
-      return <Plus className="stroke-r1" />;
+      return (
+        <div className="w-[65px] h-[24px] rounded-[200px] border-r1 flex border justify-center items-center gap-[4px]">
+          <div>
+            <Plus />
+          </div>
+          <div className="text-[14px] font-semibold text-r1">Add</div>
+        </div>
+      );
     case 'close':
       return <Close width={24} height={24} className={`${color} stroke-[2]`} />;
     case 'pencil':
