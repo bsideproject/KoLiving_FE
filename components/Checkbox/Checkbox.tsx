@@ -73,7 +73,7 @@ export default function Checkbox({
 
   return (
     <div className="flex items-center">
-      <div className={`w-[18px] h-[18px] flex items-center p-[1px] ${typeClass} mr-[10px]`}>
+      <div className={`w-[18px] h-[18px] flex items-center p-[2px] ${typeClass} mr-[10px]`}>
         <input
           type="checkbox"
           id={name}
