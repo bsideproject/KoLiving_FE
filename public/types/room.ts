@@ -161,3 +161,9 @@ export interface RoomSearchParams {
   types?: string;
   furnishingTypes?: string;
 }
+
+export interface ContactParams {
+  roomId: string;
+  contactInfo: string;
+  message: string;
+}

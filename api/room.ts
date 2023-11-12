@@ -1,4 +1,4 @@
-import { Furnishing, Room, RoomFile, RoomSearch, RoomSearchParams } from '@/public/types/room';
+import { ContactParams, Furnishing, Room, RoomFile, RoomSearch, RoomSearchParams } from '@/public/types/room';
 import { fetchData } from './index';
 
 export const fetchFurnishings = async () => {
@@ -46,6 +46,16 @@ export const getRoom = async (id: string) => {
 export const deleteRoom = async (id: string) => {
   return fetchData<RoomSearch>(`/api/v1/rooms/${id}?id=${id}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export const contactRoom = async (params: ContactParams) => {
+  return fetchData<Room>(`/api/v1/rooms/${params.roomId}/contact`, {
+    method: 'POST',
+    body: JSON.stringify(params),
     headers: {
       'Content-Type': 'application/json',
     },

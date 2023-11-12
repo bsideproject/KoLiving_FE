@@ -51,7 +51,7 @@ function Textarea({ placeholder, register, maxByte, maxLength, initValue, classN
   return (
     <div className="flex flex-col space-y-2">
       <textarea
-        className={`w-full rounded-[2px] resize-none pl-[14px] pt-[14px] focus:border-g6 focus:outline-none ${
+        className={`w-full rounded-[2px] resize-none pl-[14px] font-normal pt-[14px] focus:border-g6 focus:outline-none ${
           className || 'border-g4 border-[1px] h-[120px]'
         }`}
         placeholder={placeholder}
@@ -63,7 +63,7 @@ function Textarea({ placeholder, register, maxByte, maxLength, initValue, classN
         // readOnly={!!((maxByte && byteCount >= maxByte) || (maxLength && textValue.length >= maxLength)) }
       />
       {(maxByte || 0) > 0 && (
-        <div className="text-right text-g5 text-[14px] bold">
+        <div className="text-right text-g5 text-[14px] font-normal">
           {byteCount} / {maxByte} byte
         </div>
       )}

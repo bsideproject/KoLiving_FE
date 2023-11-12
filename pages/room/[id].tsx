@@ -4,7 +4,7 @@ import { Button, Input, Header, Textarea, Space, ModalBox } from '@/components/i
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useRouter } from 'next/router';
-import { Furnishing, ROOM_TYPE, RoomSearch } from '@/public/types/room';
+import { ContactParams, Furnishing, ROOM_TYPE, RoomSearch } from '@/public/types/room';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import ArrowDown from '@/public/icons/arrow-down.svg';
 import Pin from '@/public/icons/pin.svg';
@@ -15,10 +15,10 @@ import ReceiptBadge from '@/public/icons/receipt-badge.svg';
 import Badge from '@/components/Badge/Badge';
 import Like from '@/public/icons/like.svg';
 import MyImageSvg from '@/components/ImageSvg/ImageSvg';
-import { deleteRoom, fetchFurnishings, getRoom } from '@/api/room';
+import { contactRoom, deleteRoom, fetchFurnishings, getRoom } from '@/api/room';
 import useModal from '@/hooks/useModal';
 import { useSession } from 'next-auth/react';
-import { FieldError, useForm } from 'react-hook-form';
+import { FieldError, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { isRequired, isValidEmail } from '@/utils/validCheck.ts';
 import styles from './room.module.scss';
 // const RoomDetailLayout = ({ children }: any) => {
@@ -71,6 +71,51 @@ import styles from './room.module.scss';
 //     </>
 //   );
 // };
+
+const ContactModal = ({ closeModal }: { closeModal: () => void }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const params: ContactParams = {
+      roomId: id as string,
+      contactInfo: data.email,
+      message: data.description,
+    };
+
+    await contactRoom(params);
+    closeModal();
+  };
+  return (
+    <>
+      <h2>Do you like this room?</h2>
+      <p
+        className="text-g5 text-[16px]"
+        dangerouslySetInnerHTML={{
+          __html: 'Leave your contact info and a message so that the user can reach you back!',
+        }}
+      />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h3 className="text-g7 font-pretendard text-[16px] text-start my-[12px]">Contact info</h3>
+        <Input type="email" placeholder="Email" register={register('email')} error={errors.email as FieldError} />
+        <div className="text-[14px] text-a1 text-start font-normal pt-[6px]">* Phone number not recommended</div>
+        <h3 className="my-[12px] text-start">Message</h3>
+        <Textarea placeholder="What do you want to tell the user?" register={register('description')} maxByte={500} />
+        <div className="pt-[12px]">
+          <Button size="lg" type="submit">
+            Send
+          </Button>
+        </div>
+      </form>
+    </>
+  );
+};
 
 export default function RoomDetail() {
   const router = useRouter();
@@ -201,9 +246,35 @@ export default function RoomDetail() {
     });
   };
 
+  const completeContact = () => {
+    closeModal();
+
+    openModal({
+      props: {
+        title: 'Congratulation!',
+        content: 'Your message has been sent successfully',
+        buttonType: 'default',
+        buttonName: 'Keep Exploring',
+        handleClose: () => {
+          router.push('/');
+          closeModal();
+        },
+        hasCloseButton: true,
+      },
+    });
+  };
   /** Contact  Button Click 시 팝업 오픈 */
   const handleContactPopup = () => {
-    setShowContact(true);
+    openModal({
+      props: {
+        title: 'Add room',
+        custom: true,
+        customHeader: true,
+        hasCloseButton: true,
+        hasButton: false,
+      },
+      children: <ContactModal closeModal={completeContact} />,
+    });
   };
 
   /** Contact Click Event */
@@ -229,7 +300,7 @@ export default function RoomDetail() {
         bgColor="white"
         handleButtonClick={handleButtonClick}
         right={email === room?.user.email ? 'delete' : undefined}
-        handleSecondButtonClick={showDeleteModal}
+        // handleSecondButtonClick={showDeleteModal}
       />
       <div className="mx-auto mt-[54px]">
         {room && (
@@ -371,7 +442,7 @@ export default function RoomDetail() {
             handleCustomEvent={handleReport}
           />
         )}
-        {showContact && (
+        {/* {showContact && (
           <ModalBox
             size="md"
             buttonType="default"
@@ -409,7 +480,7 @@ export default function RoomDetail() {
               />
             </div>
           </ModalBox>
-        )}
+        )} */}
       </div>
     </>
   );

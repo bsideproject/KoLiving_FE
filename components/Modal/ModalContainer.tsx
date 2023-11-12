@@ -23,6 +23,7 @@ export interface ModalProps {
   buttonName2?: string;
   buttonNames?: Array<string>;
   buttonNumber?: number;
+  hasButton?: boolean;
   size?: 'md' | 'full';
 }
 

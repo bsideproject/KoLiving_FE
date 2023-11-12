@@ -25,6 +25,7 @@ function Modal({
   buttonName = '',
   buttonName2 = '',
   buttonNames = [],
+  hasButton = true,
   size = 'md',
 }: ModalProps) {
   const { closeModal } = useModal();
@@ -116,7 +117,7 @@ function Modal({
         {hasCloseButton && (
           <div className={styles.close}>
             <button type="button" onClick={onClose}>
-              <Close width={24} height={24} />
+              <Close width={24} height={24} fill="#FF8E00" />
             </button>
           </div>
         )}
@@ -131,14 +132,19 @@ function Modal({
             />
           </div>
         )}
-        {buttonType && buttonType !== 'none' && buttonType !== 'wrapper' ? (
-          <div className="mt-[20px] flex gap-x-2 items-center justify-center">{renderButton()}</div>
-        ) : (
+        {hasButton && (
+          // eslint-disable-next-line react/jsx-no-useless-fragment
           <>
-            <div className="mt-[10] flex flex-col items-center justify-center space-y-[10px]">{renderButton()}</div>
-            <Button onClick={handleCustomEvent} color="r1" size="lg" _className="mt-[20px] font-semibold">
-              {customButtonName}
-            </Button>
+            {buttonType && buttonType !== 'none' && buttonType !== 'wrapper' ? (
+              <div className="mt-[20px] flex gap-x-2 items-center justify-center">{renderButton()}</div>
+            ) : (
+              <div className="mt-[10] flex flex-col items-center justify-center space-y-[10px]">
+                {renderButton()}
+                <Button onClick={handleCustomEvent} color="r1" size="lg" _className="mt-[20px] font-semibold">
+                  {customButtonName}
+                </Button>
+              </div>
+            )}
           </>
         )}
       </div>

@@ -1,8 +1,7 @@
 .textArea {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring focus:border-[#FF8E00];
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring focus:border-[#FF8E00] font-normal;
 
   &.placeholder {
-    @apply text-g4;
+    @apply text-g4 font-normal;
   }
-
 }
