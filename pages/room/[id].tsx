@@ -193,8 +193,20 @@ export default function RoomDetail() {
     setIsShowDetail((value) => !value);
   };
 
+  const { openModal, closeModal } = useModal();
+
   const showReporting = () => {
-    setShowReport(true);
+    openModal({
+      props: {
+        title: 'Why are you reporting?',
+        content: "This wan't be shared with the reported user",
+        buttonName: 'Report',
+        buttonNames: ['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer'],
+        handleClose: () => {
+          closeModal();
+        },
+      },
+    });
   };
 
   const handleReport = () => {
@@ -209,8 +221,6 @@ export default function RoomDetail() {
         .map((key) => key.replace('Included', ''))
     );
   }, [room?.maintenance]);
-
-  const { openModal, closeModal } = useModal();
 
   const handleButtonClick = () => {
     window.history.back();
@@ -438,49 +448,9 @@ export default function RoomDetail() {
             buttonType="wrapper"
             buttonName="Report"
             buttonNames={['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer']}
-            handleClose={() => setShowReport(false)}
             handleCustomEvent={handleReport}
           />
         )}
-        {/* {showContact && (
-          <ModalBox
-            size="md"
-            buttonType="default"
-            custom
-            handleClose={() => setShowContact(false)}
-            handleCustomEvent={handleContact}
-            buttonName="Contact"
-            disabledBtn={contactDisabled}
-          >
-            <div>
-              <h2>Do you like this room?</h2>
-              <p
-                className="mt-[4px] text-g5 text-[16px]"
-                dangerouslySetInnerHTML={{
-                  __html: 'Leave your contact info and a message so that the user can reach you back!',
-                }}
-              />
-              <h3 className="text-g7 font-pretendard text-[16px] mb-[17px]">Contact info</h3>
-              <Input
-                type="email"
-                placeholder="Email"
-                register={register('email', {
-                  validate: (value) => {
-                    const isValid = isRequired(value, '필수 항목') || isValidEmail(value, `isValidEmail`);
-                    return isValid;
-                  },
-                })}
-                error={errors.email as FieldError}
-              />
-              <h3 className="mt-[12px] mb-[17px]">Message</h3>
-              <Textarea
-                placeholder="What do you want to tell the user?"
-                register={register('description')}
-                maxByte={500}
-              />
-            </div>
-          </ModalBox>
-        )} */}
       </div>
     </>
   );
