@@ -30,3 +30,7 @@ export const parseJWT = (token: string) => {
   const payload = Buffer.from(base64Payload, 'base64').toString();
   return JSON.parse(payload);
 };
+
+export const formatDateForNotification = (date: string) => {
+  return format(new Date(date), 'LLL.dd, HH:mm');
+};
