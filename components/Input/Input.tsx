@@ -9,10 +9,11 @@ interface InputProps {
   error?: FieldError;
   maxLength?: number;
   disabled?: boolean;
+  readOnly?: boolean;
   fixedWord?: string;
 }
 
-function Input({ placeholder, register, type, error, maxLength, disabled, fixedWord }: InputProps) {
+function Input({ placeholder, register, type, error, maxLength, disabled, readOnly, fixedWord }: InputProps) {
   const hasError = error && error.message;
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const inputType = useMemo(() => {
@@ -53,6 +54,7 @@ function Input({ placeholder, register, type, error, maxLength, disabled, fixedW
         {...register}
         onChange={handleChange}
         value={inputValue}
+        readOnly={readOnly}
       />
       <button
         className="absolute inset-y-0 right-0 flex items-center mx-4 text-gray-600 h-fit pt-[12px]"
