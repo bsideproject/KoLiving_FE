@@ -135,6 +135,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
               },
             })}
             error={errors.email as FieldError}
+            readOnly
             fixedWord={userInfo?.email || ''}
           />
         </div>
