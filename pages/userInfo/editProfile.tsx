@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
 import DefaultImage from '@/public/icons/def_img.svg';
 import { isValidEmail, isRequired } from '@/utils/validCheck.ts';
+import toast from 'react-hot-toast';
 import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.tsx';
 import ProfileCamera from '@/public/icons/profileCamera.svg';
 import { User, Profile } from '@/public/types/user';
@@ -37,26 +38,31 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender || ''));
 
+  const formatMmDdYyyyToYyyyMmDd = (inputDate: string) => {
+    const parts = inputDate.split('-');
+    if (parts.length === 3) {
+      const month = parts[0];
+      const day = parts[1];
+      const year = parts[2];
+      return `${year}-${month}-${day}`;
+    }
+    return null;
+  };
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
+      // gender,
       const profileData = data as Profile;
       profileData.profileId = userInfo.id || 0;
+      profileData.description = data?.describe || '';
+      profileData.gender = buttonState;
+      profileData.birthDate = formatMmDdYyyyToYyyyMmDd(data.dateOfBirth) || profileData.birthDate;
       const result = await modifyProfile(profileData);
-      alert('수정되었습니다');
-      // openModal({
-      //   props: {
-      //     title: 'My Postings',
-      //     size: 'full',
-      //     custom: true,
-      //     customHeader: true,
-      //   },
-      //   children: <>hi</>,
-      // });
+      toast('Successfully saved');
     } catch (error) {
       console.error('[ERROR] EDIT PROFILE', error);
     }
   };
-
   const isPostingComplete = () => {
     return (
       (imageSrc || '') === '' ||

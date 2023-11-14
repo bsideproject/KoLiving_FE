@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import { RoomSearch } from '@/public/types/room';
 import { Profile } from '@/public/types/user';
@@ -13,13 +14,13 @@ export const getProfile = async () => {
 };
 
 export const makeLikedRooms = async (id: number) => {
-    return await fetchData(`/api/v1/rooms/${id}/liked`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-}
+  return await fetchData(`/api/v1/rooms/${id}/liked`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
 
 /**
  * @TODO Api 나오면 url 및 params 바꿔줘야함!!
@@ -31,7 +32,7 @@ export const makeDisLikedRooms = async (id: number) => {
       'Content-Type': 'application/json',
     },
   });
-}
+};
 
 export const getLikedRooms = async (page: number) => {
   let result;
@@ -55,6 +56,6 @@ export const modifyProfile = async (profileInfo: Profile) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(profileInfo)
+    body: JSON.stringify(profileInfo),
   });
-}
+};
