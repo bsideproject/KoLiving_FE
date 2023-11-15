@@ -2,14 +2,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/style-prop-object */
-import React, { useState, useEffect } from 'react';
-import { FieldValues, SubmitHandler, FieldError, useForm as UseForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { FieldValues, SubmitHandler, FieldError, useForm } from 'react-hook-form';
 import DefaultImage from '@/public/icons/def_img.svg';
 import { isValidEmail, isRequired } from '@/utils/validCheck.ts';
 import toast from 'react-hot-toast';
 import { Textarea, Button, Upload, Input, Calendar } from '@/components/index.tsx';
 import ProfileCamera from '@/public/icons/profileCamera.svg';
-import { User, Profile } from '@/public/types/user';
+import { Profile } from '@/public/types/user';
 import { modifyProfile } from '@/api/userInfo';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 
@@ -30,7 +30,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     watch,
     handleSubmit,
     formState: { errors },
-  } = UseForm({ mode: 'onChange' });
+  } = useForm({ mode: 'onChange' });
   // Backend 에서 보내주는 문자열 형식이랑 맞추기 위해 추가
   const capitalizeFirstLetter = (str: string) => {
     return (str || '').charAt(0).toUpperCase() + (str || '').slice(1).toLowerCase();
@@ -55,7 +55,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       const profileData = data as Profile;
       profileData.profileId = userInfo.id || 0;
       profileData.description = data?.describe || '';
-      profileData.gender = buttonState;
+      profileData.gender = buttonState.toUpperCase();
       profileData.birthDate = formatMmDdYyyyToYyyyMmDd(data.dateOfBirth) || profileData.birthDate;
       const result = await modifyProfile(profileData);
       toast('Successfully saved');
@@ -63,18 +63,6 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       console.error('[ERROR] EDIT PROFILE', error);
     }
   };
-  const isPostingComplete = () => {
-    return (
-      (imageSrc || '') === '' ||
-      !watch('email') ||
-      !!errors.email?.message ||
-      !watch('firstName') ||
-      !watch('lastName') ||
-      !watch('dateOfBirth') ||
-      !watch('describe')
-    );
-  };
-
   const handleButtonClick = (value: string) => {
     setButtonState(value);
   };
@@ -211,7 +199,18 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
         <div className="mt-[255px] fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
             <div className="mb-[13px]">
-              <Button size="lg" type="submit" disabled={isPostingComplete()}>
+              <Button
+                size="lg"
+                type="submit"
+                disabled={
+                  (imageSrc || '') === '' ||
+                  !watch('firstName') ||
+                  !watch('lastName') ||
+                  !watch('dateOfBirth') ||
+                  !watch('describe') ||
+                  !buttonState
+                }
+              >
                 Complete
               </Button>
             </div>
