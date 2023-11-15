@@ -29,9 +29,7 @@ interface PhotoProps {
 }
 
 const UserInfo = ({ userInfo }: UserInfoProps) => {
-  const router = useRouter();
   const age = formatAge(userInfo.birthDate);
-
   const handleUserClick = () => {
     /*
     router.push(

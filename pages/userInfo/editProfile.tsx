@@ -12,6 +12,7 @@ import ProfileCamera from '@/public/icons/profileCamera.svg';
 import { Profile } from '@/public/types/user';
 import { modifyProfile } from '@/api/userInfo';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
+import useModal from '@/hooks/useModal.ts';
 
 interface ProfileProps {
   _imageSrc: string;
@@ -25,6 +26,7 @@ interface ImageComponentClickProps {
 export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   const [imageSrc, setImageSrc] = useState(_imageSrc);
   const subHeader = 'font-pretendard font-semibold text-[16px]';
+  const { closeModal } = useModal();
   const {
     register,
     watch,
@@ -38,15 +40,23 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const [buttonState, setButtonState] = useState(capitalizeFirstLetter(userInfo?.gender || ''));
 
-  const formatMmDdYyyyToYyyyMmDd = (inputDate: string) => {
+  const formatDate = (inputDate: string, format: string) => {
     const parts = inputDate.split('-');
     if (parts.length === 3) {
-      const month = parts[0];
-      const day = parts[1];
-      const year = parts[2];
-      return `${year}-${month}-${day}`;
+      if (format === 'yyyymmdd') {
+        const month = parts[0];
+        const day = parts[1];
+        const year = parts[2];
+        return `${year}-${month}-${day}`;
+      }
+      if (format === 'mmddyyyy') {
+        const year = parts[0];
+        const month = parts[1];
+        const day = parts[2];
+        return `${month}-${day}-${year}`;
+      }
     }
-    return null;
+    return '';
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -56,9 +66,10 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       profileData.profileId = userInfo.id || 0;
       profileData.description = data?.describe || '';
       profileData.gender = buttonState.toUpperCase();
-      profileData.birthDate = formatMmDdYyyyToYyyyMmDd(data.dateOfBirth) || profileData.birthDate;
+      profileData.birthDate = formatDate(data.dateOfBirth, 'yyyymmdd') || profileData.birthDate;
       const result = await modifyProfile(profileData);
       toast('Successfully saved');
+      closeModal();
     } catch (error) {
       console.error('[ERROR] EDIT PROFILE', error);
     }
@@ -181,7 +192,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
             placeholder="MM-DD-YYYY"
             type="text"
             register={register('dateOfBirth')}
-            value={userInfo?.birthDate}
+            value={formatDate(userInfo?.birthDate || '', 'mmddyyyy')}
           />
         </section>
         <div className="mb-[12px] mt-[32px]">
