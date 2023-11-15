@@ -68,7 +68,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       profileData.gender = buttonState.toUpperCase();
       profileData.birthDate = formatDate(data.dateOfBirth, 'yyyymmdd') || profileData.birthDate;
       const result = await modifyProfile(profileData);
-      toast('Successfully saved');
+      toast.error('Successfully saved');
       closeModal();
     } catch (error) {
       console.error('[ERROR] EDIT PROFILE', error);
