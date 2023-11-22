@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from 'react';
 import ResetPasswordLayout from '@/components/layouts/ResetPasswordLayout.tsx';
 import { Link, Stepper, Button, ModalBox, Input, Space, Typography } from '@/components/index.tsx';
@@ -31,6 +32,11 @@ export default function step1() {
       setAuthEmail(true);
       await postResetPassword(watch('email'));
     }
+  };
+
+  const handleResendLink = () => {
+    setAuthEmail(false);
+    fnAuthEmail();
   };
 
   return (
@@ -71,6 +77,7 @@ export default function step1() {
           buttonType="default"
           buttonName="Resend link"
           hasCloseButton
+          handleClose={handleResendLink}
           overlayClose
         />
       )}
