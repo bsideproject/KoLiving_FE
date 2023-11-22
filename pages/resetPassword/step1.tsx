@@ -6,6 +6,7 @@ import { isValidEmail } from '@/utils/validCheck.ts';
 import { useTranslation as UseTranslation } from 'next-i18next';
 import type { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { postResetPassword } from '@/api/signup';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -25,9 +26,11 @@ export default function step1() {
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
 
-  const fnAuthEmail = () => {
-    console.log('error is ??', errors);
-    return !errors.email?.message && setAuthEmail(true);
+  const fnAuthEmail = async () => {
+    if (!errors.email?.message) {
+      setAuthEmail(true);
+      await postResetPassword(watch('email'));
+    }
   };
 
   return (
