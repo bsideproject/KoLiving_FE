@@ -27,7 +27,7 @@ export const postPassword = async (payload: ProfilePayload) => {
 export const postProfile = async (payload: ProfilePayload) => {
   const { firstName, lastName, genderCode, birthDate, description, email } = payload;
 
-  return fetchData(`/api/v1/auth/profile?email=${email ? encodeURIComponent(email) : ''}`, {
+  return fetchData(`/api/v1/auth/reset-password=${email ? encodeURIComponent(email) : ''}`, {
     method: 'POST',
     body: JSON.stringify({
       firstName,
@@ -49,6 +49,16 @@ export const login = async (payload: { email: string; password: string }) => {
       email: payload.email,
       password: payload.password,
     }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export const postResetPassword = async (email: string) => {
+  return fetchData('/api/v1/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
     headers: {
       'Content-Type': 'application/json',
     },
