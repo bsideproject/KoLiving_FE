@@ -71,7 +71,7 @@ import styles from './room.module.scss';
 //     </>
 //   );
 // };
-
+   
 const ContactModal = ({ closeModal }: { closeModal: () => void }) => {
   const {
     register,
