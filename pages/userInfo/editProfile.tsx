@@ -67,7 +67,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       profileData.description = data?.describe || '';
       profileData.gender = buttonState.toUpperCase();
       profileData.birthDate = formatDate(data.dateOfBirth, 'yyyymmdd') || profileData.birthDate;
-      const result = await modifyProfile(profileData);
+      await modifyProfile(profileData);
       toast.error('Successfully saved');
       closeModal();
     } catch (error) {
