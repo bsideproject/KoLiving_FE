@@ -19,59 +19,62 @@ import { contactRoom, deleteRoom, fetchFurnishings, getRoom } from '@/api/room';
 import useModal from '@/hooks/useModal';
 import { useSession } from 'next-auth/react';
 import { FieldError, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { isRequired, isValidEmail } from '@/utils/validCheck.ts';
+import Check2 from '@/public/icons/Check2.svg';
 import styles from './room.module.scss';
-// const RoomDetailLayout = ({ children }: any) => {
-//   const router = useRouter();
-//   const { id } = router.query;
 
-//   const { openModal, closeModal } = useModal();
+const REPORT_REASON = ['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer'];
 
-//   const handleButtonClick = () => {
-//     window.history.back();
-//   };
+const ReportModal = ({ closeModal }: { closeModal: () => void }) => {
+  const { handleSubmit } = useForm();
 
-//   const removeRoom = async () => {
-//     if (typeof id === 'string') {
-//       await deleteRoom(id);
-//     }
-//   };
+  const router = useRouter();
+  const { id } = router.query;
+  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(-1);
 
-//   const showDeleteModal = () => {
-//     openModal({
-//       props: {
-//         title: 'Delete this post?',
-//         content: 'You will not be able to restore this post.',
-//         buttonType: 'both',
-//         buttonName: 'Cancel',
-//         buttonName2: 'Delete',
-//         hasCloseButton: true,
-//         handleClose: () => {
-//           closeModal();
-//         },
-//         handleSecondButton: async () => {
-//           await removeRoom();
-//           router.push('/');
-//           closeModal();
-//         },
-//       },
-//     });
-//   };
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    // TODO: 신고하기 API 연결
+    closeModal();
+  };
 
-//   return (
-//     <>
-//       <Header
-//         type="back"
-//         bgColor="white"
-//         handleButtonClick={handleButtonClick}
-//         right="delete"
-//         handleSecondButtonClick={showDeleteModal}
-//       />
-//       <div className="mx-auto mt-[54px]">{children}</div>
-//     </>
-//   );
-// };
-   
+  const handleButtonClick = (index: number) => {
+    setSelectedButtonIndex(index);
+  };
+  return (
+    <>
+      <h2>Why are you reporting?</h2>
+      <p
+        className="text-r1 text-[16px]"
+        dangerouslySetInnerHTML={{
+          __html: 'This won’t be shared with the reported user',
+        }}
+      />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-[10px] mt-[10px]">
+          {REPORT_REASON.map((item, index) => (
+            <Button
+              onClick={() => handleButtonClick(index)}
+              color={selectedButtonIndex === index ? 'noBg' : 'outlined'}
+              size="lg"
+              fontWeight="light"
+              key={index}
+            >
+              <div className={`flex items-center justify-between `}>
+                <span>{item}</span>
+                {selectedButtonIndex === index && <Check2 className="ml-auto" />}
+              </div>
+            </Button>
+          ))}
+        </div>
+        <div className="pt-[12px]">
+          <Button size="lg" type="submit" disabled={selectedButtonIndex === -1}>
+            Report
+          </Button>
+        </div>
+      </form>
+    </>
+  );
+};
+
 const ContactModal = ({ closeModal }: { closeModal: () => void }) => {
   const {
     register,
@@ -195,24 +198,6 @@ export default function RoomDetail() {
 
   const { openModal, closeModal } = useModal();
 
-  const showReporting = () => {
-    openModal({
-      props: {
-        title: 'Why are you reporting?',
-        content: "This wan't be shared with the reported user",
-        buttonName: 'Report',
-        buttonNames: ['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer'],
-        handleClose: () => {
-          closeModal();
-        },
-      },
-    });
-  };
-
-  const handleReport = () => {
-    setShowReport(false);
-  };
-
   const includeServices = useMemo(() => {
     return (
       room?.maintenance &&
@@ -277,7 +262,6 @@ export default function RoomDetail() {
   const handleContactPopup = () => {
     openModal({
       props: {
-        title: 'Add room',
         custom: true,
         customHeader: true,
         hasCloseButton: true,
@@ -287,12 +271,16 @@ export default function RoomDetail() {
     });
   };
 
-  /** Contact Click Event */
-  const handleContact = () => {
-    // Email 발송 기능 추가 필요
-    setShowContact(false);
-    setValue('email', '');
-    setValue('description', '');
+  const showReporting = () => {
+    openModal({
+      props: {
+        custom: true,
+        customHeader: true,
+        hasCloseButton: true,
+        hasButton: false,
+      },
+      children: <ReportModal closeModal={closeModal} />,
+    });
   };
 
   useEffect(() => {
@@ -441,25 +429,7 @@ export default function RoomDetail() {
             </div>
           </>
         )}
-        {showReport && (
-          <ModalBox
-            title="Why are you reporting?"
-            content="This wan't be shared with the reported user"
-            buttonType="wrapper"
-            buttonName="Report"
-            buttonNames={['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer']}
-            handleCustomEvent={handleReport}
-          />
-        )}
       </div>
     </>
   );
 }
-
-// export default function RoomDetail() {
-//   return (
-//     <RoomDetailLayout>
-//       <Page />
-//     </RoomDetailLayout>
-//   );
-// }
