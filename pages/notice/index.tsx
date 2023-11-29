@@ -1,5 +1,5 @@
 import { getNotifications } from '@/api/notification';
-import { Button, Nav } from '@/components';
+import { Button, Chip, Nav } from '@/components';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import React, { useEffect } from 'react';
 import Send from '@/public/icons/send.svg';
@@ -9,8 +9,34 @@ import { formatDateForNotification } from '@/utils/transform';
 import NoLiked from '@/public/icons/noLiked.svg';
 import { useRouter } from 'next/router';
 
+// const FILTER_LABEL: Record<string, string> = {
+//   All_
+// };
+
+const FILTERS = ['All', 'Send', 'Recieved'];
+
+interface filterProps {
+  selectedFilter?: string;
+  label: string;
+  onClick?: () => void;
+}
+
+const Filter = ({ selectedFilter, label, onClick }: filterProps) => {
+  const styleBySelected = selectedFilter === label ? 'bg-r1 text-g0 border-r1' : 'border-g3 text-g5 bg-g0';
+
+  return (
+    <div
+      className={`flex h-[32px] px-[16px] py-[6px] justify-center items-center border border-solid rounded-[200px] text-[14px] ${styleBySelected}`}
+      onClick={onClick}
+    >
+      {label}
+    </div>
+  );
+};
+
 function Notice() {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  const [selectedFilter, setSelectedFilter] = React.useState<string>('All');
 
   const fetchData = async () => {
     const data = await getNotifications();
@@ -34,6 +60,13 @@ function Notice() {
 
   return (
     <div>
+      <div className="flex flex-row gap-[8px] pt-[12px]">
+        {FILTERS.map((filter, index) => (
+          <div key={index}>
+            <Filter label={filter} selectedFilter={selectedFilter} onClick={() => setSelectedFilter(filter)} />
+          </div>
+        ))}
+      </div>
       {notifications.length === 0 && (
         <div className="flex flex-col items-center text-center mt-[154px]">
           <div className="w-fit">
