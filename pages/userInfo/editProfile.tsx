@@ -127,10 +127,10 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
             callbackImageFn={(imageList: ImageListType) => {
               if (imageList && imageList[0] && imageList[0].dataURL) {
                 setImageSrc(imageList[0].dataURL);
-                const image = imageList[0];
+                const image = imageList[0].file;
                 const file = {
                   lastModified: image?.lastModified,
-                  lastModifiedDate: image?.lastModifiedDate,
+                  lastModifiedDate: new Date(image?.lastModified || ''),
                   size: image?.size,
                   type: image?.type,
                   webkitRelativePath: image?.webkitRelativePath,
