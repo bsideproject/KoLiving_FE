@@ -6,6 +6,7 @@ import Me from '@/public/icons/me.svg';
 import HugeIcon from '@/public/icons/huge-icon.svg';
 import { useRouter } from 'next/router';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
+import useNotification from '@/hooks/useNotification';
 import styles from './Nav.module.scss';
 
 const defaultStrokeColor = 'stroke-g4 stroke-[1.5px]';
@@ -53,6 +54,7 @@ export default function Nav({ initMenu, profile }: NavProps) {
       );
     }
   };
+  const { notificationCount } = useNotification();
 
   return (
     <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center relative`}>
@@ -74,7 +76,11 @@ export default function Nav({ initMenu, profile }: NavProps) {
                     hoverMenu === index ? 'cursor-pointer' : ''
                   }`}
                 />
-                <div className="w-[15px] h-[15px] bg-r1 absolute top-0 left-[20px] rounded-[20px]" />
+                {notificationCount > 0 && menu.name === 'Notice' && (
+                  <div className="w-fit h-fit min-w-[16px] min-h-[16px] bg-r2 absolute top-[-2px] left-[12px] rounded-[20px] text-[11px] font-medium text-white">
+                    {notificationCount}
+                  </div>
+                )}
               </div>
             </div>
             <div className={styles[`${menu.router === router.pathname ? 'nav-activeText' : 'nav-text'}`]}>

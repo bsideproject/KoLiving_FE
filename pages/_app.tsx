@@ -13,6 +13,7 @@ import UserInfoProvider from '@/context/UserInfoProvider.tsx';
 import ModalProvider from '../context/ModalProvider.tsx';
 import ModalContainer from '../components/Modal/ModalContainer.tsx';
 import AppLayout from '../components/layouts/AppLayout/AppLayout.tsx';
+import NotificationProvider from '../context/NotificationProvider.tsx';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -69,18 +70,20 @@ function MyApp({ Component, pageProps }: LayoutAppProps): React.ReactElement {
       </Head>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <Providers>
-        <SessionProvider>
-          <ModalProvider>
-            <UserInfoProvider>
-              {data && (
-                <AppLayout>
-                  {getLayout(<Component {...pageProps} />)}
-                  <ModalContainer />
-                </AppLayout>
-              )}
-            </UserInfoProvider>
-          </ModalProvider>
-        </SessionProvider>
+        <NotificationProvider>
+          <SessionProvider>
+            <ModalProvider>
+              <UserInfoProvider>
+                {data && (
+                  <AppLayout>
+                    {getLayout(<Component {...pageProps} />)}
+                    <ModalContainer />
+                  </AppLayout>
+                )}
+              </UserInfoProvider>
+            </ModalProvider>
+          </SessionProvider>
+        </NotificationProvider>
       </Providers>
       <Toaster
         toastOptions={{
