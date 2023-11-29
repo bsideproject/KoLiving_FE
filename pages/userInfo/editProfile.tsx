@@ -13,6 +13,8 @@ import { Profile } from '@/public/types/user';
 import { modifyProfile } from '@/api/userInfo';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import useModal from '@/hooks/useModal.ts';
+import { uploadFile } from '@/api/room';
+import { ImageListType } from 'react-images-uploading';
 
 interface ProfileProps {
   _imageSrc: string;
@@ -84,6 +86,11 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const genderButtons = [{ label: 'Male' }, { label: 'Female' }, { label: 'Others' }];
 
+  const uploadPhoto = async (photo: File) => {
+    const result = await uploadFile(photo);
+    return result;
+  };
+
   const ProfileImage = ({ onClick }: ImageComponentClickProps) => {
     return (
       <div className="flex justify-center items-center h-[90px] mt-[20px] mb-[36px]" onClick={onClick}>
@@ -117,9 +124,20 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
           <Upload
             InitImageComponent={ProfileImage}
             multiImage={false}
-            callbackImageFn={(imageList) => {
+            callbackImageFn={(imageList: ImageListType) => {
               if (imageList && imageList[0] && imageList[0].dataURL) {
                 setImageSrc(imageList[0].dataURL);
+                const image = imageList[0];
+                const file = {
+                  lastModified: image?.lastModified,
+                  lastModifiedDate: image?.lastModifiedDate,
+                  size: image?.size,
+                  type: image?.type,
+                  webkitRelativePath: image?.webkitRelativePath,
+                  name: image?.name,
+                } as unknown as File;
+                // API 추가
+                uploadPhoto(file);
               }
             }}
             style="center"
