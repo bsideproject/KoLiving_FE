@@ -1,14 +1,14 @@
 import { getNotifications, updateNotification } from '@/api/notification';
-import { Button, Chip, Nav } from '@/components';
+import { Button, Nav, Space } from '@/components';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import React, { useEffect } from 'react';
 import Send from '@/public/icons/send.svg';
-import Dot from '@/public/icons/dot.svg';
 import { Notification } from '@/public/types/notification';
 import { formatDateForNotification } from '@/utils/transform';
 import NoLiked from '@/public/icons/noLiked.svg';
 import { useRouter } from 'next/router';
 import useNotification from '@/hooks/useNotification';
+import Reply from '@/public/icons/reply.svg';
 
 const FILTERS = ['All', 'Send', 'Recieved'];
 
@@ -97,37 +97,52 @@ function Notice() {
         </div>
       )}
       {notifications.length > 0 && (
-        <>
-          <div className="text-[16px] font-normal p-[10px]">
-            Notifications will be automatically deleted after <span className="font-bold text-r1">30days</span>
-          </div>
-          <hr />
+        <div className="!mx-[-20px] mt-[12px]">
           {notifications.map((notification, index) => {
             return (
-              <div key={index}>
-                <div className="p-[10px] flex flex-col gap-[6px]">
-                  <div className="flex items-center">
-                    <Send className="mr-[6px]" />
-                    <div className="font-bold text-r1 text-[10px]">
-                      {notification.type === 'SEND' ? 'Message sent' : 'Message recieved'}
+              <>
+                <div className="flex" key={index}>
+                  <div className="w-[68px] h-[68px]">
+                    <div className="py-[10px] px-[18px]">
+                      <img
+                        className="object-cover object-center w-[32px] h-[32px] rounded-[32px]"
+                        src={notification.imageProfile}
+                        alt="user"
+                      />
                     </div>
-                    <Dot className="fill-black stroke-[5px] mx-[6px]" />
-                    <div className="font-light text-[10px] text-g4">
-                      {formatDateForNotification(notification.createdAt)}
-                    </div>
+                    {notification.type === 'SEND' && (
+                      <div className="flex h-[16px] px-[10px] justify-center bg-r1 bg-opacity-10">
+                        <Send />
+                        <span className="ml-[2px] text-r1 text-[10px]">Sent</span>
+                      </div>
+                    )}
+                    {notification.type === 'RECEIVE' && (
+                      <div className="flex h-[16px] justify-center bg-r1">
+                        <span className="ml-[2px] text-g0 text-[10px]">Received</span>
+                        <Reply />
+                      </div>
+                    )}
                   </div>
-                  <div className="font-bold text-[14px]">{notification.userName}</div>
-                  <div className="text-[14px] text-g5">
-                    {notification.type === 'SEND'
-                      ? 'Your message has been sent successfully.'
-                      : 'You have recieved a message. Check your e-mail.'}
+                  <div className="p-[10px] flex flex-col gap-[6px]" style={{ width: 'calc(100% - 68px)' }}>
+                    <div className="flex items-center">
+                      <div className="font-semibold text-[16px]">{notification.userName}</div>
+                      <Space />
+                      <div className="font-light text-[10px] text-g4">
+                        {formatDateForNotification(notification.createdAt)}
+                      </div>
+                    </div>
+                    <div className="text-[12px] text-g5">
+                      {notification.type === 'SEND'
+                        ? 'Your message has been sent successfully.'
+                        : 'You have recieved a message. Check your e-mail.'}
+                    </div>
                   </div>
                 </div>
                 <hr />
-              </div>
+              </>
             );
           })}
-        </>
+        </div>
       )}
     </div>
   );
@@ -136,7 +151,7 @@ function Notice() {
 Notice.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <>
-      <DefaultLayout type="title" title="Notificatioin" titleCenter>
+      <DefaultLayout type="title" title="Noti" titleCenter>
         {page}
       </DefaultLayout>
       <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">

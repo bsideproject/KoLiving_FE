@@ -23,7 +23,7 @@ const menus = [
     router: '/',
   },
   {
-    name: 'Notice',
+    name: 'Noti',
     icon: HugeIcon,
     router: '/notice',
   },
