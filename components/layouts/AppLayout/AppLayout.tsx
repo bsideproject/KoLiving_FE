@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { getNotifications } from '@/api/notification';
+import { getNewNotifications } from '@/api/notification';
 import useNotification from '@/hooks/useNotification';
 import styles from './AppLayout.module.scss';
 
@@ -10,18 +10,17 @@ interface AppLayoutProps {
 
 function AppLayout({ children }: AppLayoutProps) {
   const router = useRouter();
-  const { setNotificationCount } = useNotification();
+  const { setNewNotifications } = useNotification();
 
   const fetchNotification = useCallback(async () => {
     if (router.pathname === '/notice') {
       return;
     }
-    const data = await getNotifications();
+    const data = await getNewNotifications();
     if (!data) {
       return;
     }
-    // TODO: 확인 안 한 응답 데이터로 변경
-    setNotificationCount(data.length);
+    setNewNotifications(data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

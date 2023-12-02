@@ -1,3 +1,4 @@
+import { Notification } from '@/public/types/notification';
 import React, { useState, useMemo } from 'react';
 
 interface ComponentProps {
@@ -5,14 +6,14 @@ interface ComponentProps {
 }
 
 interface SetterProps {
-  setState: React.Dispatch<number>;
+  setState: React.Dispatch<Notification[]>;
 }
 
-export const NotificationStateContext = React.createContext<number>(0);
+export const NotificationStateContext = React.createContext<Notification[]>([]);
 export const NotificationSetterContext = React.createContext<SetterProps | null>(null);
 
 function ModalProvider({ children }: ComponentProps) {
-  const [state, setState] = useState<number>(0);
+  const [state, setState] = useState<Notification[]>([]);
 
   const memoizedSetterValue = useMemo(() => ({ setState }), [setState]);
   const memoizedStateValue = useMemo(() => state, [state]);

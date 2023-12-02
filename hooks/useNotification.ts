@@ -1,21 +1,22 @@
 import { useContext } from 'react';
 import { NotificationSetterContext, NotificationStateContext } from '@/context/NotificationProvider.tsx';
+import { Notification } from '@/public/types/notification';
 
 function useNotification() {
   const setNotificationState = useContext(NotificationSetterContext);
-  const notificationCount = useContext(NotificationStateContext);
+  const newNotifications = useContext(NotificationStateContext);
 
   if (!setNotificationState) {
     throw new Error('NotificationSetterContext is not properly initialized');
   }
 
-  const setNotificationCount = (count: number) => {
+  const setNewNotifications = (notifications: Notification[]) => {
     if (setNotificationState) {
-      setNotificationState.setState(count);
+      setNotificationState.setState(notifications);
     }
   };
 
-  return { setNotificationCount, notificationCount };
+  return { setNewNotifications, newNotifications };
 }
 
 export default useNotification;

@@ -1,4 +1,4 @@
-import { getNotifications } from '@/api/notification';
+import { getNotifications, updateNotification } from '@/api/notification';
 import { Button, Chip, Nav } from '@/components';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import React, { useEffect } from 'react';
@@ -8,10 +8,7 @@ import { Notification } from '@/public/types/notification';
 import { formatDateForNotification } from '@/utils/transform';
 import NoLiked from '@/public/icons/noLiked.svg';
 import { useRouter } from 'next/router';
-
-// const FILTER_LABEL: Record<string, string> = {
-//   All_
-// };
+import useNotification from '@/hooks/useNotification';
 
 const FILTERS = ['All', 'Send', 'Recieved'];
 
@@ -37,6 +34,17 @@ const Filter = ({ selectedFilter, label, onClick }: filterProps) => {
 function Notice() {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const [selectedFilter, setSelectedFilter] = React.useState<string>('All');
+  const { setNewNotifications, newNotifications } = useNotification();
+
+  const updateNewNotifications = () => {
+    const updatePromises = newNotifications.map(async (notification) => {
+      const result = await updateNotification(notification.id);
+      return result;
+    });
+    setNewNotifications([]);
+
+    return Promise.all(updatePromises);
+  };
 
   const fetchData = async () => {
     const data = await getNotifications();
@@ -50,6 +58,8 @@ function Notice() {
 
   useEffect(() => {
     fetchData();
+    updateNewNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const router = useRouter();

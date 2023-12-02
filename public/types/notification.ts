@@ -5,6 +5,9 @@ export const NOTIFICATION_TYPE = {
 
 export interface Notification {
   type: keyof typeof NOTIFICATION_TYPE;
-  userName: 'string';
-  createdAt: '2023-11-12T09:17:25.644Z';
+  id: number;
+  userName: string;
+  imageProfile: string;
+  createdAt: string;
+  confirm: boolean;
 }

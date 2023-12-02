@@ -54,7 +54,7 @@ export default function Nav({ initMenu, profile }: NavProps) {
       );
     }
   };
-  const { notificationCount } = useNotification();
+  const { newNotifications } = useNotification();
 
   return (
     <div className={`${styles.container} grid grid-cols-4 bg-g0 w-full h-[66px] text-center relative`}>
@@ -76,9 +76,9 @@ export default function Nav({ initMenu, profile }: NavProps) {
                     hoverMenu === index ? 'cursor-pointer' : ''
                   }`}
                 />
-                {notificationCount > 0 && menu.name === 'Notice' && (
+                {newNotifications.length > 0 && menu.name === 'Notice' && (
                   <div className="w-fit h-fit min-w-[16px] min-h-[16px] bg-r2 absolute top-[-2px] left-[12px] rounded-[20px] text-[11px] font-medium text-white">
-                    {notificationCount}
+                    {newNotifications.length}
                   </div>
                 )}
               </div>
