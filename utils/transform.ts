@@ -32,5 +32,5 @@ export const parseJWT = (token: string) => {
 };
 
 export const formatDateForNotification = (date: string) => {
-  return format(new Date(date), 'LLL.dd, HH:mm');
+  return format(new Date(date), 'LLL.dd.yyyy HH:mm');
 };

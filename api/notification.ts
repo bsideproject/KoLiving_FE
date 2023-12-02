@@ -1,8 +1,8 @@
 import { Notification } from '@/public/types/notification';
 import { fetchData } from '.';
 
-export const getNotifications = () => {
-  return fetchData<Notification[]>('/api/v1/my/notification', {
+export const getNotifications = (type: string) => {
+  return fetchData<Notification[]>(`/api/v1/my/notification?notifyType=${type}`, {
     headers: {
       'Content-Type': 'application/json',
     },

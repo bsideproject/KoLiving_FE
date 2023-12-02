@@ -10,7 +10,22 @@ import { useRouter } from 'next/router';
 import useNotification from '@/hooks/useNotification';
 import Reply from '@/public/icons/reply.svg';
 
-const FILTERS = ['All', 'Send', 'Recieved'];
+const FILTERS_MAP = [
+  {
+    label: 'All',
+    type: 'ALL',
+  },
+  {
+    label: 'Send',
+    type: 'SEND',
+  },
+  {
+    label: 'Recieved',
+    type: 'RECEIVE',
+  },
+];
+
+const FILTERS = FILTERS_MAP.map((filter) => filter.label);
 
 interface filterProps {
   selectedFilter?: string;
@@ -33,7 +48,10 @@ const Filter = ({ selectedFilter, label, onClick }: filterProps) => {
 
 function Notice() {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
-  const [selectedFilter, setSelectedFilter] = React.useState<string>('All');
+  const [selectedFilter, setSelectedFilter] = React.useState<Record<string, string>>({
+    label: 'All',
+    type: 'ALL',
+  });
   const { setNewNotifications, newNotifications } = useNotification();
 
   const updateNewNotifications = () => {
@@ -47,7 +65,7 @@ function Notice() {
   };
 
   const fetchData = async () => {
-    const data = await getNotifications();
+    const data = await getNotifications(selectedFilter.type);
 
     if (!data) {
       return;
@@ -68,12 +86,21 @@ function Notice() {
     router.push('/');
   };
 
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter]);
+
   return (
     <div>
       <div className="flex flex-row gap-[8px] pt-[12px]">
-        {FILTERS.map((filter, index) => (
+        {FILTERS_MAP.map((filter, index) => (
           <div key={index}>
-            <Filter label={filter} selectedFilter={selectedFilter} onClick={() => setSelectedFilter(filter)} />
+            <Filter
+              label={filter.label}
+              selectedFilter={selectedFilter.label}
+              onClick={() => setSelectedFilter(filter)}
+            />
           </div>
         ))}
       </div>
@@ -100,8 +127,8 @@ function Notice() {
         <div className="!mx-[-20px] mt-[12px]">
           {notifications.map((notification, index) => {
             return (
-              <>
-                <div className="flex" key={index}>
+              <div key={index}>
+                <div className="flex">
                   <div className="w-[68px] h-[68px]">
                     <div className="py-[10px] px-[18px]">
                       <img
@@ -127,7 +154,7 @@ function Notice() {
                     <div className="flex items-center">
                       <div className="font-semibold text-[16px]">{notification.userName}</div>
                       <Space />
-                      <div className="font-light text-[10px] text-g4">
+                      <div className="font-light text-[10px] text-g4 pr-[10px]">
                         {formatDateForNotification(notification.createdAt)}
                       </div>
                     </div>
@@ -139,11 +166,12 @@ function Notice() {
                   </div>
                 </div>
                 <hr />
-              </>
+              </div>
             );
           })}
         </div>
       )}
+      <div className="h-[80px]" />
     </div>
   );
 }
@@ -154,7 +182,7 @@ Notice.getLayout = function getLayout(page: React.ReactElement) {
       <DefaultLayout type="title" title="Noti" titleCenter>
         {page}
       </DefaultLayout>
-      <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">
+      <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max z-20 border-t-[1px] border-g2">
         <div className="w-full">
           <div className="mb-[13px] space-x-[8px] max-w-max">
             <Nav />

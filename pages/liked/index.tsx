@@ -103,7 +103,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
             Look around
           </button>
         </div>
-        <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max z-20 border-t-[1px] border-g2">
+        <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max z-20 border-t-[1px] border-g2">
           <div className="w-full">
             <div className="mb-[13px] space-x-[8px] max-w-max">
               <Nav initMenu={2} />
@@ -208,7 +208,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
             <RoomCard room={room} onClick={() => handleCardClick(room.id)} isLikedRooms />
           </div>
         ))}
-        <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
+        <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max">
           <div className="w-full">
             <div className="mb-[13px] space-x-[8px] max-w-max">
               <Nav />
