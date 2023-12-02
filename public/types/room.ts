@@ -167,3 +167,13 @@ export interface ContactParams {
   contactInfo: string;
   message: string;
 }
+
+export interface ReportReason {
+  id: number;
+  desc: string;
+}
+
+export interface ReportParams {
+  roomId: string;
+  reportId: string;
+}

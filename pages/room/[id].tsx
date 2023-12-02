@@ -4,7 +4,7 @@ import { Button, Input, Header, Textarea, Space, ModalBox } from '@/components/i
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useRouter } from 'next/router';
-import { ContactParams, Furnishing, ROOM_TYPE, RoomSearch } from '@/public/types/room';
+import { ContactParams, Furnishing, ROOM_TYPE, ReportParams, ReportReason, RoomSearch } from '@/public/types/room';
 import { formatAge, formatDate, formatPrice } from '@/utils/transform';
 import ArrowDown from '@/public/icons/arrow-down.svg';
 import Pin from '@/public/icons/pin.svg';
@@ -15,7 +15,7 @@ import ReceiptBadge from '@/public/icons/receipt-badge.svg';
 import Badge from '@/components/Badge/Badge';
 import Like from '@/public/icons/like.svg';
 import MyImageSvg from '@/components/ImageSvg/ImageSvg';
-import { contactRoom, deleteRoom, fetchFurnishings, getRoom } from '@/api/room';
+import { contactRoom, deleteRoom, fetchFurnishings, fetchReportReasons, getRoom, reportRoom } from '@/api/room';
 import useModal from '@/hooks/useModal';
 import { useSession } from 'next-auth/react';
 import { FieldError, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -24,15 +24,19 @@ import styles from './room.module.scss';
 
 const REPORT_REASON = ['Not a real place', 'Inappropriate content', 'Incorrect information', 'Suspected scammer'];
 
-const ReportModal = ({ closeModal }: { closeModal: () => void }) => {
+const ReportModal = ({ closeModal, reportReasons }: { closeModal: () => void; reportReasons: ReportReason[] }) => {
   const { handleSubmit } = useForm();
 
   const router = useRouter();
   const { id } = router.query;
   const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(-1);
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    // TODO: 신고하기 API 연결
+  const onSubmit: SubmitHandler<FieldValues> = async () => {
+    const params: ReportParams = {
+      roomId: id as string,
+      reportId: String(selectedButtonIndex),
+    };
+    await reportRoom(params);
     closeModal();
   };
 
@@ -50,17 +54,17 @@ const ReportModal = ({ closeModal }: { closeModal: () => void }) => {
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-[10px] mt-[10px]">
-          {REPORT_REASON.map((item, index) => (
+          {reportReasons.map((item) => (
             <Button
-              onClick={() => handleButtonClick(index)}
-              color={selectedButtonIndex === index ? 'noBg' : 'outlined'}
+              onClick={() => handleButtonClick(item.id)}
+              color={selectedButtonIndex === item.id ? 'noBg' : 'outlined'}
               size="lg"
               fontWeight="light"
-              key={index}
+              key={item.id}
             >
               <div className={`flex items-center justify-between `}>
-                <span>{item}</span>
-                {selectedButtonIndex === index && <Check2 className="ml-auto" />}
+                <span>{item.desc}</span>
+                {selectedButtonIndex === item.id && <Check2 className="ml-auto" />}
               </div>
             </Button>
           ))}
@@ -128,21 +132,31 @@ export default function RoomDetail() {
   const [room, setRoom] = React.useState<RoomSearch | null>();
   const age = room ? formatAge(room.user.birthDate) : 0;
   const [isShowDetail, setIsShowDetail] = React.useState(false);
-  const [showReport, setShowReport] = React.useState(false);
-  const [showContact, setShowContact] = React.useState(false);
   const [contactDisabled, setContactDisabled] = React.useState(false);
   const handleSlideChange = (activeIndex: number) => {
     setCurrentSlide(activeIndex);
   };
   const {
-    register,
     watch,
-    setValue,
     formState: { errors },
   } = useForm({ mode: 'onChange' });
   const roomType = room?.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
+  const [reportReasons, setReportReasons] = useState<ReportReason[]>([]);
 
   const [furnishings, setFurnishings] = useState<Furnishing[]>([]);
+  const getReportReasons = async () => {
+    try {
+      const data = await fetchReportReasons();
+
+      if (!data) {
+        return;
+      }
+
+      setReportReasons(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getFurnishings = async () => {
     try {
@@ -161,6 +175,7 @@ export default function RoomDetail() {
   useEffect(() => {
     (async () => {
       await getFurnishings();
+      await getReportReasons();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -279,7 +294,7 @@ export default function RoomDetail() {
         hasCloseButton: true,
         hasButton: false,
       },
-      children: <ReportModal closeModal={closeModal} />,
+      children: <ReportModal closeModal={closeModal} reportReasons={reportReasons} />,
     });
   };
 
