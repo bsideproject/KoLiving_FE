@@ -134,9 +134,7 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
         </div>
         <Textarea
           register={register('describe')}
-          initValue={
-            "Hi, I'm Dennis. I'm 31 years old and I'm from Seoul, South Korea. I'm a software engineer with 5 years of experience in the industry. I'm passionate about building innovative products that make people's lives easier."
-          }
+          initValue={userInfo?.description || ''}
           className="bg-r1 mb-[20px] h-[120px] text-[14px]"
           readonly
         />
