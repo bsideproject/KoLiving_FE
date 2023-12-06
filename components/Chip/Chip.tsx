@@ -37,7 +37,7 @@ export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }
       }`}
       onClick={onDivClick}
     >
-      <Typography variant="label" fontStyle="semiBold" font="pretendard" color={clicked ? 'r1' : 'g5'}>
+      <Typography variant="label" fontStyle="medium" font="pretendard" color={clicked ? 'r1' : 'g5'}>
         {label}
       </Typography>
       {!onlyText && (

@@ -64,3 +64,13 @@ export const postResetPassword = async (email: string) => {
     },
   });
 };
+
+export const putPassword = async (payload: { password: string; email: string; passwordVerify: string }) => {
+  return fetchData(`/api/v1/auth/reset-password?email=${payload.email}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};

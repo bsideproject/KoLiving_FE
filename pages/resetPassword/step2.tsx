@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ResetPasswordLayout from '@/components/layouts/ResetPasswordLayout.tsx';
 import Space from '@/components/Space.tsx';
 import Typography from '@/components/Typography/Typography.tsx';
@@ -8,10 +8,11 @@ import Input from '@/components/Input/Input.tsx';
 import { isRequired, isValidPassword, isSamePassword } from '@/utils/validCheck.ts';
 import { useTranslation as UseTranslation } from 'next-i18next';
 import Button from '@/components/Button/Button.tsx';
-import ModalBox from '@/components/Modal/ModalBox.tsx';
 import type { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { emit } from 'process';
+import { putPassword } from '@/api/signup';
+import { useRouter } from 'next/router';
+import useModal from '@/hooks/useModal';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -21,21 +22,42 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
 
 export default function step2() {
   const { t } = UseTranslation('common');
-  const [resetPassword, setResetPassword] = useState(false);
+  const router = useRouter();
 
   const {
     register,
     getValues,
+    watch,
     formState: { errors },
   } = UseForm({ mode: 'onChange' });
 
-  const fnResetPassword = () => {
-    console.log('error is ??', errors);
-    return !errors.password?.message && !errors.passwordConfirm?.message && setResetPassword(true);
+  const { openModal, closeModal } = useModal();
+
+  const fnResetPassword = async () => {
+    if (!errors.password?.message && !errors.passwordConfirm?.message) {
+      const params = {
+        email: router.query.email as string,
+        password: watch('password'),
+        passwordVerify: watch('passwordConfirm'),
+      };
+      await putPassword(params);
+      openModal({
+        props: {
+          title: 'Password changed!',
+          content: 'Your password has been successfully changed.',
+          buttonType: 'default',
+          buttonName: 'Try Log in',
+          handleClose: () => {
+            closeModal();
+            router.push('/login');
+          },
+        },
+      });
+    }
   };
 
   return (
-    <div className="font-pretendard w-full">
+    <div className="w-full font-pretendard">
       <div className="relative w-full h-[60px]">
         <Space />
       </div>
@@ -87,16 +109,6 @@ export default function step2() {
       >
         Reset password
       </Button>
-
-      {resetPassword && (
-        <ModalBox
-          title="Password changed!"
-          content="Your password has been successfully changed."
-          buttonType="default"
-          buttonName="Try Log in"
-          overlayClose
-        />
-      )}
     </div>
   );
 }
