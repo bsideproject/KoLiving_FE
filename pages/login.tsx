@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { GetStaticPropsContext } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { FieldError, useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { LoginLayout, Link, CustomImage, Chip, Button, Input, Space } from '@/components/index.tsx';
+import { LoginLayout, Link, CustomImage, Button, Input, Space } from '@/components/index.tsx';
 import { isRequired, isValidEmail, isValidPassword } from '@/utils/validCheck.ts';
-import { login } from '@/api/signup';
 import { signIn } from 'next-auth/react';
 import { getProfile } from '@/api/userInfo';
 import useUserInfo from '@/hooks/useUserInfo.ts';
+import { useRouter } from 'next/router';
 
 export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   props: {
@@ -25,6 +24,7 @@ export default function Login() {
     register,
     formState: { errors },
     watch,
+    setError,
   } = useForm({ mode: 'onChange' });
 
   const email = watch('email');
@@ -41,13 +41,19 @@ export default function Login() {
     }
   };
 
+  const router = useRouter();
   const onSubmit = async () => {
-    await selectProfile();
-    await signIn('email-password-credential', {
+    const data = await signIn('email-password-credential', {
       email,
       password,
-      callbackUrl: '/',
+      redirect: false,
     });
+    if (data?.status !== 200) {
+      setError('password', { type: 'validate', message: 'Invalid email or password' });
+      return;
+    }
+    await selectProfile();
+    router.push('/');
   };
 
   const isDisabledButton = !email || !password || !isValidEmail(email) || !isValidPassword(password);

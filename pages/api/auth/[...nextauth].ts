@@ -19,24 +19,28 @@ export default NextAuth({
           return null;
         }
 
-        const { email, password } = credentials;
+        try {
+          const { email, password } = credentials;
 
-        const data = await login({ email, password });
+          const data = await login({ email, password });
 
-        if (!data) {
+          if (!data) {
+            return null;
+          }
+
+          const jwt = parseJWT(data.accessToken);
+
+          const user = {
+            id: jwt.email,
+            email: jwt.email,
+            token: data.accessToken,
+            exp: jwt.exp,
+          };
+
+          return user;
+        } catch (error) {
           return null;
         }
-
-        const jwt = parseJWT(data.accessToken);
-
-        const user = {
-          id: jwt.email,
-          email: jwt.email,
-          token: data.accessToken,
-          exp: jwt.exp,
-        };
-
-        return user;
       },
     }),
   ],
