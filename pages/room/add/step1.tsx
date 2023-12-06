@@ -57,7 +57,7 @@ export default function AddRoom() {
       monthlyRent: data.monthPrice,
       deposit: data.depositPrice,
       maintenanceFee: data.maintananceFee,
-      availableDate: formatDateForAPI(data.dateAvailable),
+      availableDate: data.dateAvailable ? formatDateForAPI(data.dateAvailable) : '',
       gasIncluded: data.gasChecked,
       waterIncluded: data.waterChecked,
       electricityIncluded: data.electricityChecked,
@@ -87,7 +87,7 @@ export default function AddRoom() {
       !dong ||
       !monthPrice ||
       (!noDeposit && !depositPrice) ||
-      (!availableNow && !dateAvailable) ||
+      (!dateAvailable && !availableNow) ||
       (isUseMaintananceFee?.value === 'yes' && !maintananceFee)
     );
   }, [
