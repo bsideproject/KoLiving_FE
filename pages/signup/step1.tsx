@@ -22,6 +22,29 @@ export const getStaticProps = async ({ locale }: GetStaticPropsContext) => ({
   },
 });
 
+const CheckMailModal = ({ email }: { email: string }) => {
+  const resend = async () => {
+    await postSignup(email);
+  };
+
+  return (
+    <>
+      <h2>Check Your Mail Box</h2>
+      <p
+        className="text-g5 text-[16px] mt-[4px]"
+        dangerouslySetInnerHTML={{
+          __html: `A verification has just been sent to<br/> <b class="font-semibold">${email}<b>`,
+        }}
+      />
+      <div className="mt-[20px]">
+        <Button size="lg" onClick={resend} color="noBg">
+          Resend link
+        </Button>
+      </div>
+    </>
+  );
+};
+
 export default function SignUp() {
   const signUpTranslation = useTranslation('signup');
   const commonTranslation = useTranslation('common');
@@ -102,23 +125,10 @@ export default function SignUp() {
       await postSignup(data.email);
       openModal({
         props: {
-          title: 'Check Your Mail Box',
-          content: `A verification has just been sent to<br/> <b class="font-semibold">${data.email}<b>`,
-          buttonType: 'outline',
-          buttonName: 'Resend link',
-          handleClose: async () => {
-            await postSignup(data.email);
-            closeModal();
-            openModal({
-              props: {
-                title: 'Check Your Mail Box',
-                content: `A verification has just been sent to<br/> <b>${data.email}<b>`,
-                buttonType: 'disabled',
-                buttonName: 'Resend link',
-              },
-            });
-          },
+          custom: true,
+          hasButton: false,
         },
+        children: <CheckMailModal email={data.email} />,
       });
     } catch (e) {
       console.error(e);
