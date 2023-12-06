@@ -91,7 +91,7 @@ export default function SignUp() {
         buttonType: 'default',
         buttonName: signUpTranslation.t('startToExplore') as string,
         handleClose: () => {
-          Router.push('/');
+          Router.push('/login');
           closeModal();
         },
         hasCloseButton: true,
