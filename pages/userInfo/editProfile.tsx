@@ -27,6 +27,7 @@ interface ImageComponentClickProps {
 
 export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   const [imageSrc, setImageSrc] = useState(_imageSrc);
+  const [imgFile, setImgFile] = useState<File>();
   const subHeader = 'font-pretendard font-semibold text-[16px]';
   const { closeModal } = useModal();
   const {
@@ -60,6 +61,10 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     }
     return '';
   };
+  const uploadPhoto = async (photo: File) => {
+    const result = await uploadFile(photo);
+    return result;
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -69,6 +74,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
       profileData.description = data?.describe || '';
       profileData.gender = buttonState.toUpperCase();
       profileData.birthDate = formatDate(data.dateOfBirth, 'yyyymmdd') || profileData.birthDate;
+      if (imgFile) await uploadPhoto(imgFile as File);
       await modifyProfile(profileData);
       toast.error('Successfully saved');
       closeModal();
@@ -85,11 +91,6 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   };
 
   const genderButtons = [{ label: 'Male' }, { label: 'Female' }, { label: 'Others' }];
-
-  const uploadPhoto = async (photo: File) => {
-    const result = await uploadFile(photo);
-    return result;
-  };
 
   const ProfileImage = ({ onClick }: ImageComponentClickProps) => {
     return (
@@ -127,17 +128,8 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
             callbackImageFn={(imageList: ImageListType) => {
               if (imageList && imageList[0] && imageList[0].dataURL) {
                 setImageSrc(imageList[0].dataURL);
-                const image = imageList[0].file;
-                const file = {
-                  lastModified: image?.lastModified,
-                  lastModifiedDate: new Date(image?.lastModified || ''),
-                  size: image?.size,
-                  type: image?.type,
-                  webkitRelativePath: image?.webkitRelativePath,
-                  name: image?.name,
-                } as unknown as File;
                 // API 추가
-                uploadPhoto(file);
+                setImgFile(imageList[0].file);
               }
             }}
             style="center"
