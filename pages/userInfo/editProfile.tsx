@@ -15,6 +15,7 @@ import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import useModal from '@/hooks/useModal.ts';
 import { uploadFile } from '@/api/room';
 import { ImageListType } from 'react-images-uploading';
+import { RoomFile } from '@/public/types/room';
 
 interface ProfileProps {
   _imageSrc: string;
@@ -70,11 +71,12 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     try {
       // gender,
       const profileData = data as Profile;
-      profileData.profileId = userInfo.id || 0;
+      const imgResult = await uploadPhoto(imgFile as File);
+      profileData.profileId = imgResult?.id || userInfo?.id || 0;
       profileData.description = data?.describe || '';
       profileData.gender = buttonState.toUpperCase();
       profileData.birthDate = formatDate(data.dateOfBirth, 'yyyymmdd') || profileData.birthDate;
-      if (imgFile) await uploadPhoto(imgFile as File);
+
       await modifyProfile(profileData);
       toast.error('Successfully saved');
       closeModal();
