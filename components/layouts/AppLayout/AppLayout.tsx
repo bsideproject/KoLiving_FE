@@ -13,7 +13,7 @@ function AppLayout({ children }: AppLayoutProps) {
   const { setNewNotifications } = useNotification();
 
   const fetchNotification = useCallback(async () => {
-    if (router.pathname === '/notice') {
+    if (router.pathname === '/notice' || router.pathname.includes('/login') || router.pathname.includes('/signup')) {
       return;
     }
     const data = await getNewNotifications();

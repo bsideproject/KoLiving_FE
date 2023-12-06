@@ -123,9 +123,17 @@ export default function SignUp() {
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('name')}</p>
           <div className="mb-[8px]">
-            <Input register={register('firstName')} placeholder={signUpTranslation.t('firstName') as string} />
+            <Input
+              register={register('firstName')}
+              placeholder={signUpTranslation.t('firstName') as string}
+              maxLength={50}
+            />
           </div>
-          <Input register={register('lastName')} placeholder={signUpTranslation.t('lastName') as string} />
+          <Input
+            register={register('lastName')}
+            placeholder={signUpTranslation.t('lastName') as string}
+            maxLength={50}
+          />
         </section>
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('gender')}</p>
