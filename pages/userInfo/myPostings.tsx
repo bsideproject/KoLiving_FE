@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NoPosting from '@/public/icons/noPosting.svg';
 import Step1 from '@/pages/room/addRoom/step1.tsx';
 import useModal from '@/hooks/useModal';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import { Nav } from '@/components/index.tsx';
+import { getRooms } from '@/api/room';
+import { RoomSearch } from '@/public/types/room';
 // import { useRouter } from 'next/router';
 
 // TODO 데이터가 구체화되면 바꿔줘야함
@@ -14,6 +17,7 @@ interface MyPostingProps {
 
 export default function MyPosting({ roomInfo }: MyPostingProps) {
   const { openModal } = useModal();
+  const [myRooms, setMyRooms] = useState<RoomSearch[]>([]);
   const handleAddPosting = () => {
     openModal({
       props: {
@@ -25,6 +29,15 @@ export default function MyPosting({ roomInfo }: MyPostingProps) {
       children: <Step1 />,
     });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getRooms({ page: 0 });
+      setMyRooms((prevRooms) => [...prevRooms, ...(data?.content || [])]);
+      console.log('data', data);
+    };
+    fetchData();
+  }, []);
 
   /**
    *  룸이 없을 때 보여주는 Component
