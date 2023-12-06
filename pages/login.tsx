@@ -50,8 +50,10 @@ export default function Login() {
     });
   };
 
+  const isDisabledButton = !email || !password || !isValidEmail(email) || !isValidPassword(password);
+
   return (
-    <div className="font-pretendard w-full">
+    <div className="w-full font-pretendard">
       <div className="relative h-[422px] mb-7 w-[calc(100%+40px)] -left-[20px]">
         <CustomImage
           src="/images/thumb.png"
@@ -63,7 +65,7 @@ export default function Login() {
         />
       </div>
       <div className="m-[auto]">
-        <div className="font-semibold text-2xl text-G6 font-poppins mb-4">{t('welcome')}</div>
+        <div className="mb-4 text-2xl font-semibold text-G6 font-poppins">{t('welcome')}</div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
             <Input
@@ -95,7 +97,7 @@ export default function Login() {
               {t('resetPwd')}
             </Link>
           </div>
-          <Button disabled={false} size="lg" type="submit">
+          <Button disabled={isDisabledButton} size="lg" type="submit">
             Login
           </Button>
           <div className="flex items-center justify-center mt-[9px]">
@@ -104,7 +106,6 @@ export default function Login() {
               {t('signup')}
             </Link>
           </div>
-          {/* <Chip label="테스트" onDelete={console.log} clicked /> */}
         </form>
       </div>
     </div>
