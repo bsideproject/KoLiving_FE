@@ -60,7 +60,6 @@ export default NextAuth({
       if (user) {
         // eslint-disable-next-line no-param-reassign
         token.user = user;
-        console.log('%c 🤩🤩🤩 영우의 로그 User: ', 'font-size: x-large; color: #bada55;', '', user);
       }
       return {
         ...token,

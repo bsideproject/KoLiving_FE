@@ -149,8 +149,12 @@ export default function SignUp() {
         </section>
         <section>
           <p className="text-[16px] text-g7 font-semibold mb-[8px]">{signUpTranslation.t('aboutYou')}</p>
-          <Textarea placeholder={signUpTranslation.t('introduce') as string} register={register('introduce')} />
-          <div className="text-right text-[14px] text-g5 mt-[4px]">{watch('introduce')?.length} / 1000 byte</div>
+          <Textarea
+            placeholder={signUpTranslation.t('introduce') as string}
+            register={register('introduce')}
+            maxLength={500}
+          />
+          <div className="text-right text-[14px] text-g5 mt-[4px]">{watch('introduce')?.length} / 500 byte</div>
         </section>
         <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] px-[20px] max-w-max">
           <div className="w-full">
