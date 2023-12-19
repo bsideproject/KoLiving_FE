@@ -160,6 +160,16 @@ export default function Filter({
   }, [minMonthlyRent, maxMonthlyRent, setValue]);
 
   useEffect(() => {
+    if (minDeposit > 500000000) {
+      setValue('depositMin', 500000000);
+    }
+    if (maxDeposit > 500000000) {
+      setValue('depositMax', 500000000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minDeposit, maxDeposit, setValue]);
+
+  useEffect(() => {
     const formattedSelectedLocation = selectedLocations.map((item) => item.dong.value);
 
     if (minDeposit === undefined) {
@@ -278,8 +288,20 @@ export default function Filter({
                 <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
               </div>
               <div className="grid grid-flow-row gap-[8px]">
-                <Input placeholder="Min" type="number" register={register('depositMin')} />
-                <Input placeholder="Max" type="number" register={register('depositMax')} />
+                <Input
+                  placeholder="Min"
+                  type="tel"
+                  register={register('depositMin')}
+                  maxLength={9}
+                  fixedWord={watch('depositMin')}
+                />
+                <Input
+                  placeholder="Max"
+                  type="tel"
+                  register={register('depositMax')}
+                  maxLength={9}
+                  fixedWord={watch('depositMax')}
+                />
               </div>
             </>
           )}
