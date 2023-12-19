@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import styles from './Input.module.scss';
 
@@ -27,6 +27,12 @@ function Input({ placeholder, register, type, error, maxLength, disabled, readOn
   const togglePasswordVisibility = () => {
     setIsPasswordShow((state) => !state);
   };
+
+  useEffect(() => {
+    if (fixedWord) {
+      setInputValue(fixedWord);
+    }
+  }, [fixedWord]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;

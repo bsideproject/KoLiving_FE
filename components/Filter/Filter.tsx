@@ -32,7 +32,7 @@ export default function Filter({
   focus?: number;
   initialData?: any;
 }) {
-  const { register, handleSubmit, watch, reset, setValue } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch, reset, setValue } = useForm({ mode: 'onChange', shouldUnregister: false });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useState({});
@@ -148,6 +148,16 @@ export default function Filter({
   const minMonthlyRent = watch('monthMin');
   const maxMonthlyRent = watch('monthMax');
   const dateAvailable = watch('dateAvailable');
+
+  useEffect(() => {
+    if (minMonthlyRent > 20000000) {
+      setValue('monthMin', 20000000);
+    }
+    if (maxMonthlyRent > 20000000) {
+      setValue('monthMax', 20000000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minMonthlyRent, maxMonthlyRent, setValue]);
 
   useEffect(() => {
     const formattedSelectedLocation = selectedLocations.map((item) => item.dong.value);
@@ -290,8 +300,20 @@ export default function Filter({
                 <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 20,000,000 ￦ </div>
               </div>
               <div className="grid grid-flow-row gap-[8px]">
-                <Input placeholder="Min" type="number" register={register('monthMin')} />
-                <Input placeholder="Max" type="number" register={register('monthMax')} />
+                <Input
+                  placeholder="Min"
+                  type="tel"
+                  register={register('monthMin')}
+                  maxLength={8}
+                  fixedWord={watch('monthMin')}
+                />
+                <Input
+                  placeholder="Max"
+                  type="tel"
+                  register={register('monthMax')}
+                  maxLength={8}
+                  fixedWord={watch('monthMax')}
+                />
               </div>
             </>
           )}
