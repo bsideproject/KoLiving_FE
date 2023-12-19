@@ -14,13 +14,22 @@ interface InputProps {
   disabled?: boolean;
   value?: string;
   handleCalendarShow?: (data: boolean) => void;
+  fixedWord?: string;
 }
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function Calendar({ placeholder, register, error, disabled, value, handleCalendarShow }: InputProps) {
+export default function Calendar({
+  placeholder,
+  register,
+  error,
+  disabled,
+  value,
+  handleCalendarShow,
+  fixedWord,
+}: InputProps) {
   const hasError = error && error.message;
   const [isCalendarShow, setIsCalendarShow] = useState(false);
   const calendarRef = useRef<HTMLDivElement | null>(null);
@@ -65,6 +74,13 @@ export default function Calendar({ placeholder, register, error, disabled, value
   const changeDate = (date: Value) => {
     setDateValue(format(date as Date, 'MM-dd-yyyy'));
   };
+
+  useEffect(() => {
+    if (fixedWord === '') {
+      setDateValue(fixedWord);
+      setOriginDateValue(fixedWord);
+    }
+  }, [fixedWord]);
 
   const applyDate = useCallback(() => {
     const customEvent = {

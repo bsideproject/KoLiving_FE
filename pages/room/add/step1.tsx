@@ -150,29 +150,29 @@ export default function AddRoom() {
     );
   };
 
-  const price = watch('monthPrice');
-
   useEffect(() => {
-    if (price > 20000000) {
+    if (monthPrice > 20000000) {
       setValue('monthPrice', 20000000);
     }
-  }, [price, setValue]);
-
-  const deposit = watch('depositPrice');
+  }, [monthPrice, setValue]);
 
   useEffect(() => {
-    if (deposit > 500000000) {
+    if (depositPrice > 500000000) {
       setValue('depositPrice', 500000000);
     }
-  }, [deposit, setValue]);
-
-  const maintanance = watch('maintananceFee');
+  }, [depositPrice, setValue]);
 
   useEffect(() => {
-    if (maintanance > 5000000) {
+    if (maintananceFee > 5000000) {
       setValue('maintananceFee', 5000000);
     }
-  }, [maintanance, setValue]);
+  }, [maintananceFee, setValue]);
+
+  useEffect(() => {
+    if (availableNow) {
+      setValue('dateAvailable', '');
+    }
+  }, [availableNow, setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -305,6 +305,7 @@ export default function AddRoom() {
           type="text"
           register={register('dateAvailable')}
           disabled={watch('availableNow')}
+          fixedWord={watch('dateAvailable')}
         />
       </section>
       <div className="grid grid-cols-2 gap-[8px] mb-[166px]">
