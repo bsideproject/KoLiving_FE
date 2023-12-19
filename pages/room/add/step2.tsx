@@ -145,7 +145,7 @@ export default function Step2() {
             register={register('bathrooms')}
             initCount={1}
             disabledLeft={watch('bathrooms') <= 1}
-            disabledRight={watch('bathrooms') >= 20}
+            disabledRight={watch('bathrooms') >= 20 || typeButton?.label === '1 bed flat'}
           />
         </div>
         <div className="flex justify-between items-center mb-[8px]">

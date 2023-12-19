@@ -174,6 +174,12 @@ export default function AddRoom() {
     }
   }, [availableNow, setValue]);
 
+  useEffect(() => {
+    if (noDeposit) {
+      setValue('depositPrice', '');
+    }
+  }, [noDeposit, setValue]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stepper step={1} totalStep={3} />
@@ -215,7 +221,7 @@ export default function AddRoom() {
           <div className={styles['sub-header']}>Monthly rent</div>
         </div>
         <div className="mb-[8px]">
-          <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
+          <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 200,000,000 ￦</div>
         </div>
         <div className="mb-[28px]">
           <Input

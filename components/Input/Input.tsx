@@ -29,7 +29,7 @@ function Input({ placeholder, register, type, error, maxLength, disabled, readOn
   };
 
   useEffect(() => {
-    if (fixedWord) {
+    if (fixedWord || fixedWord === '') {
       setInputValue(fixedWord);
     }
   }, [fixedWord]);
