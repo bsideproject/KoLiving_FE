@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, { useState, useEffect } from 'react';
 import NoPosting from '@/public/icons/noPosting.svg';
-import Step1 from '@/pages/room/addRoom/step1.tsx';
+import Step1 from '@/pages/room/add/step1.tsx';
 import useModal from '@/hooks/useModal';
 import DefaultLayout from '@/components/layouts/DefaultLayout';
 import { Nav } from '@/components/index.tsx';
