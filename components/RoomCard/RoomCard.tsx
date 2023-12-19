@@ -11,6 +11,7 @@ import Camera from '@/public/icons/camera.svg';
 import styles from '@/pages/room/room.module.scss';
 import { useRouter } from 'next/router';
 import { makeLikedRooms, makeDisLikedRooms } from '@/api/userInfo';
+import { useSession } from 'next-auth/react';
 import Card from '../Card/Card';
 
 interface CardProps {
@@ -86,9 +87,17 @@ const Photo = ({ photos, onClick }: PhotoProps) => {
 const Footer = ({ room, isLikedRooms }: CardProps) => {
   const roomType = room.roomInfo.roomType === ROOM_TYPE.ONE_ROOM ? '1bed flats' : '';
   const [isLiked, setIsLiked] = useState(false || isLikedRooms);
+
+  const { data: session } = useSession();
+  const router = useRouter();
   const handleLikeClick = async () => {
     try {
-      // !isLiked ? await makeLikedRooms(room?.id) : await makeDisLikedRooms(room?.id);
+      if (!session) {
+        router.push('/login');
+
+        return;
+      }
+
       await makeLikedRooms(room?.id);
       setIsLiked(!isLiked);
     } catch (error) {
