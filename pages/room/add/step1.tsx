@@ -47,7 +47,7 @@ const INCLUDE_OPTIONS = [
 ];
 
 export default function AddRoom() {
-  const { register, handleSubmit, watch } = useForm({ mode: 'onChange' });
+  const { register, handleSubmit, watch, setValue } = useForm({ mode: 'onChange' });
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const router = useRouter();
 
@@ -150,6 +150,30 @@ export default function AddRoom() {
     );
   };
 
+  const price = watch('monthPrice');
+
+  useEffect(() => {
+    if (price > 20000000) {
+      setValue('monthPrice', 20000000);
+    }
+  }, [price, setValue]);
+
+  const deposit = watch('depositPrice');
+
+  useEffect(() => {
+    if (deposit > 500000000) {
+      setValue('depositPrice', 500000000);
+    }
+  }, [deposit, setValue]);
+
+  const maintanance = watch('maintananceFee');
+
+  useEffect(() => {
+    if (maintanance > 5000000) {
+      setValue('maintananceFee', 5000000);
+    }
+  }, [maintanance, setValue]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stepper step={1} totalStep={3} />
@@ -194,7 +218,13 @@ export default function AddRoom() {
           <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
         </div>
         <div className="mb-[28px]">
-          <Input placeholder="Price" type="number" register={register('monthPrice')} />
+          <Input
+            placeholder="Price"
+            type="tel"
+            register={register('monthPrice')}
+            maxLength={8}
+            fixedWord={watch('monthPrice')}
+          />
         </div>
       </div>
 
@@ -207,7 +237,14 @@ export default function AddRoom() {
           <div className="text-g5 text-[12px] font-normal">Min 0 ￦ - Max 500,000,000 ￦</div>
         </div>
         <div className="mb-[16px]">
-          <Input placeholder="Price" type="number" register={register('depositPrice')} disabled={watch('noDeposit')} />
+          <Input
+            placeholder="Price"
+            type="tel"
+            register={register('depositPrice')}
+            disabled={watch('noDeposit')}
+            maxLength={9}
+            fixedWord={watch('depositPrice')}
+          />
         </div>
         <div className="grid grid-cols-2 gap-[8px] mt-[12px]">
           <Checkbox type="outlined" label="No Deposit" register={register('noDeposit')} />
@@ -226,7 +263,13 @@ export default function AddRoom() {
       {watch('isUseMaintananceFee')?.value === 'yes' && (
         <>
           <div className="mb-[16px]">
-            <Input placeholder="Price" type="number" register={register('maintananceFee')} />
+            <Input
+              placeholder="Price"
+              type="tel"
+              register={register('maintananceFee')}
+              maxLength={7}
+              fixedWord={watch('maintananceFee')}
+            />
           </div>
 
           {/* Maintanance fee - Included */}
