@@ -14,6 +14,7 @@ import { signOut } from 'next-auth/react';
 import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 // import { Profile } from '@/public/types/user';
 import { formatAge } from '@/utils/transform';
+import UserInfoSvg from '../ImageSvg/UserInfoSvg';
 
 interface ListItemProps {
   IconComponent: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -77,8 +78,8 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
       onClick={() => handleClick({ route, onclick })}
     >
       <div className="flex items-center h-[35px]">
-        <IconComponent className="mr-[10px] w-[24px] h-[24px] stroke-g2 stroke-[1px]" />
-        <div className="text-base text-g6 font-bold">{text}</div>
+        <IconComponent className="mr-[16px] w-[24px] h-[24px] stroke-g2 stroke-[1px]" />
+        <div className="text-base font-medium text-g6">{text}</div>
       </div>
       {hoveredIndex === index && <Vector />}
     </div>
@@ -114,16 +115,16 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
     <>
       <div className="w-full h-auto border border-gray-300 flex flex-col bg-r1 text-g0 mt-[50px]">
         <div className="flex w-full">
-          <div className="ml-[20px] w-[52px] h-[72px] flex items-center justify-center mt-[20px]">
-            <img src={imageSrc || ''} alt={' '} />
+          <div className="ml-[20px] mt-[20px]">
+            <UserInfoSvg imageUrl={imageSrc || '/images/thumb.png'} />
           </div>
-          <div className="flex flex-col justify-center pl-5 h-[72px] mt-[17px]">
-            <div className="text-lg font-bold">{userInfo?.firstName}</div>
-            <div className="text-base">
+          <div className="flex flex-col justify-center pl-5 mt-[31px]">
+            <div className="text-[20px] font-semibold">{userInfo?.firstName}</div>
+            <div className="text-[14px] font-normal text-opacity-80">
               {age} years old | {userInfo?.gender}
             </div>
           </div>
-          <div className="ml-auto flex items-center pr-4">
+          <div className="flex items-center pr-4 ml-auto">
             <button
               className="text-sm text-r5 border border-r5 rounded-full w-[50px] h-[24px]"
               onClick={handleProfileEdit}
