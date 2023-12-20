@@ -172,8 +172,20 @@ export default function SignUp() {
           placeholder={signUpTranslation.t('emailPlaceholder') as string}
           type="email"
           register={register('email', {
-            validate: (value) => {
-              return isValidEmail(value, `${commonTranslation.t('validEmail')}`);
+            validate: async (value) => {
+              if (isValidEmail(value, `${commonTranslation.t('validEmail')}`) !== true) {
+                return commonTranslation.t('validEmail') as string;
+              }
+              try {
+                const data = await postSignup(value);
+                // @ts-ignore
+                if (data?.error) {
+                  throw Error;
+                }
+                return true;
+              } catch {
+                return 'This email is already registered';
+              }
             },
           })}
           error={errors.email as FieldError}
