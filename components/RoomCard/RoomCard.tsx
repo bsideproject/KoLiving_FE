@@ -120,7 +120,7 @@ const Footer = ({ room, isLikedRooms }: CardProps) => {
         {room.location.name}-dong, {room.location.upperLocation?.name}-gu
       </div>
       <div className="font-poppins text-[20px] font-semibold text-g7 flex items-center">
-        <div>&#8361;{formatPrice(room.deposit.amount)}&nbsp;</div>
+        <div>&#8361;{formatPrice(room.monthlyRent.amount)}&nbsp;</div>
         <span className="font-pretendard text-[14px] font-medium mr-[12px]">/ month </span>
         <span className="font-pretendard text-[14px] text-r1 font-[500] bg-g1 px-[4px] py-[2px] rounded-[2px]">
           {room.deposit ? 'Deposit required' : ''}

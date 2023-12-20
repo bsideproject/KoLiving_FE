@@ -433,7 +433,7 @@ export default function RoomDetail() {
             <div className="fixed bottom-0 w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max bg-g0 h-[71px] flex justify-center border-t-[1px] border-g2">
               <div className="flex items-center">
                 <Like className="stroke-g7 stroke-[1.5px] m-[8px]" />
-                <span className="text-[20px] font-semibold">&#8361; {formatPrice(room.deposit.amount)}&nbsp;</span>
+                <span className="text-[20px] font-semibold">&#8361; {formatPrice(room.monthlyRent.amount)}&nbsp;</span>
                 <span>/ month</span>
                 <div className="h-[40px] font-medium text-[14px] ml-[12px]">
                   <Button height="40px" onClick={handleContactPopup}>
