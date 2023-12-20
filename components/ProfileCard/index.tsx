@@ -16,6 +16,16 @@ import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import { formatAge } from '@/utils/transform';
 import UserInfoSvg from '../ImageSvg/UserInfoSvg';
 
+function capitalizeFirstLetter(str?: string) {
+  // 빈 문자열 또는 null 또는 undefined인 경우에 대비
+  if (!str) {
+    return str;
+  }
+
+  // 첫 번째 글자만 대문자로 변경 후 나머지는 그대로 둠
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 interface ListItemProps {
   IconComponent: React.FC<React.SVGProps<SVGSVGElement>>;
   text: string;
@@ -121,7 +131,7 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
           <div className="flex flex-col justify-center pl-5 mt-[31px]">
             <div className="text-[20px] font-semibold">{userInfo?.firstName}</div>
             <div className="text-[14px] font-normal text-opacity-80">
-              {age} years old | {userInfo?.gender}
+              {age} years old | {capitalizeFirstLetter(userInfo?.gender)}
             </div>
           </div>
           <div className="flex items-center pr-4 ml-auto">

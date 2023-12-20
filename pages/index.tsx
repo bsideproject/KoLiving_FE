@@ -51,7 +51,6 @@ function Home() {
   // TODO : ModalLayer 로 로그인한 사용자의 Context 생성 필요
   // eslint-disable-next-line consistent-return
   const selectRooms = async () => {
-    console.log('%c 🤩🤩🤩 영우의 로그 그럼 왜: ', 'font-size: x-large; color: #bada55;', '');
     try {
       const data = await getRooms({
         ...searchParams,
@@ -135,7 +134,6 @@ function Home() {
   // 최초 접근 시 Room 정보 조회
   useEffect(() => {
     (async () => {
-      console.log('%c 🤩🤩🤩 영우의 로그 이게 두번?: ', 'font-size: x-large; color: #bada55;', '');
       const resultRooms = await selectRooms();
       const resultLikedRooms = (await getLikedRooms(page))?.content;
       const roomIds = [];
