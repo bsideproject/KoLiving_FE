@@ -46,7 +46,7 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
   return (
     <div className="flex">
       <img
-        className="rounded-[40px] w-[40px] h-[40px]"
+        className="object-cover object-center w-[32px] h-[32px] rounded-[32px]"
         src={userInfo.imageUrl || '/images/thumb.png'}
         alt="user"
         onClick={handleUserClick}
@@ -114,7 +114,7 @@ const Footer = ({ room, isLikedRooms }: CardProps) => {
         onClick={handleLikeClick}
       />
       <div className="text-g6 text-[12px]">
-        {room.location.name}, {room.location.upperLocation?.name}
+        {room.location.name}-dong, {room.location.upperLocation?.name}-gu
       </div>
       <div className="font-poppins text-[20px] font-semibold text-g7 flex items-center">
         <div>&#8361;{formatPrice(room.deposit.amount)}&nbsp;</div>
