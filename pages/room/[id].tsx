@@ -362,7 +362,7 @@ export default function RoomDetail() {
               <div className="font-pretendard text-[14px] text-g6 py-[20px]">
                 <div className="flex items-center">
                   <Pin className="mr-[12px]" />
-                  {room.location.name}, {room.location.upperLocation?.name}
+                  {room.location.name}-dong, {room.location.upperLocation?.name}-gu
                 </div>
                 <div className="flex items-center">
                   <Calendar className="mr-[12px]" />
