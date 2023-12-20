@@ -136,7 +136,7 @@ const Footer = ({ room, isLikedRooms }: CardProps) => {
       </div>
       <hr />
       <p className="pt-[10px] font-medium text-[12px] text-a2">
-        Available {room.available === true ? formatDate(room.availableDate) : 'Now'}
+        Available {room.available === true ? 'Now' : formatDate(room.availableDate)}
       </p>
     </div>
   );
