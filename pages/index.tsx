@@ -226,6 +226,7 @@ function Home() {
                 onDelete={() => handleOptionRemove?.(filter, index)}
                 onChipClick={() => handleChipClick?.(index)}
                 clicked={filter.selected}
+                fontWeight="medium"
               />
             );
           })}

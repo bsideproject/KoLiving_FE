@@ -8,10 +8,11 @@ interface ChipProps {
   clicked?: boolean;
   onChipClick?: (label: string) => void;
   onlyText?: boolean;
+  fontWeight?: string;
 }
 
 /** Chip Component 1차 개발 */
-export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }: ChipProps) {
+export default function Chip({ label, onDelete, clicked, onChipClick, onlyText, fontWeight }: ChipProps) {
   const [fillStroke, setFillStroke] = useState('');
   const [fillText, setFillText] = useState('');
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function Chip({ label, onDelete, clicked, onChipClick, onlyText }
     <div
       className={`pl-[12px] pr-[3.75px] inline-flex items-center mr-2 bg-opacity-10 py-1 font-semibold ${fillText} ${
         onlyText ? 'border-g3 border-[1px] rounded-[2px] !pr-[12px]' : ''
-      }`}
+      } ${fontWeight ? `font-[${fontWeight}]` : ''}`}
       onClick={onDivClick}
     >
       <Typography variant="label" fontStyle="medium" font="pretendard" color={clicked ? 'r1' : 'g5'}>

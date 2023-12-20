@@ -45,12 +45,15 @@ const UserInfo = ({ userInfo }: UserInfoProps) => {
 
   return (
     <div className="flex">
-      <img
-        className="object-cover object-center w-[32px] h-[32px] rounded-[32px]"
-        src={userInfo.imageUrl || '/images/thumb.png'}
-        alt="user"
-        onClick={handleUserClick}
-      />
+      <div className="relative inline-block w-[32px] h-[32px] ">
+        <img
+          className="object-cover object-center w-full h-full rounded-[32px]"
+          src={userInfo.imageUrl || '/images/thumb.png'}
+          alt="user"
+          onClick={handleUserClick}
+        />
+        <div className="absolute w-full h-full rounded-[50%] border-g3 border-solid top-0 left-0 box-border border-[1px]" />
+      </div>
       <div className="ml-[12px]">
         <div className="text-[16px] text-g7 font-semibold">{userInfo.firstName}</div>
         <div className="text-a2 text-[12px]">
