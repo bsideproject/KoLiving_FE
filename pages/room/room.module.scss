@@ -9,7 +9,7 @@
 }
 
 .tag {
-  @apply absolute z-10 bottom-[14px] right-[19.5px] rounded-[4px] px-[2px] py-[4px] text-g1 text-[12px];
+  @apply absolute z-10 bottom-[14px] right-[19.5px] rounded-[4px] px-[4px] py-[2px] text-g1 text-[12px] flex items-center justify-between font-medium;
 
   background: rgba(33, 33, 33, 0.5);
 }
