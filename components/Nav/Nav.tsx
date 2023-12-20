@@ -63,7 +63,7 @@ export default function Nav({ initMenu, profile }: NavProps) {
 
         return (
           <div
-            className="my-[9px] align-middle items-center cursor-pointer"
+            className="my-[13px] align-middle items-center cursor-pointer"
             key={menu.name}
             onClick={() => handleNavClicked(index)}
             onMouseEnter={() => setHoverMenu(index)}
