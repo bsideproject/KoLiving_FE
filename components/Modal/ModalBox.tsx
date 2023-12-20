@@ -117,7 +117,7 @@ function Modal({
         {hasCloseButton && (
           <div className={styles.close}>
             <button type="button" onClick={onClose}>
-              <Close width={24} height={24} fill="#FF8E00" />
+              <Close width={24} height={24} className="stroke-r1 stroke-[2]" />
             </button>
           </div>
         )}
