@@ -57,7 +57,7 @@ export default function AddRoom() {
       monthlyRent: data.monthPrice,
       deposit: data.depositPrice,
       maintenanceFee: data.maintananceFee,
-      availableDate: data.dateAvailable ? formatDateForAPI(data.dateAvailable) : '',
+      availableDate: data.dateAvailable ? formatDateForAPI(data.dateAvailable) : null,
       gasIncluded: data.gasChecked,
       waterIncluded: data.waterChecked,
       electricityIncluded: data.electricityChecked,
