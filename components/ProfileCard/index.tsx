@@ -45,7 +45,7 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const age = formatAge(userInfo?.birthDate || '');
   const router = useRouter();
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const handleRouting = (route: string) => {
     if (route === '/') {
@@ -95,13 +95,23 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
     </div>
   );
 
-  const handleLogout = () => {
-    setShowModal(true);
-  };
-
   const doLogout = () => {
     signOut({
       callbackUrl: '/',
+    });
+  };
+
+  const handleLogout = () => {
+    openModal({
+      props: {
+        title: 'Log out of Ko-Living?',
+        content: 'You can log back in at anytime.',
+        buttonType: 'both',
+        buttonName: 'Cancel',
+        buttonName2: 'Log out',
+        handleClose: () => closeModal(),
+        handleSecondButton: () => doLogout(),
+      },
     });
   };
 
@@ -149,18 +159,6 @@ export default function ProfileCard({ imageSrc, userInfo }: ProfileCard) {
           className="bg-r1 mb-[20px] h-[120px] text-[14px]"
           readonly
         />
-
-        {showModal && (
-          <ModalBox
-            title="Log out of Ko-Living?"
-            content="You can log back in at anytime."
-            buttonType="both"
-            buttonName="Cancel"
-            buttonName2="Log out"
-            handleClose={() => setShowModal(false)}
-            handleSecondButton={() => doLogout()}
-          />
-        )}
       </div>
       <ListContainer />
       <hr className="mt-[345px]" />
