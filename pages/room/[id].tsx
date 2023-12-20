@@ -366,7 +366,7 @@ export default function RoomDetail() {
                 </div>
                 <div className="flex items-center">
                   <Calendar className="mr-[12px]" />
-                  From {formatDate(room.availableDate)}
+                  {room.available === true ? `From ${formatDate(room.availableDate)}` : 'Available Now'}
                 </div>
               </div>
               <hr />

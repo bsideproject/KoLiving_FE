@@ -135,7 +135,9 @@ const Footer = ({ room, isLikedRooms }: CardProps) => {
         {room.roomInfo.roommates} housemates in total
       </div>
       <hr />
-      <p className="pt-[10px] font-medium text-[12px] text-a2">Available {formatDate(room.availableDate)}</p>
+      <p className="pt-[10px] font-medium text-[12px] text-a2">
+        Available {room.available === true ? formatDate(room.availableDate) : 'Now'}
+      </p>
     </div>
   );
 };
