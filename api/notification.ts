@@ -19,7 +19,7 @@ export const getNewNotifications = () => {
 
 export const updateNotification = (id: number) => {
   return fetchData<Notification[]>(`/api/v1/my/notification/${id}`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
