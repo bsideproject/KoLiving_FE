@@ -9,6 +9,7 @@ import NoLiked from '@/public/icons/noLiked.svg';
 import { useRouter } from 'next/router';
 import useNotification from '@/hooks/useNotification';
 import Reply from '@/public/icons/reply.svg';
+import NoticeIcon from '@/public/icons/notice.svg';
 
 const FILTERS_MAP = [
   {
@@ -93,6 +94,16 @@ function Notice() {
 
   return (
     <div>
+      <div className="!mx-[-20px] px-[20px] py-[8px] bg-g1">
+        <div className="flex flex-row gap-[8px] text-[14px] text-g5">
+          <div className="pt-[2px]">
+            <NoticeIcon />
+          </div>
+          <div>
+            Notifications will be automatically deleted after <span className="font-bold">30days</span>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-row gap-[8px] pt-[12px]">
         {FILTERS_MAP.map((filter, index) => (
           <div key={index}>
