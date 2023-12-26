@@ -188,13 +188,7 @@ export default function Liked({ roomInfo }: MyPostingProps) {
             <RoomCard room={room} onClick={() => handleCardClick(room.id)} isLikedRooms />
           </div>
         ))}
-        <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max">
-          <div className="w-full">
-            <div className="mb-[13px] space-x-[8px] max-w-max">
-              <Nav />
-            </div>
-          </div>
-        </div>
+
         <div ref={target} />
       </div>
     );
@@ -204,8 +198,17 @@ export default function Liked({ roomInfo }: MyPostingProps) {
 
 Liked.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <DefaultLayout type="title" title="Liked" titleCenter>
-      {page}
-    </DefaultLayout>
+    <>
+      <DefaultLayout type="title" title="Liked" titleCenter>
+        {page}
+      </DefaultLayout>
+      <div className="mt-[83px] fixed bottom-[-15px] w-full overflow-x-hidden left-[50%] translate-x-[-50%] max-w-max z-20 border-t-[1px] border-g2">
+        <div className="w-full">
+          <div className="mb-[13px] space-x-[8px] max-w-max">
+            <Nav />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
