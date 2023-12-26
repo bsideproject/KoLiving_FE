@@ -43,7 +43,7 @@ function Home() {
   const [clickedChip, setClickedChip] = useState(-1);
   const router = useRouter();
   const { openModal, closeModal } = useModal();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
   const [searchParams, setSearchParams] = useState<Record<string, string>>({});
   const [likedRoom, setLikedRoom] = useState([]);
@@ -120,7 +120,7 @@ function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (page === 0) {
+      if (page === 1) {
         return;
       }
       const data = await getRooms({ ...searchParams, page });
