@@ -61,14 +61,7 @@ export default function Login() {
   return (
     <div className="w-full font-pretendard">
       <div className="relative h-[422px] mb-7 w-[calc(100%+40px)] -left-[20px]">
-        <CustomImage
-          src="/images/thumb.png"
-          alt="Koliving"
-          width={0}
-          height={0}
-          layout="fill"
-          objectFit="object-cover"
-        />
+        <img className="object-cover w-full h-full" src="/images/top.png" alt="Koliving" />
       </div>
       <div className="m-[auto]">
         <div className="mb-4 text-2xl font-semibold text-G6 font-poppins">{t('welcome')}</div>
