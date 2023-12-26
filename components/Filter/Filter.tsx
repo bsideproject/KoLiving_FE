@@ -3,7 +3,7 @@ import { Chip, Select, Toggle, Checkbox, Button, Input } from '@/components/inde
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { GuList, DongList } from '@/public/js/guDongList.ts';
 import toast from 'react-hot-toast';
-import { fetchFurnishings, getRooms } from '@/api/room';
+import { Location, fetchFurnishings, getRooms } from '@/api/room';
 import { ROOM_TYPE, ROOM_TYPE_KEYS, ROOM_TYPE_LABEL } from '@/public/types/room';
 import { formatDateForAPI } from '@/utils/transform';
 import { isEmpty } from 'lodash-es';
@@ -21,6 +21,10 @@ interface GuDong {
   dong: Option;
 }
 
+interface DongOption extends Option {
+  upperLocationId: number;
+}
+
 export default function Filter({
   getChildData,
   closeModal,
@@ -36,6 +40,8 @@ export default function Filter({
   const [selectedLocations, setSelectedLocations] = useState<GuDong[]>([]);
   const [count, setCount] = useState(0);
   const [searchParams, setSearchParams] = useState({});
+  const [gus, setGus] = useState<Option[]>([]);
+  const [dongs, setDongs] = useState<DongOption[]>([]);
 
   const onSubmit: SubmitHandler<FieldValues> = () => {
     getChildData(searchParams);
@@ -64,8 +70,8 @@ export default function Filter({
       return [];
     }
 
-    return DongList.filter((v) => v.gu === gu.value);
-  }, [gu]);
+    return dongs.filter((v) => v.upperLocationId === gu.value);
+  }, [gu, dongs]);
 
   const resetFilter = useCallback(() => {
     reset();
@@ -179,7 +185,7 @@ export default function Filter({
     const fetchData = async () => {
       setSearchParams({
         locationIds: formattedSelectedLocation.join(', '),
-        locations: selectedLocations,
+        // locations: selectedLocations,
         minDeposit,
         maxDeposit,
         minMonthlyRent,
@@ -239,6 +245,14 @@ export default function Filter({
   useEffect(() => {
     resetSearchParams();
     getFurnishings();
+
+    if (sessionStorage.getItem('gu')) {
+      setGus(JSON.parse(sessionStorage.getItem('gu') || '[]'));
+    }
+
+    if (sessionStorage.getItem('dong')) {
+      setDongs(JSON.parse(sessionStorage.getItem('dong') || '[]'));
+    }
   }, []);
 
   return (
@@ -250,7 +264,7 @@ export default function Filter({
             <div className={styles['sub-header']}>Location</div>
           </div>
           <div className="grid grid-flow-row gap-[8px]">
-            <Select options={GuList} register={register('gu')} placeholder="Gu" />
+            <Select options={gus} register={register('gu')} placeholder="Gu" />
             <Select options={filteredDongList} register={register('dong')} placeholder="Dong" disabled={!watch('gu')} />
           </div>
 

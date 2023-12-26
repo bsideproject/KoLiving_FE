@@ -205,6 +205,7 @@ export default function SignUp() {
               <Checkbox
                 label={signUpTranslation.t('14over') as string}
                 required
+                type="outlined"
                 register={register('yearChecked')}
                 checked={watch('yearChecked')}
               />
@@ -217,6 +218,7 @@ export default function SignUp() {
               <Checkbox
                 label={signUpTranslation.t('termsAndCondition') as string}
                 required
+                type="outlined"
                 register={register('termChecked')}
                 checked={watch('termChecked')}
               />
@@ -229,6 +231,7 @@ export default function SignUp() {
               <Checkbox
                 label={signUpTranslation.t('privacyPolicies') as string}
                 required
+                type="outlined"
                 register={register('privacyChecked')}
                 checked={watch('privacyChecked')}
               />

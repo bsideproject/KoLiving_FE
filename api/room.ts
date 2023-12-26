@@ -84,3 +84,19 @@ export const reportRoom = async (params: ReportParams) => {
     },
   });
 };
+
+export interface Location {
+  id: number;
+  upperLocation: Location;
+  name: string;
+  displayName: string;
+  locationType: string;
+}
+
+export const getLocations = async () => {
+  return fetchData<Location[]>('/api/v1/locations', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};

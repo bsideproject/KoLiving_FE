@@ -110,47 +110,6 @@ export default function AddRoom() {
   }, [gu]);
 
   useEffect(() => {
-    if (!dong) return;
-
-    if (selectedLocations.length === 5) {
-      toast.error('You can select up to five');
-      return;
-    }
-
-    const isExist = selectedLocations.some((item) => item.dong.value === dong.value);
-
-    if (isExist) {
-      toast.error('Already selected');
-      return;
-    }
-
-    setSelectedLocations((prevSelectedLocations) => {
-      prevSelectedLocations.push({
-        gu: {
-          ...gu,
-        },
-        dong: {
-          ...dong,
-        },
-      });
-
-      return [...prevSelectedLocations];
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dong]);
-
-  // 옵션 제거 시 실행될 함수
-  const removeLocation = (option: string | number) => {
-    setSelectedLocations((prevSelectedLocations) =>
-      prevSelectedLocations.filter((item) => {
-        const value = String(option);
-
-        return item.dong.value !== value;
-      })
-    );
-  };
-
-  useEffect(() => {
     if (monthPrice > 20000000) {
       setValue('monthPrice', 20000000);
     }
@@ -196,21 +155,6 @@ export default function AddRoom() {
           <Select options={GuList} register={register('gu')} placeholder="Gu" />
           <Select options={filteredDongList} register={register('dong')} placeholder="Dong" disabled={!watch('gu')} />
         </div>
-        {/* 선택된 옵션들에 대해 동적으로 Chip 컴포넌트 렌더링 */}
-        {selectedLocations.length > 0 && (
-          <div className="mt-[16px] overflow-x-auto whitespace-nowrap">
-            {selectedLocations.map((option) => {
-              return (
-                <Chip
-                  key={option.dong.value}
-                  label={`${option.gu.label}, ${option.dong.label}`}
-                  onDelete={() => removeLocation?.(option.dong.value)}
-                  clicked
-                />
-              );
-            })}
-          </div>
-        )}
       </div>
 
       <hr />
