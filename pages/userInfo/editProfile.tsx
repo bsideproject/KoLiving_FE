@@ -36,7 +36,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: 'onChange', shouldUnregister: false });
   // Backend 에서 보내주는 문자열 형식이랑 맞추기 위해 추가
   const capitalizeFirstLetter = (str: string) => {
     return (str || '').charAt(0).toUpperCase() + (str || '').slice(1).toLowerCase();
@@ -62,6 +62,12 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
     }
     return '';
   };
+
+  const firstName = watch('firstName');
+  const lastName = watch('lastName');
+  const dateOfBirth = watch('dateOfBirth');
+  const describe = watch('describe');
+
   const uploadPhoto = async (photo: File) => {
     const result = await uploadFile(photo);
     return result;
@@ -69,7 +75,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      // gender,
+      // gender
       const profileData = data as Profile;
       const imgResult = await uploadPhoto(imgFile as File);
       profileData.profileId = imgResult?.id || userInfo?.id || 0;
@@ -93,6 +99,19 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
   };
 
   const genderButtons = [{ label: 'Male' }, { label: 'Female' }, { label: 'Others' }];
+
+  const disabledYn = () => {
+    setTimeout(() => {
+      return (
+        (imageSrc || '') === '' ||
+        !watch('firstName') ||
+        !watch('lastName') ||
+        !watch('dateOfBirth') ||
+        !watch('describe') ||
+        !buttonState
+      );
+    }, 1000);
+  };
 
   const ProfileImage = ({ onClick }: ImageComponentClickProps) => {
     return (
@@ -225,14 +244,7 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
               <Button
                 size="lg"
                 type="submit"
-                disabled={
-                  (imageSrc || '') === '' ||
-                  !watch('firstName') ||
-                  !watch('lastName') ||
-                  !watch('dateOfBirth') ||
-                  !watch('describe') ||
-                  !buttonState
-                }
+                disabled={!firstName || !lastName || !describe || !dateOfBirth || !buttonState}
               >
                 Complete
               </Button>
