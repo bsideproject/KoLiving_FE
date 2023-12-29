@@ -15,7 +15,6 @@ import { UserInfoProps } from '@/context/UserInfoProvider.tsx';
 import useModal from '@/hooks/useModal.ts';
 import { uploadFile } from '@/api/room';
 import { ImageListType } from 'react-images-uploading';
-import { RoomFile } from '@/public/types/room';
 
 interface ProfileProps {
   _imageSrc: string;
@@ -100,19 +99,6 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
 
   const genderButtons = [{ label: 'Male' }, { label: 'Female' }, { label: 'Others' }];
 
-  const disabledYn = () => {
-    setTimeout(() => {
-      return (
-        (imageSrc || '') === '' ||
-        !watch('firstName') ||
-        !watch('lastName') ||
-        !watch('dateOfBirth') ||
-        !watch('describe') ||
-        !buttonState
-      );
-    }, 1000);
-  };
-
   const ProfileImage = ({ onClick }: ImageComponentClickProps) => {
     return (
       <div className="flex justify-center items-center h-[90px] mt-[20px] mb-[36px]" onClick={onClick}>
@@ -167,7 +153,6 @@ export default function EditProfile({ _imageSrc, userInfo }: ProfileProps) {
             register={register('email', {
               validate: (value) => {
                 return isRequired(value, '필수 항목') || isValidEmail(value, `Invalid email`);
-                // return true;
               },
             })}
             error={errors.email as FieldError}
